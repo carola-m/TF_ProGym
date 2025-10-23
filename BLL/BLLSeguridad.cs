@@ -348,45 +348,36 @@ namespace BLL
 
         #endregion
 
-        #region Encriptación (Ejemplo Básico - ¡MEJORAR EN PRODUCCIÓN!)
+        // Asegúrate de tener esto al principio de BLLSeguridad.cs:
+        // using BCryptNet = BCrypt.Net.BCrypt; // Alias para evitar colisiones si hubiera otra clase BCrypt
 
-        // ¡¡¡ADVERTENCIA!!! Este método de encriptación es MUY BÁSICO y solo para fines demostrativos.
-        // En una aplicación real, DEBES usar algoritmos de hashing seguros (como Argon2, bcrypt, Scrypt)
-        // con salting adecuado. NUNCA almacenes contraseñas en texto plano o con Base64.
+        #region Encriptación Segura (BCrypt)
+
+        // Encripta usando BCrypt con un work factor (costo) adecuado
         private string EncriptarPassword(string passwordPlana)
         {
-            // Ejemplo simple con Base64 (NO SEGURO PARA PRODUCCIÓN)
             if (string.IsNullOrEmpty(passwordPlana)) return string.Empty;
-            byte[] bytes = Encoding.UTF8.GetBytes(passwordPlana);
-            return Convert.ToBase64String(bytes);
-
-            // Ejemplo con SHA256 (Mejor, pero aún sin salt - NO IDEAL)
-            /*
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(passwordPlana));
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
-            */
+            // El work factor (ej. 11 o 12) determina la "lentitud" del hash. Más alto = más seguro pero más lento.
+            // BCrypt genera y almacena la "sal" automáticamente dentro del hash resultante.
+            return BCrypt.Net.BCrypt.HashPassword(passwordPlana, workFactor: 11);
         }
 
-        private bool VerificarPassword(string passwordIngresada, string passwordAlmacenada)
+        // Verifica si la contraseña ingresada coincide con el hash almacenado
+        private bool VerificarPassword(string passwordIngresada, string hashAlmacenado)
         {
-            // Verifica la contraseña encriptada con Base64 (NO SEGURO)
-            string passwordIngresadaEncriptada = EncriptarPassword(passwordIngresada);
-            return passwordIngresadaEncriptada == passwordAlmacenada;
+            if (string.IsNullOrEmpty(passwordIngresada) || string.IsNullOrEmpty(hashAlmacenado))
+                return false;
 
-            // Verificar con SHA256 (si usaste ese método para encriptar)
-            /*
-            string hashIngresado = EncriptarPassword(passwordIngresada); // Re-hashea la ingresada
-            StringComparer comparer = StringComparer.OrdinalIgnoreCase;
-            return comparer.Compare(hashIngresado, passwordAlmacenada) == 0;
-            */
+            try
+            {
+                // BCrypt.Verify extrae la sal del hashAlmacenado y la usa para hashear la passwordIngresada
+                return BCrypt.Net.BCrypt.Verify(passwordIngresada, hashAlmacenado);
+            }
+            catch (Exception ex) // Captura posibles errores de BCrypt (ej. hash mal formado)
+            {
+                Console.WriteLine($"Error al verificar password: {ex.Message}");
+                return false;
+            }
         }
 
         #endregion
