@@ -77,6 +77,7 @@
             btnIngresar.TabIndex = 4;
             btnIngresar.Text = "INGRESAR";
             btnIngresar.UseVisualStyleBackColor = true;
+            btnIngresar.Click += btnIngresar_Click_1;
             // 
             // btnCancelar
             // 

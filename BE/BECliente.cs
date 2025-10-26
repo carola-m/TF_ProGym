@@ -17,5 +17,14 @@ namespace BE
         {
             return $"{Nombre} {Apellido} ({DNI})";
         }
+
+        public string ApellidoNombreDNI
+        {
+            get
+            {
+                if (Id == 0) return Apellido; // Para el item "[Seleccione Cliente]"
+                return $"{Apellido}, {Nombre} ({DNI})";
+            }
+        }
     }
 }

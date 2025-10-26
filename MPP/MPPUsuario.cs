@@ -1,4 +1,5 @@
 ﻿using BE;
+using BCryptNet = BCrypt.Net.BCrypt;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,25 +17,45 @@ namespace MPP
 
         public MPPUsuario()
         {
-            xmlHelper = new XmlHelper.XmlHelper();
+            xmlHelper = new XmlHelper.XmlHelper(); // Asumiendo que XmlHelper está en su propio proyecto
+
+            // Asegura que la carpeta 'datos' exista
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string dataDirectory = Path.Combine(baseDirectory, "datos");
+            Directory.CreateDirectory(dataDirectory); // XmlHelper.cs ya hace esto, pero es bueno asegurarlo
+
+            archivo = Path.Combine(dataDirectory, "Usuarios.xml"); // Asigna la variable de clase
+            archivoUsuarioRol = Path.Combine(dataDirectory, "UsuarioRol.xml"); // Asigna la variable de clase
+
             if (!File.Exists(archivo))
             {
                 var doc = new XDocument(new XElement("Usuarios"));
-                // Opcional: Crear usuario admin inicial
+
+                // --- INICIO DE CORRECCIÓN ---
+                // Encriptamos la contraseña 'admin' antes de guardarla
+                string adminPasswordPlana = "admin";
+                // Hasheamos la contraseña usando BCrypt
+                string adminPasswordHasheada = BCrypt.Net.BCrypt.HashPassword(adminPasswordPlana, workFactor: 11);
+
                 var adminUser = new XElement("Usuario",
                     new XElement("Id", 1),
                     new XElement("NombreUsuario", "admin"),
-                    // ¡IMPORTANTE! En un caso real, la contraseña inicial debería ser más segura
-                    // y preferiblemente encriptada aquí mismo con una clave conocida o configuración.
-                    new XElement("Password", "admin"), // Simplificado para el ejemplo
+                    // Guardamos la contraseña YA ENCRIPTADA (hasheada)
+                    new XElement("Password", adminPasswordHasheada),
                     new XElement("DebeCambiarPassword", false), // Admin no necesita cambiarla
                     new XElement("Activo", true));
-                doc.Root.Add(adminUser);
+                // --- FIN DE CORRECCIÓN ---
 
+                doc.Root.Add(adminUser);
                 doc.Save(archivo);
             }
+
             // Asegurarse que el archivo de relaciones exista
-            if (!File.Exists(archivoUsuarioRol)) new XDocument(new XElement("UsuarioRoles")).Save(archivoUsuarioRol);
+            if (!File.Exists(archivoUsuarioRol))
+            {
+                var docRoles = new XDocument(new XElement("UsuarioRoles"));
+                docRoles.Save(archivoUsuarioRol);
+            }
         }
 
         private int ObtenerNuevoId(XElement root)
