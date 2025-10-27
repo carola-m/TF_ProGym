@@ -47,7 +47,6 @@ namespace MPP
                     new XElement("Password", adminPasswordBase64), // Guarda la clave en Base64
                     new XElement("DebeCambiarPassword", false),
                     new XElement("Activo", true));
-                // --- FIN DE CORRECCIÓN ---
 
                 doc.Root.Add(adminUser);
                 xmlHelper.GuardarXml(doc, archivo);

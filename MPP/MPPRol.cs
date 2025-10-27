@@ -66,6 +66,9 @@ namespace MPP
         }
 
         // Crea el rol Admin y le asigna todos los permisos iniciales
+        // En MPP/MPPRol.cs
+
+        // Crea el rol Admin y le asigna todos los permisos iniciales
         private void CrearRolAdminInicial()
         {
             // 1. Crear Rol Admin en Roles.xml
@@ -94,28 +97,35 @@ namespace MPP
 
                 var permisosAdmin = new XElement("Permisos");
                 // Agrega todos los permisos simples definidos en Permisos.xml
-                foreach (var permElem in docPermisos.Root.Elements("Permiso")) // Asume estructura simple sin categorías en XML
+                foreach (var permElem in docPermisos.Root.Elements("Permiso"))
                 {
                     permisosAdmin.Add(new XElement("Permiso",
                         new XAttribute("Id", (string)permElem.Attribute("Id")),
-                        new XAttribute("NombreInterno", (string)permElem.Attribute("NombreInterno")) // Guarda el NombreInterno
+                        new XAttribute("NombreInterno", (string)permElem.Attribute("NombreInterno"))
                     ));
                 }
 
-
+                // --- INICIO DE LA CORRECCIÓN ---
+                // El nodo 'permisosAdmin' debe estar DENTRO del nodo 'Rol'
                 docRolPerm.Root.Add(new XElement("RolPermiso",
                     new XElement("Rol",
                         new XElement("Id", adminId),
-                        new XElement("Nombre", "Administrador")
-                    ),
-                    permisosAdmin
+                        new XElement("Nombre", "Administrador"),
+                        permisosAdmin  // <--- ESTA ES LA POSICIÓN CORRECTA
+                    )
+                // (Se elimina 'permisosAdmin' de aquí fuera)
                 ));
+                // --- FIN DE LA CORRECCIÓN ---
+
                 docRolPerm.Save(rolPermisoFilePath);
 
                 // 3. Opcional: Asignar Rol Admin al usuario 'admin' en UsuarioRol.xml
                 if (!File.Exists(usuarioRolFilePath)) CrearArchivoXmlInicial(usuarioRolFilePath, "UsuarioRoles");
                 var docUserRol = XDocument.Load(usuarioRolFilePath);
-                var userAdmin = new MPPUsuario().BuscarPorNombre("admin"); // Busca el ID del usuario admin
+
+                // Usamos una nueva instancia de MPPUsuario aquí como la usabas antes
+                var userAdmin = new MPPUsuario().BuscarPorNombre("admin");
+
                 if (userAdmin != null && !docUserRol.Root.Elements("UsuarioRol")
                                             .Any(ur => (int?)ur.Attribute("usuarioId") == userAdmin.Id && (int?)ur.Attribute("rolId") == adminId))
                 {
@@ -279,21 +289,19 @@ namespace MPP
 
                 if (rolPermisoElement != null)
                 {
-                    var permisosGuardados = rolPermisoElement.Element("Rol").Element("Permisos")?.Elements("Permiso") ?? Enumerable.Empty<XElement>();
+                    // Se busca "Permisos" DENTRO de "Rol"
+                    var permisosGuardados = rolPermisoElement.Element("Rol")?.Element("Permisos")?.Elements("Permiso") ?? Enumerable.Empty<XElement>();
+
                     var nombresInternosPermisos = permisosGuardados.Select(p => (string)p.Attribute("NombreInterno")).ToList();
 
-                    // Carga la definición completa de permisos desde Permisos.xml
                     var todosLosPermisosDefinidos = CargarDefinicionPermisos();
 
-                    // Reconstruye la lista de BEPermiso usando los NombreInterno guardados
                     rolBasico.Permisos = todosLosPermisosDefinidos
                         .Where(p => nombresInternosPermisos.Contains(p.NombreInterno))
-                        .Select(p => new BEPermiso { Id = p.Id, Nombre = p.Nombre, NombreInterno = p.NombreInterno }) // Crea BEPermiso
-                        .ToList<BEPermiso>(); // Convierte explícitamente a List<BEPermiso>
-
+                        .Select(p => new BEPermiso { Id = p.Id, Nombre = p.Nombre, NombreInterno = p.NombreInterno })
+                        .ToList<BEPermiso>();
                 }
             }
-            // Si no se encuentra en RolesPermisos.xml, devuelve el rol básico sin permisos
             return rolBasico;
         }
 
