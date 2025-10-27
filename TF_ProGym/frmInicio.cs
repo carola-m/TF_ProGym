@@ -21,9 +21,10 @@ namespace CapaPresentacion
             InitializeComponent();
         }
 
+        // Evento Load: Se ejecuta cuando el formulario se carga por primera vez
         private void frmInicio_Load(object sender, EventArgs e)
         {
-            PersonalizarUI(); // Aplicar permisos a los menús
+            PersonalizarUI(); // Aplica permisos a los menús
             lblTituloFormHijo.Text = "Bienvenido"; // Título inicial
         }
 
