@@ -29,565 +29,560 @@ namespace CapaPresentacion
         /// </summary>
         private void InitializeComponent()
         {
-            gbCrearUsuario = new GroupBox();
-            btnLimpiarCamposUsuario = new Button();
-            btnBorrarUsuario = new Button();
-            btnEditarUsuario = new Button();
-            btnAltaUsuario = new Button();
-            chkActivoUsuario = new CheckBox();
-            txtContraseña = new TextBox();
-            lblPassword = new Label();
-            txtNombreUsuario = new TextBox();
-            lblUsuario = new Label();
-            txtCodigoUsuario = new TextBox();
-            lblCodigoUsuario = new Label();
-            cbUsuarioEditarEliminar = new ComboBox();
-            lblUsuarioEditar = new Label();
-            gbCrearRol = new GroupBox();
-            btnLimpiarCamposRol = new Button();
-            btnBorrarRol = new Button();
-            btnEditarRol = new Button();
-            btnAltaRol = new Button();
-            chkActivoRol = new CheckBox();
-            txtNombreRol = new TextBox();
-            lblNombreRol = new Label();
-            txtCodigoRol = new TextBox();
-            lblCodigoRol = new Label();
-            cbRolEditarEliminar = new ComboBox();
-            lblRolEditar = new Label();
-            gbAsociarUsuarioRol = new GroupBox();
-            btnDesasociarUsuarioArol = new Button();
-            btnAsociarUsuarioArol = new Button();
-            cmbRolAasociarAusuario = new ComboBox();
-            lblRolAsociar = new Label();
-            cmbUsuarioAasociarRol = new ComboBox();
-            lblUsuarioAsociar = new Label();
-            gbAsociarPermisoRol = new GroupBox();
-            btnDesasociarPermisoArol = new Button();
-            btnAsociarPermisoArol = new Button();
-            trViewPermisoRol = new TreeView();
-            lblPermisosRol = new Label();
-            btnAsociarPermisosMarcados = new Button();
-            cbRolParaAsociarApermiso = new ComboBox();
-            lblRolDisponible = new Label();
-            trvwPermisoAasociar = new TreeView();
-            lblPermisosDisponibles = new Label();
-            gbRolesYPermisosUsuario = new GroupBox();
-            trvRolesyPermisosPorUsuario = new TreeView();
-            gbCrearUsuario.SuspendLayout();
-            gbCrearRol.SuspendLayout();
-            gbAsociarUsuarioRol.SuspendLayout();
-            gbAsociarPermisoRol.SuspendLayout();
-            gbRolesYPermisosUsuario.SuspendLayout();
-            SuspendLayout();
+            this.gbCrearUsuario = new System.Windows.Forms.GroupBox();
+            this.btnLimpiarCamposUsuario = new System.Windows.Forms.Button();
+            this.btnBorrarUsuario = new System.Windows.Forms.Button();
+            this.btnEditarUsuario = new System.Windows.Forms.Button();
+            this.btnAltaUsuario = new System.Windows.Forms.Button();
+            this.chkActivoUsuario = new System.Windows.Forms.CheckBox();
+            this.txtContraseña = new System.Windows.Forms.TextBox();
+            this.lblPassword = new System.Windows.Forms.Label();
+            this.txtNombreUsuario = new System.Windows.Forms.TextBox();
+            this.lblUsuario = new System.Windows.Forms.Label();
+            this.txtCodigoUsuario = new System.Windows.Forms.TextBox();
+            this.lblCodigoUsuario = new System.Windows.Forms.Label();
+            this.cbUsuarioEditarEliminar = new System.Windows.Forms.ComboBox();
+            this.lblUsuarioEditar = new System.Windows.Forms.Label();
+            this.gbCrearRol = new System.Windows.Forms.GroupBox();
+            this.btnLimpiarCamposRol = new System.Windows.Forms.Button();
+            this.btnBorrarRol = new System.Windows.Forms.Button();
+            this.btnEditarRol = new System.Windows.Forms.Button();
+            this.btnAltaRol = new System.Windows.Forms.Button();
+            this.chkActivoRol = new System.Windows.Forms.CheckBox();
+            this.txtNombreRol = new System.Windows.Forms.TextBox();
+            this.lblNombreRol = new System.Windows.Forms.Label();
+            this.txtCodigoRol = new System.Windows.Forms.TextBox();
+            this.lblCodigoRol = new System.Windows.Forms.Label();
+            this.cbRolEditarEliminar = new System.Windows.Forms.ComboBox();
+            this.lblRolEditar = new System.Windows.Forms.Label();
+            this.gbAsociarUsuarioRol = new System.Windows.Forms.GroupBox();
+            this.btnDesasociarUsuarioArol = new System.Windows.Forms.Button();
+            this.btnAsociarUsuarioArol = new System.Windows.Forms.Button();
+            this.cmbRolAasociarAusuario = new System.Windows.Forms.ComboBox();
+            this.lblRolAsociar = new System.Windows.Forms.Label();
+            this.cmbUsuarioAasociarRol = new System.Windows.Forms.ComboBox();
+            this.lblUsuarioAsociar = new System.Windows.Forms.Label();
+            this.gbAsociarPermisoRol = new System.Windows.Forms.GroupBox();
+            this.btnDesasociarPermisoArol = new System.Windows.Forms.Button();
+            this.btnAsociarPermisoArol = new System.Windows.Forms.Button();
+            this.trViewPermisoRol = new System.Windows.Forms.TreeView();
+            this.lblPermisosRol = new System.Windows.Forms.Label();
+            this.btnAsociarPermisosMarcados = new System.Windows.Forms.Button();
+            this.cbRolParaAsociarApermiso = new System.Windows.Forms.ComboBox();
+            this.lblRolDisponible = new System.Windows.Forms.Label();
+            this.trvwPermisoAasociar = new System.Windows.Forms.TreeView();
+            this.lblPermisosDisponibles = new System.Windows.Forms.Label();
+            this.gbRolesYPermisosUsuario = new System.Windows.Forms.GroupBox();
+            this.trvRolesyPermisosPorUsuario = new System.Windows.Forms.TreeView();
+            this.chkEncriptarDesencriptar = new System.Windows.Forms.CheckBox(); // Control del modelo
+            this.gbCrearUsuario.SuspendLayout();
+            this.gbCrearRol.SuspendLayout();
+            this.gbAsociarUsuarioRol.SuspendLayout();
+            this.gbAsociarPermisoRol.SuspendLayout();
+            this.gbRolesYPermisosUsuario.SuspendLayout();
+            this.SuspendLayout();
             // 
             // gbCrearUsuario
             // 
-            gbCrearUsuario.Controls.Add(btnLimpiarCamposUsuario);
-            gbCrearUsuario.Controls.Add(btnBorrarUsuario);
-            gbCrearUsuario.Controls.Add(btnEditarUsuario);
-            gbCrearUsuario.Controls.Add(btnAltaUsuario);
-            gbCrearUsuario.Controls.Add(chkActivoUsuario);
-            gbCrearUsuario.Controls.Add(txtContraseña);
-            gbCrearUsuario.Controls.Add(lblPassword);
-            gbCrearUsuario.Controls.Add(txtNombreUsuario);
-            gbCrearUsuario.Controls.Add(lblUsuario);
-            gbCrearUsuario.Controls.Add(txtCodigoUsuario);
-            gbCrearUsuario.Controls.Add(lblCodigoUsuario);
-            gbCrearUsuario.Controls.Add(cbUsuarioEditarEliminar);
-            gbCrearUsuario.Controls.Add(lblUsuarioEditar);
-            gbCrearUsuario.Location = new Point(14, 16);
-            gbCrearUsuario.Margin = new Padding(3, 4, 3, 4);
-            gbCrearUsuario.Name = "gbCrearUsuario";
-            gbCrearUsuario.Padding = new Padding(3, 4, 3, 4);
-            gbCrearUsuario.Size = new Size(400, 320);
-            gbCrearUsuario.TabIndex = 0;
-            gbCrearUsuario.TabStop = false;
-            gbCrearUsuario.Text = "Crear Usuario";
+            this.gbCrearUsuario.Controls.Add(this.chkEncriptarDesencriptar); // Añadido
+            this.gbCrearUsuario.Controls.Add(this.btnLimpiarCamposUsuario);
+            this.gbCrearUsuario.Controls.Add(this.btnBorrarUsuario);
+            this.gbCrearUsuario.Controls.Add(this.btnEditarUsuario);
+            this.gbCrearUsuario.Controls.Add(this.btnAltaUsuario);
+            this.gbCrearUsuario.Controls.Add(this.chkActivoUsuario);
+            this.gbCrearUsuario.Controls.Add(this.txtContraseña);
+            this.gbCrearUsuario.Controls.Add(this.lblPassword);
+            this.gbCrearUsuario.Controls.Add(this.txtNombreUsuario);
+            this.gbCrearUsuario.Controls.Add(this.lblUsuario);
+            this.gbCrearUsuario.Controls.Add(this.txtCodigoUsuario);
+            this.gbCrearUsuario.Controls.Add(this.lblCodigoUsuario);
+            this.gbCrearUsuario.Controls.Add(this.cbUsuarioEditarEliminar);
+            this.gbCrearUsuario.Controls.Add(this.lblUsuarioEditar);
+            this.gbCrearUsuario.Location = new System.Drawing.Point(12, 12);
+            this.gbCrearUsuario.Name = "gbCrearUsuario";
+            this.gbCrearUsuario.Size = new System.Drawing.Size(350, 240);
+            this.gbCrearUsuario.TabIndex = 0;
+            this.gbCrearUsuario.TabStop = false;
+            this.gbCrearUsuario.Text = "Gestión Usuario";
             // 
             // btnLimpiarCamposUsuario
             // 
-            btnLimpiarCamposUsuario.Location = new Point(343, 213);
-            btnLimpiarCamposUsuario.Margin = new Padding(3, 4, 3, 4);
-            btnLimpiarCamposUsuario.Name = "btnLimpiarCamposUsuario";
-            btnLimpiarCamposUsuario.Size = new Size(46, 33);
-            btnLimpiarCamposUsuario.TabIndex = 8;
-            btnLimpiarCamposUsuario.Text = "Limp.";
-            btnLimpiarCamposUsuario.UseVisualStyleBackColor = true;
+            this.btnLimpiarCamposUsuario.Location = new System.Drawing.Point(300, 160);
+            this.btnLimpiarCamposUsuario.Name = "btnLimpiarCamposUsuario";
+            this.btnLimpiarCamposUsuario.Size = new System.Drawing.Size(40, 25);
+            this.btnLimpiarCamposUsuario.TabIndex = 8;
+            this.btnLimpiarCamposUsuario.Text = "Limp.";
+            this.btnLimpiarCamposUsuario.UseVisualStyleBackColor = true;
+            this.btnLimpiarCamposUsuario.Click += new System.EventHandler(this.btnLimpiarCamposUsuario_Click);
             // 
             // btnBorrarUsuario
             // 
-            btnBorrarUsuario.Location = new Point(286, 213);
-            btnBorrarUsuario.Margin = new Padding(3, 4, 3, 4);
-            btnBorrarUsuario.Name = "btnBorrarUsuario";
-            btnBorrarUsuario.Size = new Size(46, 33);
-            btnBorrarUsuario.TabIndex = 7;
-            btnBorrarUsuario.Text = "Baja";
-            btnBorrarUsuario.UseVisualStyleBackColor = true;
+            this.btnBorrarUsuario.Location = new System.Drawing.Point(250, 160);
+            this.btnBorrarUsuario.Name = "btnBorrarUsuario";
+            this.btnBorrarUsuario.Size = new System.Drawing.Size(40, 25);
+            this.btnBorrarUsuario.TabIndex = 7;
+            this.btnBorrarUsuario.Text = "Baja";
+            this.btnBorrarUsuario.UseVisualStyleBackColor = true;
+            this.btnBorrarUsuario.Click += new System.EventHandler(this.btnBorrarUsuario_Click);
             // 
             // btnEditarUsuario
             // 
-            btnEditarUsuario.Location = new Point(286, 107);
-            btnEditarUsuario.Margin = new Padding(3, 4, 3, 4);
-            btnEditarUsuario.Name = "btnEditarUsuario";
-            btnEditarUsuario.Size = new Size(103, 40);
-            btnEditarUsuario.TabIndex = 6;
-            btnEditarUsuario.Text = "Editar";
-            btnEditarUsuario.UseVisualStyleBackColor = true;
+            this.btnEditarUsuario.Location = new System.Drawing.Point(250, 80);
+            this.btnEditarUsuario.Name = "btnEditarUsuario";
+            this.btnEditarUsuario.Size = new System.Drawing.Size(90, 30);
+            this.btnEditarUsuario.TabIndex = 6;
+            this.btnEditarUsuario.Text = "Editar";
+            this.btnEditarUsuario.UseVisualStyleBackColor = true;
+            this.btnEditarUsuario.Click += new System.EventHandler(this.btnEditarUsuario_Click);
             // 
             // btnAltaUsuario
             // 
-            btnAltaUsuario.Location = new Point(286, 53);
-            btnAltaUsuario.Margin = new Padding(3, 4, 3, 4);
-            btnAltaUsuario.Name = "btnAltaUsuario";
-            btnAltaUsuario.Size = new Size(103, 40);
-            btnAltaUsuario.TabIndex = 5;
-            btnAltaUsuario.Text = "Alta";
-            btnAltaUsuario.UseVisualStyleBackColor = true;
+            this.btnAltaUsuario.Location = new System.Drawing.Point(250, 40);
+            this.btnAltaUsuario.Name = "btnAltaUsuario";
+            this.btnAltaUsuario.Size = new System.Drawing.Size(90, 30);
+            this.btnAltaUsuario.TabIndex = 5;
+            this.btnAltaUsuario.Text = "Alta";
+            this.btnAltaUsuario.UseVisualStyleBackColor = true;
+            this.btnAltaUsuario.Click += new System.EventHandler(this.btnAltaUsuario_Click);
             // 
             // chkActivoUsuario
             // 
-            chkActivoUsuario.AutoSize = true;
-            chkActivoUsuario.Checked = true;
-            chkActivoUsuario.CheckState = CheckState.Checked;
-            chkActivoUsuario.Location = new Point(17, 280);
-            chkActivoUsuario.Margin = new Padding(3, 4, 3, 4);
-            chkActivoUsuario.Name = "chkActivoUsuario";
-            chkActivoUsuario.Size = new Size(73, 24);
-            chkActivoUsuario.TabIndex = 4;
-            chkActivoUsuario.Text = "Activo";
-            chkActivoUsuario.UseVisualStyleBackColor = true;
+            this.chkActivoUsuario.AutoSize = true;
+            this.chkActivoUsuario.Checked = true;
+            this.chkActivoUsuario.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkActivoUsuario.Location = new System.Drawing.Point(15, 210);
+            this.chkActivoUsuario.Name = "chkActivoUsuario";
+            this.chkActivoUsuario.Size = new System.Drawing.Size(60, 19);
+            this.chkActivoUsuario.TabIndex = 4;
+            this.chkActivoUsuario.Text = "Activo";
+            this.chkActivoUsuario.UseVisualStyleBackColor = true;
             // 
             // txtContraseña
             // 
-            txtContraseña.Location = new Point(91, 233);
-            txtContraseña.Margin = new Padding(3, 4, 3, 4);
-            txtContraseña.Name = "txtContraseña";
-            txtContraseña.PasswordChar = '*';
-            txtContraseña.Size = new Size(171, 27);
-            txtContraseña.TabIndex = 3;
+            this.txtContraseña.Location = new System.Drawing.Point(80, 175);
+            this.txtContraseña.Name = "txtContraseña";
+            this.txtContraseña.PasswordChar = '*';
+            this.txtContraseña.Size = new System.Drawing.Size(150, 23);
+            this.txtContraseña.TabIndex = 3;
             // 
             // lblPassword
             // 
-            lblPassword.AutoSize = true;
-            lblPassword.Location = new Point(14, 237);
-            lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(73, 20);
-            lblPassword.TabIndex = 0;
-            lblPassword.Text = "Password:";
+            this.lblPassword.AutoSize = true;
+            this.lblPassword.Location = new System.Drawing.Point(12, 178);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(60, 15);
+            this.lblPassword.TabIndex = 0;
+            this.lblPassword.Text = "Password:";
             // 
             // txtNombreUsuario
             // 
-            txtNombreUsuario.Location = new Point(91, 187);
-            txtNombreUsuario.Margin = new Padding(3, 4, 3, 4);
-            txtNombreUsuario.Name = "txtNombreUsuario";
-            txtNombreUsuario.Size = new Size(171, 27);
-            txtNombreUsuario.TabIndex = 2;
+            this.txtNombreUsuario.Location = new System.Drawing.Point(80, 140);
+            this.txtNombreUsuario.Name = "txtNombreUsuario";
+            this.txtNombreUsuario.Size = new System.Drawing.Size(150, 23);
+            this.txtNombreUsuario.TabIndex = 2;
             // 
             // lblUsuario
             // 
-            lblUsuario.AutoSize = true;
-            lblUsuario.Location = new Point(14, 191);
-            lblUsuario.Name = "lblUsuario";
-            lblUsuario.Size = new Size(62, 20);
-            lblUsuario.TabIndex = 0;
-            lblUsuario.Text = "Usuario:";
+            this.lblUsuario.AutoSize = true;
+            this.lblUsuario.Location = new System.Drawing.Point(12, 143);
+            this.lblUsuario.Name = "lblUsuario";
+            this.lblUsuario.Size = new System.Drawing.Size(50, 15);
+            this.lblUsuario.TabIndex = 0;
+            this.lblUsuario.Text = "Usuario:";
             // 
             // txtCodigoUsuario
             // 
-            txtCodigoUsuario.Location = new Point(91, 140);
-            txtCodigoUsuario.Margin = new Padding(3, 4, 3, 4);
-            txtCodigoUsuario.Name = "txtCodigoUsuario";
-            txtCodigoUsuario.ReadOnly = true;
-            txtCodigoUsuario.Size = new Size(79, 27);
-            txtCodigoUsuario.TabIndex = 1;
-            txtCodigoUsuario.TabStop = false;
+            this.txtCodigoUsuario.Location = new System.Drawing.Point(80, 105);
+            this.txtCodigoUsuario.Name = "txtCodigoUsuario";
+            this.txtCodigoUsuario.ReadOnly = true;
+            this.txtCodigoUsuario.Size = new System.Drawing.Size(70, 23);
+            this.txtCodigoUsuario.TabIndex = 1;
+            this.txtCodigoUsuario.TabStop = false;
             // 
             // lblCodigoUsuario
             // 
-            lblCodigoUsuario.AutoSize = true;
-            lblCodigoUsuario.Location = new Point(14, 144);
-            lblCodigoUsuario.Name = "lblCodigoUsuario";
-            lblCodigoUsuario.Size = new Size(61, 20);
-            lblCodigoUsuario.TabIndex = 0;
-            lblCodigoUsuario.Text = "Código:";
+            this.lblCodigoUsuario.AutoSize = true;
+            this.lblCodigoUsuario.Location = new System.Drawing.Point(12, 108);
+            this.lblCodigoUsuario.Name = "lblCodigoUsuario";
+            this.lblCodigoUsuario.Size = new System.Drawing.Size(21, 15);
+            this.lblCodigoUsuario.TabIndex = 0;
+            this.lblCodigoUsuario.Text = "ID:";
             // 
             // cbUsuarioEditarEliminar
             // 
-            cbUsuarioEditarEliminar.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbUsuarioEditarEliminar.FormattingEnabled = true;
-            cbUsuarioEditarEliminar.Location = new Point(17, 60);
-            cbUsuarioEditarEliminar.Margin = new Padding(3, 4, 3, 4);
-            cbUsuarioEditarEliminar.Name = "cbUsuarioEditarEliminar";
-            cbUsuarioEditarEliminar.Size = new Size(245, 28);
-            cbUsuarioEditarEliminar.TabIndex = 0;
+            this.cbUsuarioEditarEliminar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbUsuarioEditarEliminar.FormattingEnabled = true;
+            this.cbUsuarioEditarEliminar.Location = new System.Drawing.Point(15, 45);
+            this.cbUsuarioEditarEliminar.Name = "cbUsuarioEditarEliminar";
+            this.cbUsuarioEditarEliminar.Size = new System.Drawing.Size(215, 23);
+            this.cbUsuarioEditarEliminar.TabIndex = 0;
+            this.cbUsuarioEditarEliminar.SelectedIndexChanged += new System.EventHandler(this.cbUsuarioEditarEliminar_SelectedIndexChanged);
             // 
             // lblUsuarioEditar
             // 
-            lblUsuarioEditar.AutoSize = true;
-            lblUsuarioEditar.Location = new Point(17, 33);
-            lblUsuarioEditar.Name = "lblUsuarioEditar";
-            lblUsuarioEditar.Size = new Size(152, 20);
-            lblUsuarioEditar.TabIndex = 0;
-            lblUsuarioEditar.Text = "Usuario a editar/baja:";
+            this.lblUsuarioEditar.AutoSize = true;
+            this.lblUsuarioEditar.Location = new System.Drawing.Point(15, 25);
+            this.lblUsuarioEditar.Name = "lblUsuarioEditar";
+            this.lblUsuarioEditar.Size = new System.Drawing.Size(124, 15);
+            this.lblUsuarioEditar.TabIndex = 0;
+            this.lblUsuarioEditar.Text = "Usuario a editar/baja:";
+            // 
+            // chkEncriptarDesencriptar
+            // 
+            this.chkEncriptarDesencriptar.AutoSize = true;
+            this.chkEncriptarDesencriptar.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.chkEncriptarDesencriptar.Location = new System.Drawing.Point(90, 210);
+            this.chkEncriptarDesencriptar.Name = "chkEncriptarDesencriptar";
+            this.chkEncriptarDesencriptar.Size = new System.Drawing.Size(140, 17); // Ajustado
+            this.chkEncriptarDesencriptar.TabIndex = 9;
+            this.chkEncriptarDesencriptar.Text = "Mostrar/Ocultar Pass"; // Texto cambiado
+            this.chkEncriptarDesencriptar.UseVisualStyleBackColor = true;
+            this.chkEncriptarDesencriptar.CheckedChanged += new System.EventHandler(this.chkEncriptarDesencriptar_CheckedChanged);
             // 
             // gbCrearRol
             // 
-            gbCrearRol.Controls.Add(btnLimpiarCamposRol);
-            gbCrearRol.Controls.Add(btnBorrarRol);
-            gbCrearRol.Controls.Add(btnEditarRol);
-            gbCrearRol.Controls.Add(btnAltaRol);
-            gbCrearRol.Controls.Add(chkActivoRol);
-            gbCrearRol.Controls.Add(txtNombreRol);
-            gbCrearRol.Controls.Add(lblNombreRol);
-            gbCrearRol.Controls.Add(txtCodigoRol);
-            gbCrearRol.Controls.Add(lblCodigoRol);
-            gbCrearRol.Controls.Add(cbRolEditarEliminar);
-            gbCrearRol.Controls.Add(lblRolEditar);
-            gbCrearRol.Location = new Point(14, 347);
-            gbCrearRol.Margin = new Padding(3, 4, 3, 4);
-            gbCrearRol.Name = "gbCrearRol";
-            gbCrearRol.Padding = new Padding(3, 4, 3, 4);
-            gbCrearRol.Size = new Size(400, 267);
-            gbCrearRol.TabIndex = 1;
-            gbCrearRol.TabStop = false;
-            gbCrearRol.Text = "Crear Rol";
+            this.gbCrearRol.Controls.Add(this.btnLimpiarCamposRol);
+            this.gbCrearRol.Controls.Add(this.btnBorrarRol);
+            this.gbCrearRol.Controls.Add(this.btnEditarRol);
+            this.gbCrearRol.Controls.Add(this.btnAltaRol);
+            this.gbCrearRol.Controls.Add(this.chkActivoRol);
+            this.gbCrearRol.Controls.Add(this.txtNombreRol);
+            this.gbCrearRol.Controls.Add(this.lblNombreRol);
+            this.gbCrearRol.Controls.Add(this.txtCodigoRol);
+            this.gbCrearRol.Controls.Add(this.lblCodigoRol);
+            this.gbCrearRol.Controls.Add(this.cbRolEditarEliminar);
+            this.gbCrearRol.Controls.Add(this.lblRolEditar);
+            this.gbCrearRol.Location = new System.Drawing.Point(12, 260);
+            this.gbCrearRol.Name = "gbCrearRol";
+            this.gbCrearRol.Size = new System.Drawing.Size(350, 200);
+            this.gbCrearRol.TabIndex = 1;
+            this.gbCrearRol.TabStop = false;
+            this.gbCrearRol.Text = "Gestión Rol";
             // 
             // btnLimpiarCamposRol
             // 
-            btnLimpiarCamposRol.Location = new Point(343, 213);
-            btnLimpiarCamposRol.Margin = new Padding(3, 4, 3, 4);
-            btnLimpiarCamposRol.Name = "btnLimpiarCamposRol";
-            btnLimpiarCamposRol.Size = new Size(46, 33);
-            btnLimpiarCamposRol.TabIndex = 17;
-            btnLimpiarCamposRol.Text = "Limp.";
-            btnLimpiarCamposRol.UseVisualStyleBackColor = true;
+            this.btnLimpiarCamposRol.Location = new System.Drawing.Point(300, 160);
+            this.btnLimpiarCamposRol.Name = "btnLimpiarCamposRol";
+            this.btnLimpiarCamposRol.Size = new System.Drawing.Size(40, 25);
+            this.btnLimpiarCamposRol.TabIndex = 17;
+            this.btnLimpiarCamposRol.Text = "Limp.";
+            this.btnLimpiarCamposRol.UseVisualStyleBackColor = true;
+            this.btnLimpiarCamposRol.Click += new System.EventHandler(this.btnLimpiarCamposRol_Click);
             // 
             // btnBorrarRol
             // 
-            btnBorrarRol.Location = new Point(286, 213);
-            btnBorrarRol.Margin = new Padding(3, 4, 3, 4);
-            btnBorrarRol.Name = "btnBorrarRol";
-            btnBorrarRol.Size = new Size(46, 33);
-            btnBorrarRol.TabIndex = 16;
-            btnBorrarRol.Text = "Baja";
-            btnBorrarRol.UseVisualStyleBackColor = true;
+            this.btnBorrarRol.Location = new System.Drawing.Point(250, 160);
+            this.btnBorrarRol.Name = "btnBorrarRol";
+            this.btnBorrarRol.Size = new System.Drawing.Size(40, 25);
+            this.btnBorrarRol.TabIndex = 16;
+            this.btnBorrarRol.Text = "Baja";
+            this.btnBorrarRol.UseVisualStyleBackColor = true;
+            this.btnBorrarRol.Click += new System.EventHandler(this.btnBorrarRol_Click);
             // 
             // btnEditarRol
             // 
-            btnEditarRol.Location = new Point(286, 107);
-            btnEditarRol.Margin = new Padding(3, 4, 3, 4);
-            btnEditarRol.Name = "btnEditarRol";
-            btnEditarRol.Size = new Size(103, 40);
-            btnEditarRol.TabIndex = 15;
-            btnEditarRol.Text = "Editar";
-            btnEditarRol.UseVisualStyleBackColor = true;
+            this.btnEditarRol.Location = new System.Drawing.Point(250, 80);
+            this.btnEditarRol.Name = "btnEditarRol";
+            this.btnEditarRol.Size = new System.Drawing.Size(90, 30);
+            this.btnEditarRol.TabIndex = 15;
+            this.btnEditarRol.Text = "Editar";
+            this.btnEditarRol.UseVisualStyleBackColor = true;
+            this.btnEditarRol.Click += new System.EventHandler(this.btnEditarRol_Click);
             // 
             // btnAltaRol
             // 
-            btnAltaRol.Location = new Point(286, 53);
-            btnAltaRol.Margin = new Padding(3, 4, 3, 4);
-            btnAltaRol.Name = "btnAltaRol";
-            btnAltaRol.Size = new Size(103, 40);
-            btnAltaRol.TabIndex = 14;
-            btnAltaRol.Text = "Alta";
-            btnAltaRol.UseVisualStyleBackColor = true;
+            this.btnAltaRol.Location = new System.Drawing.Point(250, 40);
+            this.btnAltaRol.Name = "btnAltaRol";
+            this.btnAltaRol.Size = new System.Drawing.Size(90, 30);
+            this.btnAltaRol.TabIndex = 14;
+            this.btnAltaRol.Text = "Alta";
+            this.btnAltaRol.UseVisualStyleBackColor = true;
+            this.btnAltaRol.Click += new System.EventHandler(this.btnAltaRol_Click);
             // 
             // chkActivoRol
             // 
-            chkActivoRol.AutoSize = true;
-            chkActivoRol.Checked = true;
-            chkActivoRol.CheckState = CheckState.Checked;
-            chkActivoRol.Location = new Point(17, 220);
-            chkActivoRol.Margin = new Padding(3, 4, 3, 4);
-            chkActivoRol.Name = "chkActivoRol";
-            chkActivoRol.Size = new Size(73, 24);
-            chkActivoRol.TabIndex = 13;
-            chkActivoRol.Text = "Activo";
-            chkActivoRol.UseVisualStyleBackColor = true;
+            this.chkActivoRol.AutoSize = true;
+            this.chkActivoRol.Checked = true;
+            this.chkActivoRol.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkActivoRol.Location = new System.Drawing.Point(15, 165);
+            this.chkActivoRol.Name = "chkActivoRol";
+            this.chkActivoRol.Size = new System.Drawing.Size(60, 19);
+            this.chkActivoRol.TabIndex = 13;
+            this.chkActivoRol.Text = "Activo";
+            this.chkActivoRol.UseVisualStyleBackColor = true;
             // 
             // txtNombreRol
             // 
-            txtNombreRol.Location = new Point(91, 173);
-            txtNombreRol.Margin = new Padding(3, 4, 3, 4);
-            txtNombreRol.Name = "txtNombreRol";
-            txtNombreRol.Size = new Size(171, 27);
-            txtNombreRol.TabIndex = 12;
+            this.txtNombreRol.Location = new System.Drawing.Point(80, 130);
+            this.txtNombreRol.Name = "txtNombreRol";
+            this.txtNombreRol.Size = new System.Drawing.Size(150, 23);
+            this.txtNombreRol.TabIndex = 12;
             // 
             // lblNombreRol
             // 
-            lblNombreRol.AutoSize = true;
-            lblNombreRol.Location = new Point(14, 177);
-            lblNombreRol.Name = "lblNombreRol";
-            lblNombreRol.Size = new Size(67, 20);
-            lblNombreRol.TabIndex = 0;
-            lblNombreRol.Text = "Nombre:";
+            this.lblNombreRol.AutoSize = true;
+            this.lblNombreRol.Location = new System.Drawing.Point(12, 133);
+            this.lblNombreRol.Name = "lblNombreRol";
+            this.lblNombreRol.Size = new System.Drawing.Size(54, 15);
+            this.lblNombreRol.TabIndex = 0;
+            this.lblNombreRol.Text = "Nombre:";
             // 
             // txtCodigoRol
             // 
-            txtCodigoRol.Location = new Point(91, 127);
-            txtCodigoRol.Margin = new Padding(3, 4, 3, 4);
-            txtCodigoRol.Name = "txtCodigoRol";
-            txtCodigoRol.ReadOnly = true;
-            txtCodigoRol.Size = new Size(79, 27);
-            txtCodigoRol.TabIndex = 11;
-            txtCodigoRol.TabStop = false;
+            this.txtCodigoRol.Location = new System.Drawing.Point(80, 95);
+            this.txtCodigoRol.Name = "txtCodigoRol";
+            this.txtCodigoRol.ReadOnly = true;
+            this.txtCodigoRol.Size = new System.Drawing.Size(70, 23);
+            this.txtCodigoRol.TabIndex = 11;
+            this.txtCodigoRol.TabStop = false;
             // 
             // lblCodigoRol
             // 
-            lblCodigoRol.AutoSize = true;
-            lblCodigoRol.Location = new Point(14, 131);
-            lblCodigoRol.Name = "lblCodigoRol";
-            lblCodigoRol.Size = new Size(61, 20);
-            lblCodigoRol.TabIndex = 0;
-            lblCodigoRol.Text = "Código:";
+            this.lblCodigoRol.AutoSize = true;
+            this.lblCodigoRol.Location = new System.Drawing.Point(12, 98);
+            this.lblCodigoRol.Name = "lblCodigoRol";
+            this.lblCodigoRol.Size = new System.Drawing.Size(21, 15);
+            this.lblCodigoRol.TabIndex = 0;
+            this.lblCodigoRol.Text = "ID:";
             // 
             // cbRolEditarEliminar
             // 
-            cbRolEditarEliminar.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbRolEditarEliminar.FormattingEnabled = true;
-            cbRolEditarEliminar.Location = new Point(17, 60);
-            cbRolEditarEliminar.Margin = new Padding(3, 4, 3, 4);
-            cbRolEditarEliminar.Name = "cbRolEditarEliminar";
-            cbRolEditarEliminar.Size = new Size(245, 28);
-            cbRolEditarEliminar.TabIndex = 10;
+            this.cbRolEditarEliminar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRolEditarEliminar.FormattingEnabled = true;
+            this.cbRolEditarEliminar.Location = new System.Drawing.Point(15, 45);
+            this.cbRolEditarEliminar.Name = "cbRolEditarEliminar";
+            this.cbRolEditarEliminar.Size = new System.Drawing.Size(215, 23);
+            this.cbRolEditarEliminar.TabIndex = 10;
+            this.cbRolEditarEliminar.SelectedIndexChanged += new System.EventHandler(this.cbRolEditarEliminar_SelectedIndexChanged);
             // 
             // lblRolEditar
             // 
-            lblRolEditar.AutoSize = true;
-            lblRolEditar.Location = new Point(17, 33);
-            lblRolEditar.Name = "lblRolEditar";
-            lblRolEditar.Size = new Size(124, 20);
-            lblRolEditar.TabIndex = 0;
-            lblRolEditar.Text = "Rol a editar/baja:";
+            this.lblRolEditar.AutoSize = true;
+            this.lblRolEditar.Location = new System.Drawing.Point(15, 25);
+            this.lblRolEditar.Name = "lblRolEditar";
+            this.lblRolEditar.Size = new System.Drawing.Size(102, 15);
+            this.lblRolEditar.TabIndex = 0;
+            this.lblRolEditar.Text = "Rol a editar/baja:";
             // 
             // gbAsociarUsuarioRol
             // 
-            gbAsociarUsuarioRol.Controls.Add(btnDesasociarUsuarioArol);
-            gbAsociarUsuarioRol.Controls.Add(btnAsociarUsuarioArol);
-            gbAsociarUsuarioRol.Controls.Add(cmbRolAasociarAusuario);
-            gbAsociarUsuarioRol.Controls.Add(lblRolAsociar);
-            gbAsociarUsuarioRol.Controls.Add(cmbUsuarioAasociarRol);
-            gbAsociarUsuarioRol.Controls.Add(lblUsuarioAsociar);
-            gbAsociarUsuarioRol.Location = new Point(14, 627);
-            gbAsociarUsuarioRol.Margin = new Padding(3, 4, 3, 4);
-            gbAsociarUsuarioRol.Name = "gbAsociarUsuarioRol";
-            gbAsociarUsuarioRol.Padding = new Padding(3, 4, 3, 4);
-            gbAsociarUsuarioRol.Size = new Size(400, 200);
-            gbAsociarUsuarioRol.TabIndex = 2;
-            gbAsociarUsuarioRol.TabStop = false;
-            gbAsociarUsuarioRol.Text = "Asociar Usuario a Rol";
+            this.gbAsociarUsuarioRol.Controls.Add(this.btnDesasociarUsuarioArol);
+            this.gbAsociarUsuarioRol.Controls.Add(this.btnAsociarUsuarioArol);
+            this.gbAsociarUsuarioRol.Controls.Add(this.cmbRolAasociarAusuario);
+            this.gbAsociarUsuarioRol.Controls.Add(this.lblRolAsociar);
+            this.gbAsociarUsuarioRol.Controls.Add(this.cmbUsuarioAasociarRol);
+            this.gbAsociarUsuarioRol.Controls.Add(this.lblUsuarioAsociar);
+            this.gbAsociarUsuarioRol.Location = new System.Drawing.Point(12, 470);
+            this.gbAsociarUsuarioRol.Name = "gbAsociarUsuarioRol";
+            this.gbAsociarUsuarioRol.Size = new System.Drawing.Size(350, 150);
+            this.gbAsociarUsuarioRol.TabIndex = 2;
+            this.gbAsociarUsuarioRol.TabStop = false;
+            this.gbAsociarUsuarioRol.Text = "Asociar Usuario a Rol";
             // 
             // btnDesasociarUsuarioArol
             // 
-            btnDesasociarUsuarioArol.Location = new Point(286, 120);
-            btnDesasociarUsuarioArol.Margin = new Padding(3, 4, 3, 4);
-            btnDesasociarUsuarioArol.Name = "btnDesasociarUsuarioArol";
-            btnDesasociarUsuarioArol.Size = new Size(103, 40);
-            btnDesasociarUsuarioArol.TabIndex = 22;
-            btnDesasociarUsuarioArol.Text = "Desasociar";
-            btnDesasociarUsuarioArol.UseVisualStyleBackColor = true;
+            this.btnDesasociarUsuarioArol.Location = new System.Drawing.Point(250, 90);
+            this.btnDesasociarUsuarioArol.Name = "btnDesasociarUsuarioArol";
+            this.btnDesasociarUsuarioArol.Size = new System.Drawing.Size(90, 30);
+            this.btnDesasociarUsuarioArol.TabIndex = 22;
+            this.btnDesasociarUsuarioArol.Text = "Desasociar";
+            this.btnDesasociarUsuarioArol.UseVisualStyleBackColor = true;
+            this.btnDesasociarUsuarioArol.Click += new System.EventHandler(this.btnDesasociarUsuarioArol_Click);
             // 
             // btnAsociarUsuarioArol
             // 
-            btnAsociarUsuarioArol.Location = new Point(286, 60);
-            btnAsociarUsuarioArol.Margin = new Padding(3, 4, 3, 4);
-            btnAsociarUsuarioArol.Name = "btnAsociarUsuarioArol";
-            btnAsociarUsuarioArol.Size = new Size(103, 40);
-            btnAsociarUsuarioArol.TabIndex = 21;
-            btnAsociarUsuarioArol.Text = "Asociar";
-            btnAsociarUsuarioArol.UseVisualStyleBackColor = true;
+            this.btnAsociarUsuarioArol.Location = new System.Drawing.Point(250, 45);
+            this.btnAsociarUsuarioArol.Name = "btnAsociarUsuarioArol";
+            this.btnAsociarUsuarioArol.Size = new System.Drawing.Size(90, 30);
+            this.btnAsociarUsuarioArol.TabIndex = 21;
+            this.btnAsociarUsuarioArol.Text = "Asociar";
+            this.btnAsociarUsuarioArol.UseVisualStyleBackColor = true;
+            this.btnAsociarUsuarioArol.Click += new System.EventHandler(this.btnAsociarUsuarioArol_Click);
             // 
             // cmbRolAasociarAusuario
             // 
-            cmbRolAasociarAusuario.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbRolAasociarAusuario.FormattingEnabled = true;
-            cmbRolAasociarAusuario.Location = new Point(17, 133);
-            cmbRolAasociarAusuario.Margin = new Padding(3, 4, 3, 4);
-            cmbRolAasociarAusuario.Name = "cmbRolAasociarAusuario";
-            cmbRolAasociarAusuario.Size = new Size(245, 28);
-            cmbRolAasociarAusuario.TabIndex = 20;
+            this.cmbRolAasociarAusuario.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRolAasociarAusuario.FormattingEnabled = true;
+            this.cmbRolAasociarAusuario.Location = new System.Drawing.Point(15, 100);
+            this.cmbRolAasociarAusuario.Name = "cmbRolAasociarAusuario";
+            this.cmbRolAasociarAusuario.Size = new System.Drawing.Size(215, 23);
+            this.cmbRolAasociarAusuario.TabIndex = 20;
             // 
             // lblRolAsociar
             // 
-            lblRolAsociar.AutoSize = true;
-            lblRolAsociar.Location = new Point(17, 107);
-            lblRolAsociar.Name = "lblRolAsociar";
-            lblRolAsociar.Size = new Size(165, 20);
-            lblRolAsociar.TabIndex = 0;
-            lblRolAsociar.Text = "Rol a asociar al usuario:";
+            this.lblRolAsociar.AutoSize = true;
+            this.lblRolAsociar.Location = new System.Drawing.Point(15, 80);
+            this.lblRolAsociar.Name = "lblRolAsociar";
+            this.lblRolAsociar.Size = new System.Drawing.Size(121, 15);
+            this.lblRolAsociar.TabIndex = 0;
+            this.lblRolAsociar.Text = "Rol a asociar al usuario:";
             // 
             // cmbUsuarioAasociarRol
             // 
-            cmbUsuarioAasociarRol.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbUsuarioAasociarRol.FormattingEnabled = true;
-            cmbUsuarioAasociarRol.Location = new Point(17, 60);
-            cmbUsuarioAasociarRol.Margin = new Padding(3, 4, 3, 4);
-            cmbUsuarioAasociarRol.Name = "cmbUsuarioAasociarRol";
-            cmbUsuarioAasociarRol.Size = new Size(245, 28);
-            cmbUsuarioAasociarRol.TabIndex = 19;
+            this.cmbUsuarioAasociarRol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbUsuarioAasociarRol.FormattingEnabled = true;
+            this.cmbUsuarioAasociarRol.Location = new System.Drawing.Point(15, 45);
+            this.cmbUsuarioAasociarRol.Name = "cmbUsuarioAasociarRol";
+            this.cmbUsuarioAasociarRol.Size = new System.Drawing.Size(215, 23);
+            this.cmbUsuarioAasociarRol.TabIndex = 19;
             // 
             // lblUsuarioAsociar
             // 
-            lblUsuarioAsociar.AutoSize = true;
-            lblUsuarioAsociar.Location = new Point(17, 33);
-            lblUsuarioAsociar.Name = "lblUsuarioAsociar";
-            lblUsuarioAsociar.Size = new Size(140, 20);
-            lblUsuarioAsociar.TabIndex = 0;
-            lblUsuarioAsociar.Text = "Seleccionar usuario:";
+            this.lblUsuarioAsociar.AutoSize = true;
+            this.lblUsuarioAsociar.Location = new System.Drawing.Point(15, 25);
+            this.lblUsuarioAsociar.Name = "lblUsuarioAsociar";
+            this.lblUsuarioAsociar.Size = new System.Drawing.Size(117, 15);
+            this.lblUsuarioAsociar.TabIndex = 0;
+            this.lblUsuarioAsociar.Text = "Seleccionar usuario:";
             // 
             // gbAsociarPermisoRol
             // 
-            gbAsociarPermisoRol.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            gbAsociarPermisoRol.Controls.Add(btnDesasociarPermisoArol);
-            gbAsociarPermisoRol.Controls.Add(btnAsociarPermisoArol);
-            gbAsociarPermisoRol.Controls.Add(trViewPermisoRol);
-            gbAsociarPermisoRol.Controls.Add(lblPermisosRol);
-            gbAsociarPermisoRol.Controls.Add(btnAsociarPermisosMarcados);
-            gbAsociarPermisoRol.Controls.Add(cbRolParaAsociarApermiso);
-            gbAsociarPermisoRol.Controls.Add(lblRolDisponible);
-            gbAsociarPermisoRol.Controls.Add(trvwPermisoAasociar);
-            gbAsociarPermisoRol.Controls.Add(lblPermisosDisponibles);
-            gbAsociarPermisoRol.Location = new Point(429, 16);
-            gbAsociarPermisoRol.Margin = new Padding(3, 4, 3, 4);
-            gbAsociarPermisoRol.Name = "gbAsociarPermisoRol";
-            gbAsociarPermisoRol.Padding = new Padding(3, 4, 3, 4);
-            gbAsociarPermisoRol.Size = new Size(560, 413);
-            gbAsociarPermisoRol.TabIndex = 3;
-            gbAsociarPermisoRol.TabStop = false;
-            gbAsociarPermisoRol.Text = "Asociar Permiso a Rol";
-           // gbAsociarPermisoRol.Enter += gbAsociarPermisoRol_Enter;
+            this.gbAsociarPermisoRol.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbAsociarPermisoRol.Controls.Add(this.btnDesasociarPermisoArol);
+            this.gbAsociarPermisoRol.Controls.Add(this.btnAsociarPermisoArol);
+            this.gbAsociarPermisoRol.Controls.Add(this.trViewPermisoRol);
+            this.gbAsociarPermisoRol.Controls.Add(this.lblPermisosRol);
+            this.gbAsociarPermisoRol.Controls.Add(this.btnAsociarPermisosMarcados);
+            this.gbAsociarPermisoRol.Controls.Add(this.cbRolParaAsociarApermiso);
+            this.gbAsociarPermisoRol.Controls.Add(this.lblRolDisponible);
+            this.gbAsociarPermisoRol.Controls.Add(this.trvwPermisoAasociar);
+            this.gbAsociarPermisoRol.Controls.Add(this.lblPermisosDisponibles);
+            this.gbAsociarPermisoRol.Location = new System.Drawing.Point(375, 12);
+            this.gbAsociarPermisoRol.Name = "gbAsociarPermisoRol";
+            this.gbAsociarPermisoRol.Size = new System.Drawing.Size(490, 310);
+            this.gbAsociarPermisoRol.TabIndex = 3;
+            this.gbAsociarPermisoRol.TabStop = false;
+            this.gbAsociarPermisoRol.Text = "Asociar Permiso a Rol";
             // 
             // btnDesasociarPermisoArol
             // 
-            btnDesasociarPermisoArol.Location = new Point(389, 80);
-            btnDesasociarPermisoArol.Margin = new Padding(3, 4, 3, 4);
-            btnDesasociarPermisoArol.Name = "btnDesasociarPermisoArol";
-            btnDesasociarPermisoArol.Size = new Size(91, 33);
-            btnDesasociarPermisoArol.TabIndex = 27;
-            btnDesasociarPermisoArol.Text = "Desasociar";
-            btnDesasociarPermisoArol.UseVisualStyleBackColor = true;
+            this.btnDesasociarPermisoArol.Location = new System.Drawing.Point(340, 60);
+            this.btnDesasociarPermisoArol.Name = "btnDesasociarPermisoArol";
+            this.btnDesasociarPermisoArol.Size = new System.Drawing.Size(80, 25);
+            this.btnDesasociarPermisoArol.TabIndex = 27;
+            this.btnDesasociarPermisoArol.Text = "Desasociar";
+            this.btnDesasociarPermisoArol.UseVisualStyleBackColor = true;
+            this.btnDesasociarPermisoArol.Click += new System.EventHandler(this.btnDesasociarPermisoArol_Click);
             // 
             // btnAsociarPermisoArol
             // 
-            btnAsociarPermisoArol.Location = new Point(286, 80);
-            btnAsociarPermisoArol.Margin = new Padding(3, 4, 3, 4);
-            btnAsociarPermisoArol.Name = "btnAsociarPermisoArol";
-            btnAsociarPermisoArol.Size = new Size(91, 33);
-            btnAsociarPermisoArol.TabIndex = 26;
-            btnAsociarPermisoArol.Text = "Asociar >";
-            btnAsociarPermisoArol.UseVisualStyleBackColor = true;
+            this.btnAsociarPermisoArol.Location = new System.Drawing.Point(250, 60);
+            this.btnAsociarPermisoArol.Name = "btnAsociarPermisoArol";
+            this.btnAsociarPermisoArol.Size = new System.Drawing.Size(80, 25);
+            this.btnAsociarPermisoArol.TabIndex = 26;
+            this.btnAsociarPermisoArol.Text = "Asociar >";
+            this.btnAsociarPermisoArol.UseVisualStyleBackColor = true;
+            this.btnAsociarPermisoArol.Click += new System.EventHandler(this.btnAsociarPermisoArol_Click);
             // 
             // trViewPermisoRol
             // 
-            trViewPermisoRol.Location = new Point(286, 153);
-            trViewPermisoRol.Margin = new Padding(3, 4, 3, 4);
-            trViewPermisoRol.Name = "trViewPermisoRol";
-            trViewPermisoRol.Size = new Size(251, 199);
-            trViewPermisoRol.TabIndex = 28;
+            this.trViewPermisoRol.Location = new System.Drawing.Point(250, 115);
+            this.trViewPermisoRol.Name = "trViewPermisoRol";
+            this.trViewPermisoRol.Size = new System.Drawing.Size(220, 150);
+            this.trViewPermisoRol.TabIndex = 28;
             // 
             // lblPermisosRol
             // 
-            lblPermisosRol.AutoSize = true;
-            lblPermisosRol.Location = new Point(286, 127);
-            lblPermisosRol.Name = "lblPermisosRol";
-            lblPermisosRol.Size = new Size(119, 20);
-            lblPermisosRol.TabIndex = 0;
-            lblPermisosRol.Text = "Permisos por rol:";
+            this.lblPermisosRol.AutoSize = true;
+            this.lblPermisosRol.Location = new System.Drawing.Point(250, 95);
+            this.lblPermisosRol.Name = "lblPermisosRol";
+            this.lblPermisosRol.Size = new System.Drawing.Size(88, 15);
+            this.lblPermisosRol.TabIndex = 0;
+            this.lblPermisosRol.Text = "Permisos por rol:";
             // 
             // btnAsociarPermisosMarcados
             // 
-            btnAsociarPermisosMarcados.Location = new Point(17, 360);
-            btnAsociarPermisosMarcados.Margin = new Padding(3, 4, 3, 4);
-            btnAsociarPermisosMarcados.Name = "btnAsociarPermisosMarcados";
-            btnAsociarPermisosMarcados.Size = new Size(251, 40);
-            btnAsociarPermisosMarcados.TabIndex = 25;
-            btnAsociarPermisosMarcados.Text = "Asociar Múltiples Permisos Marcados";
-            btnAsociarPermisosMarcados.UseVisualStyleBackColor = true;
+            this.btnAsociarPermisosMarcados.Location = new System.Drawing.Point(15, 270);
+            this.btnAsociarPermisosMarcados.Name = "btnAsociarPermisosMarcados";
+            this.btnAsociarPermisosMarcados.Size = new System.Drawing.Size(220, 30);
+            this.btnAsociarPermisosMarcados.TabIndex = 25;
+            this.btnAsociarPermisosMarcados.Text = "Asociar Múltiples Permisos Marcados";
+            this.btnAsociarPermisosMarcados.UseVisualStyleBackColor = true;
+            this.btnAsociarPermisosMarcados.Click += new System.EventHandler(this.btnAsociarPermisosMarcados_Click);
             // 
             // cbRolParaAsociarApermiso
             // 
-            cbRolParaAsociarApermiso.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbRolParaAsociarApermiso.FormattingEnabled = true;
-            cbRolParaAsociarApermiso.Location = new Point(286, 33);
-            cbRolParaAsociarApermiso.Margin = new Padding(3, 4, 3, 4);
-            cbRolParaAsociarApermiso.Name = "cbRolParaAsociarApermiso";
-            cbRolParaAsociarApermiso.Size = new Size(251, 28);
-            cbRolParaAsociarApermiso.TabIndex = 23;
+            this.cbRolParaAsociarApermiso.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRolParaAsociarApermiso.FormattingEnabled = true;
+            this.cbRolParaAsociarApermiso.Location = new System.Drawing.Point(250, 25);
+            this.cbRolParaAsociarApermiso.Name = "cbRolParaAsociarApermiso";
+            this.cbRolParaAsociarApermiso.Size = new System.Drawing.Size(220, 23);
+            this.cbRolParaAsociarApermiso.TabIndex = 23;
+            this.cbRolParaAsociarApermiso.SelectedIndexChanged += new System.EventHandler(this.cbRolParaAsociarApermiso_SelectedIndexChanged);
             // 
             // lblRolDisponible
             // 
-            lblRolDisponible.AutoSize = true;
-            lblRolDisponible.Location = new Point(286, 7);
-            lblRolDisponible.Name = "lblRolDisponible";
-            lblRolDisponible.Size = new Size(128, 20);
-            lblRolDisponible.TabIndex = 0;
-            lblRolDisponible.Text = "Roles disponibles:";
+            this.lblRolDisponible.AutoSize = true;
+            this.lblRolDisponible.Location = new System.Drawing.Point(250, 5);
+            this.lblRolDisponible.Name = "lblRolDisponible";
+            this.lblRolDisponible.Size = new System.Drawing.Size(99, 15);
+            this.lblRolDisponible.TabIndex = 0;
+            this.lblRolDisponible.Text = "Roles disponibles:";
             // 
             // trvwPermisoAasociar
             // 
-            trvwPermisoAasociar.CheckBoxes = true;
-            trvwPermisoAasociar.Location = new Point(17, 60);
-            trvwPermisoAasociar.Margin = new Padding(3, 4, 3, 4);
-            trvwPermisoAasociar.Name = "trvwPermisoAasociar";
-            trvwPermisoAasociar.Size = new Size(251, 292);
-            trvwPermisoAasociar.TabIndex = 24;
+            this.trvwPermisoAasociar.CheckBoxes = true;
+            this.trvwPermisoAasociar.Location = new System.Drawing.Point(15, 45);
+            this.trvwPermisoAasociar.Name = "trvwPermisoAasociar";
+            this.trvwPermisoAasociar.Size = new System.Drawing.Size(220, 220);
+            this.trvwPermisoAasociar.TabIndex = 24;
             // 
             // lblPermisosDisponibles
             // 
-            lblPermisosDisponibles.AutoSize = true;
-            lblPermisosDisponibles.Location = new Point(17, 33);
-            lblPermisosDisponibles.Name = "lblPermisosDisponibles";
-            lblPermisosDisponibles.Size = new Size(150, 20);
-            lblPermisosDisponibles.TabIndex = 0;
-            lblPermisosDisponibles.Text = "Permisos disponibles:";
+            this.lblPermisosDisponibles.AutoSize = true;
+            this.lblPermisosDisponibles.Location = new System.Drawing.Point(15, 25);
+            this.lblPermisosDisponibles.Name = "lblPermisosDisponibles";
+            this.lblPermisosDisponibles.Size = new System.Drawing.Size(122, 15);
+            this.lblPermisosDisponibles.TabIndex = 0;
+            this.lblPermisosDisponibles.Text = "Permisos disponibles:";
             // 
             // gbRolesYPermisosUsuario
             // 
-            gbRolesYPermisosUsuario.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            gbRolesYPermisosUsuario.Controls.Add(trvRolesyPermisosPorUsuario);
-            gbRolesYPermisosUsuario.Location = new Point(429, 440);
-            gbRolesYPermisosUsuario.Margin = new Padding(3, 4, 3, 4);
-            gbRolesYPermisosUsuario.Name = "gbRolesYPermisosUsuario";
-            gbRolesYPermisosUsuario.Padding = new Padding(3, 4, 3, 4);
-            gbRolesYPermisosUsuario.Size = new Size(560, 387);
-            gbRolesYPermisosUsuario.TabIndex = 4;
-            gbRolesYPermisosUsuario.TabStop = false;
-            gbRolesYPermisosUsuario.Text = "Roles y permisos del usuario (Vista)";
+            this.gbRolesYPermisosUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbRolesYPermisosUsuario.Controls.Add(this.trvRolesyPermisosPorUsuario);
+            this.gbRolesYPermisosUsuario.Location = new System.Drawing.Point(375, 330);
+            this.gbRolesYPermisosUsuario.Name = "gbRolesYPermisosUsuario";
+            this.gbRolesYPermisosUsuario.Size = new System.Drawing.Size(490, 290);
+            this.gbRolesYPermisosUsuario.TabIndex = 4;
+            this.gbRolesYPermisosUsuario.TabStop = false;
+            this.gbRolesYPermisosUsuario.Text = "Roles y permisos del usuario (Vista)";
             // 
             // trvRolesyPermisosPorUsuario
             // 
-            trvRolesyPermisosPorUsuario.Dock = DockStyle.Fill;
-            trvRolesyPermisosPorUsuario.Location = new Point(3, 24);
-            trvRolesyPermisosPorUsuario.Margin = new Padding(3, 4, 3, 4);
-            trvRolesyPermisosPorUsuario.Name = "trvRolesyPermisosPorUsuario";
-            trvRolesyPermisosPorUsuario.Size = new Size(554, 359);
-            trvRolesyPermisosPorUsuario.TabIndex = 29;
+            this.trvRolesyPermisosPorUsuario.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trvRolesyPermisosPorUsuario.Location = new System.Drawing.Point(3, 19);
+            this.trvRolesyPermisosPorUsuario.Name = "trvRolesyPermisosPorUsuario";
+            this.trvRolesyPermisosPorUsuario.Size = new System.Drawing.Size(484, 268);
+            this.trvRolesyPermisosPorUsuario.TabIndex = 29;
             // 
             // frmUsuarios
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1005, 841);
-            Controls.Add(gbRolesYPermisosUsuario);
-            Controls.Add(gbAsociarPermisoRol);
-            Controls.Add(gbAsociarUsuarioRol);
-            Controls.Add(gbCrearRol);
-            Controls.Add(gbCrearUsuario);
-            Margin = new Padding(3, 4, 3, 4);
-            MinimumSize = new Size(1020, 878);
-            Name = "frmUsuarios";
-            Text = "Gestión de Seguridad (Usuarios, Roles y Permisos)";
-            gbCrearUsuario.ResumeLayout(false);
-            gbCrearUsuario.PerformLayout();
-            gbCrearRol.ResumeLayout(false);
-            gbCrearRol.PerformLayout();
-            gbAsociarUsuarioRol.ResumeLayout(false);
-            gbAsociarUsuarioRol.PerformLayout();
-            gbAsociarPermisoRol.ResumeLayout(false);
-            gbAsociarPermisoRol.PerformLayout();
-            gbRolesYPermisosUsuario.ResumeLayout(false);
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F); // .NET Core/5+ default
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(879, 631);
+            this.Controls.Add(this.gbRolesYPermisosUsuario);
+            this.Controls.Add(this.gbAsociarPermisoRol);
+            this.Controls.Add(this.gbAsociarUsuarioRol);
+            this.Controls.Add(this.gbCrearRol);
+            this.Controls.Add(this.gbCrearUsuario);
+            this.MinimumSize = new System.Drawing.Size(895, 670);
+            this.Name = "frmUsuarios";
+            this.Text = "Gestión de Seguridad (Usuarios, Roles y Permisos)";
+            this.Load += new System.EventHandler(this.frmUsuarios_Load);
+            this.gbCrearUsuario.ResumeLayout(false);
+            this.gbCrearUsuario.PerformLayout();
+            this.gbCrearRol.ResumeLayout(false);
+            this.gbCrearRol.PerformLayout();
+            this.gbAsociarUsuarioRol.ResumeLayout(false);
+            this.gbAsociarUsuarioRol.PerformLayout();
+            this.gbAsociarPermisoRol.ResumeLayout(false);
+            this.gbAsociarPermisoRol.PerformLayout();
+            this.gbRolesYPermisosUsuario.ResumeLayout(false);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -638,7 +633,6 @@ namespace CapaPresentacion
         private System.Windows.Forms.Label lblPermisosDisponibles;
         private System.Windows.Forms.GroupBox gbRolesYPermisosUsuario;
         private System.Windows.Forms.TreeView trvRolesyPermisosPorUsuario;
-     //   private EventHandler cbRolParaAsociarApermiso_SelectedIndexChanged;
-       // private readonly EventHandler btnLimpiarCamposUsuario_Click;
+        private System.Windows.Forms.CheckBox chkEncriptarDesencriptar; // Control del modelo
     }
 }

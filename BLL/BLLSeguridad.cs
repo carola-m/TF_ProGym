@@ -3,9 +3,7 @@ using MPP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography; // Para encriptación más segura
-using System.Text; // Para encriptación
-
+using System.Text; // Necesario para Base64
 
 namespace BLL
 {
@@ -33,8 +31,11 @@ namespace BLL
 
             var usuario = mppUsuario.BuscarPorNombre(nombreUsuario);
 
-            // Verifica si el usuario existe, está activo y la contraseña coincide
-            if (usuario != null && usuario.Activo && VerificarPassword(password, usuario.Password))
+            // Encriptamos la contraseña ingresada para compararla
+            string passwordEncriptada = EncriptarClave(password);
+
+            // Verifica si el usuario existe, está activo y la contraseña encriptada coincide
+            if (usuario != null && usuario.Activo && usuario.Password == passwordEncriptada)
             {
                 return usuario;
             }
@@ -46,18 +47,14 @@ namespace BLL
             if (usuario == null) throw new ArgumentNullException("El usuario no puede ser nulo.");
             if (string.IsNullOrWhiteSpace(usuario.NombreUsuario)) throw new ArgumentException("El nombre de usuario es obligatorio.");
             if (string.IsNullOrWhiteSpace(usuario.Password)) throw new ArgumentException("La contraseña es obligatoria.");
-            if (usuario.Password.Length < 4) throw new ArgumentException("La contraseña debe tener al menos 4 caracteres."); // Ejemplo de regla
-
+            if (usuario.Password.Length < 4) throw new ArgumentException("La contraseña debe tener al menos 4 caracteres.");
 
             // Encripta la contraseña antes de guardarla
-            usuario.Password = EncriptarPassword(usuario.Password);
-            // Asegura que el estado inicial sea el correcto
+            usuario.Password = EncriptarClave(usuario.Password);
             usuario.Activo = true;
-            // Forzar cambio de contraseña, excepto para admin
             usuario.DebeCambiarPassword = !usuario.NombreUsuario.Equals("admin", StringComparison.OrdinalIgnoreCase);
 
-
-            mppUsuario.Guardar(usuario); // Guardar se encarga de verificar duplicados de nombre
+            mppUsuario.Guardar(usuario);
         }
 
         public void ModificarUsuario(BEUsuario usuario, string nuevaPassword = null)
@@ -65,33 +62,26 @@ namespace BLL
             if (usuario == null) throw new ArgumentNullException("El usuario no puede ser nulo.");
             if (string.IsNullOrWhiteSpace(usuario.NombreUsuario)) throw new ArgumentException("El nombre de usuario es obligatorio.");
 
-            // Busca el usuario existente para no perder datos no modificables aquí (como el ID)
             var usuarioExistente = mppUsuario.BuscarPorId(usuario.Id);
             if (usuarioExistente == null) throw new KeyNotFoundException("Usuario no encontrado para modificar.");
 
-            // Actualiza los campos permitidos
             usuarioExistente.NombreUsuario = usuario.NombreUsuario;
-            usuarioExistente.Activo = usuario.Activo; // Permite activar/desactivar
+            usuarioExistente.Activo = usuario.Activo;
             usuarioExistente.DebeCambiarPassword = usuario.DebeCambiarPassword;
 
-
-            // Si se proporciona una nueva contraseña, la encripta y actualiza
             if (!string.IsNullOrWhiteSpace(nuevaPassword))
             {
                 if (nuevaPassword.Length < 4) throw new ArgumentException("La nueva contraseña debe tener al menos 4 caracteres.");
-                usuarioExistente.Password = EncriptarPassword(nuevaPassword);
-                // Opcional: Podrías querer resetear DebeCambiarPassword aquí si la cambia un admin
-                // usuarioExistente.DebeCambiarPassword = false;
+                usuarioExistente.Password = EncriptarClave(nuevaPassword);
             }
-            // Si no se proporciona nueva contraseña, MANTIENE LA EXISTENTE (no la borra)
-            else
+            else if (!string.IsNullOrEmpty(usuario.Password) && usuario.Password != usuarioExistente.Password)
             {
-                // Asegurarse de no perder la contraseña existente si no se pasa una nueva
-                usuario.Password = usuarioExistente.Password;
+                // Si la contraseña viene en el objeto 'usuario' (ej. desde el checkbox), la encripta
+                usuarioExistente.Password = EncriptarClave(usuario.Password);
             }
+            // Si no se pasa nuevaPassword y la password del objeto es la misma que la existente (o vacía), no hace nada.
 
-
-            mppUsuario.Guardar(usuarioExistente); // Guardar maneja la actualización
+            mppUsuario.Guardar(usuarioExistente);
         }
 
         public void CambiarPasswordPropio(int idUsuario, string passwordActual, string nuevaPassword)
@@ -103,24 +93,22 @@ namespace BLL
             if (passwordActual == nuevaPassword)
                 throw new ArgumentException("La nueva contraseña no puede ser igual a la actual.");
 
-
             var usuario = mppUsuario.BuscarPorId(idUsuario);
             if (usuario == null) throw new KeyNotFoundException("Usuario no encontrado.");
 
-            // Verificar contraseña actual
-            if (!VerificarPassword(passwordActual, usuario.Password))
+            // Verificar contraseña actual (comparando encriptadas)
+            if (EncriptarClave(passwordActual) != usuario.Password)
                 throw new UnauthorizedAccessException("La contraseña actual es incorrecta.");
 
-            // Encriptar y guardar la nueva
-            usuario.Password = EncriptarPassword(nuevaPassword);
-            usuario.DebeCambiarPassword = false; // Marcar como cambiada
+            usuario.Password = EncriptarClave(nuevaPassword);
+            usuario.DebeCambiarPassword = false;
             mppUsuario.Guardar(usuario);
         }
 
 
-        public void BajaUsuario(int idUsuario) // Baja lógica
+        public void BajaUsuario(int idUsuario)
         {
-            mppUsuario.Eliminar(idUsuario); // El MPP maneja la baja lógica
+            mppUsuario.Eliminar(idUsuario);
         }
 
         public void ReactivarUsuario(int idUsuario)
@@ -128,11 +116,8 @@ namespace BLL
             var usuario = mppUsuario.BuscarPorId(idUsuario);
             if (usuario == null) throw new KeyNotFoundException("Usuario no encontrado.");
             usuario.Activo = true;
-            // Opcional: Forzar cambio de contraseña al reactivar?
-            // usuario.DebeCambiarPassword = true;
             mppUsuario.Guardar(usuario);
         }
-
 
         public List<BEUsuario> ListarUsuarios()
         {
@@ -144,7 +129,6 @@ namespace BLL
             return mppUsuario.BuscarPorId(id);
         }
 
-
         #endregion
 
         #region Gestión Roles
@@ -153,10 +137,9 @@ namespace BLL
         {
             if (rol == null) throw new ArgumentNullException("El rol no puede ser nulo.");
             if (string.IsNullOrWhiteSpace(rol.Nombre)) throw new ArgumentException("El nombre del rol es obligatorio.");
-            rol.Activo = true; // Asegurar estado inicial
+            rol.Activo = true;
 
-            mppRol.GuardarRolBasico(rol); // Guarda info básica y crea entrada en RolesPermisos
-                                          // Los permisos se asignan por separado
+            mppRol.GuardarRolBasico(rol);
         }
 
         public void ModificarRol(BERol rol)
@@ -167,18 +150,16 @@ namespace BLL
             var rolExistente = mppRol.ListarRolesBasico().FirstOrDefault(r => r.Id == rol.Id);
             if (rolExistente == null) throw new KeyNotFoundException("Rol no encontrado para modificar.");
 
-            // No permitir cambiar nombre de Administrador?
             if (rolExistente.Nombre.Equals("Administrador", StringComparison.OrdinalIgnoreCase) &&
                 !rol.Nombre.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidOperationException("No se puede cambiar el nombre del rol Administrador.");
             }
 
-
-            mppRol.GuardarRolBasico(rol); // Guarda info básica y actualiza nombre en RolesPermisos
+            mppRol.GuardarRolBasico(rol);
         }
 
-        public void BajaRol(int idRol) // Baja lógica
+        public void BajaRol(int idRol)
         {
             var rol = mppRol.ListarRolesBasico().FirstOrDefault(r => r.Id == idRol);
             if (rol != null)
@@ -188,14 +169,12 @@ namespace BLL
                     throw new InvalidOperationException("No se puede dar de baja al rol Administrador.");
                 }
 
-                // Validar si está asignado a usuarios ACTIVOS antes de dar de baja lógica
                 var usuariosConRol = mppUsuarioRol.ObtenerIdsUsuariosDeRol(idRol);
                 var usuariosActivos = mppUsuario.Listar().Where(u => u.Activo).Select(u => u.Id);
                 if (usuariosConRol.Any(idUser => usuariosActivos.Contains(idUser)))
                 {
                     throw new InvalidOperationException("No se puede dar de baja el rol porque está asignado a usuarios activos.");
                 }
-
 
                 rol.Activo = false;
                 mppRol.GuardarRolBasico(rol);
@@ -212,34 +191,28 @@ namespace BLL
 
         public List<BERol> ListarRoles()
         {
-            // Devuelve roles activos por defecto
             return mppRol.ListarRolesBasico().Where(r => r.Activo).ToList();
         }
 
-        public List<BERol> ListarTodosRoles() // Incluye inactivos
+        public List<BERol> ListarTodosRoles()
         {
             return mppRol.ListarRolesBasico();
         }
-
 
         #endregion
 
         #region Gestión Permisos y Asignación
 
-        // Obtiene la lista de definiciones de permisos (hojas)
         public List<BEPermisoComponent> ObtenerDefinicionesPermisos()
         {
             return mppPermiso.ListarDefiniciones();
         }
 
-        // Obtiene un Rol específico con sus permisos (hojas) asignados
         public BERol ObtenerRolConPermisos(int idRol)
         {
             return mppRol.ObtenerRolConPermisos(idRol);
         }
 
-
-        // Guarda/Actualiza la lista COMPLETA de permisos para un rol
         public void AsignarPermisosARol(int idRol, List<BEPermisoComponent> permisos)
         {
             var rol = mppRol.ListarRolesBasico().FirstOrDefault(r => r.Id == idRol);
@@ -249,28 +222,22 @@ namespace BLL
                 throw new InvalidOperationException("No se pueden modificar los permisos del rol Administrador.");
             }
 
-
-            // Validar que todos los permisos a asignar existan en la definición
             var permisosDefinidos = ObtenerDefinicionesPermisos().Select(p => p.NombreInterno).ToList();
-            var permisosSimplesAAsignar = ObtenerPermisosSimplesRecursivo(permisos); // Asegura que solo sean hojas
+            var permisosSimplesAAsignar = ObtenerPermisosSimplesRecursivo(permisos);
 
             foreach (var pAsignar in permisosSimplesAAsignar)
             {
                 if (!permisosDefinidos.Contains(pAsignar.NombreInterno))
-                    throw new KeyNotFoundException($"El permiso '{pAsignar.Nombre}' (Interno: {pAsignar.NombreInterno}) no es un permiso válido definido en el sistema.");
+                    throw new KeyNotFoundException($"El permiso '{pAsignar.Nombre}' (Interno: {pAsignar.NombreInterno}) no es un permiso válido.");
             }
-
 
             mppRol.GuardarPermisosParaRol(idRol, rol.Nombre, permisosSimplesAAsignar.ToList());
         }
 
-
-        // Obtiene todos los roles con sus permisos asignados
         public List<BERol> ObtenerTodosRolesConPermisos()
         {
             return mppRol.ListarRolesConPermisos();
         }
-
 
         #endregion
 
@@ -278,20 +245,17 @@ namespace BLL
 
         public void AsignarRolAUsuario(int idUsuario, int idRol)
         {
-            // Validar que usuario y rol existan y estén activos
             var usuario = mppUsuario.BuscarPorId(idUsuario);
             if (usuario == null || !usuario.Activo) throw new KeyNotFoundException("Usuario no encontrado o inactivo.");
 
             var rol = mppRol.ListarRolesBasico().FirstOrDefault(r => r.Id == idRol);
             if (rol == null || !rol.Activo) throw new KeyNotFoundException("Rol no encontrado o inactivo.");
 
-
             mppUsuarioRol.Asociar(idUsuario, idRol);
         }
 
         public void QuitarRolDeUsuario(int idUsuario, int idRol)
         {
-            // Validar si es el rol admin del usuario admin (no permitir quitar)
             var usuario = mppUsuario.BuscarPorId(idUsuario);
             var rol = mppRol.ListarRolesBasico().FirstOrDefault(r => r.Id == idRol);
 
@@ -301,9 +265,6 @@ namespace BLL
                 throw new InvalidOperationException("No se puede quitar el rol Administrador al usuario admin.");
             }
 
-            // Validar que el usuario tenga al menos un rol restante? (depende de la lógica)
-
-
             mppUsuarioRol.Desasociar(idUsuario, idRol);
         }
 
@@ -312,32 +273,27 @@ namespace BLL
             var idsRoles = mppUsuarioRol.ObtenerIdsRolesDeUsuario(idUsuario);
             if (!idsRoles.Any()) return new List<BERol>();
 
-            // Carga la info completa (con permisos) de cada rol asignado
             return idsRoles.Select(id => ObtenerRolConPermisos(id))
                           .Where(r => r != null && r.Activo) // Solo roles activos
                           .ToList();
         }
 
-        // Obtiene la lista CONSOLIDADA de permisos SIMPLES (hojas) de un usuario
         public List<BEPermisoComponent> ObtenerPermisosUsuario(int idUsuario)
         {
-            var roles = ObtenerRolesDeUsuario(idUsuario); // Obtiene roles activos con sus permisos
-            var permisosConsolidados = new HashSet<BEPermisoComponent>(); // HashSet para evitar duplicados
+            var roles = ObtenerRolesDeUsuario(idUsuario);
+            var permisosConsolidados = new HashSet<BEPermisoComponent>();
 
             foreach (var rol in roles)
             {
-                // Asegurarse de que rol.Permisos contenga solo BEPermiso (hojas)
-                // La carga en MPPRol->ObtenerRolConPermisos debería garantizar esto.
-                foreach (var permiso in rol.Permisos) // Asumiendo que rol.Permisos ya son las hojas
+                foreach (var permiso in rol.Permisos)
                 {
                     permisosConsolidados.Add(permiso);
                 }
             }
 
-            return permisosConsolidados.OrderBy(p => p.Nombre).ToList(); // Devuelve lista ordenada
+            return permisosConsolidados.OrderBy(p => p.Nombre).ToList();
         }
 
-        // Verifica si un usuario tiene un permiso específico (por NombreInterno)
         public bool UsuarioTienePermiso(int idUsuario, string nombreInternoPermiso)
         {
             if (string.IsNullOrWhiteSpace(nombreInternoPermiso)) return false;
@@ -345,38 +301,32 @@ namespace BLL
             return permisosUsuario.Any(p => p.NombreInterno.Equals(nombreInternoPermiso, StringComparison.OrdinalIgnoreCase));
         }
 
-
         #endregion
 
-        // Asegúrate de tener esto al principio de BLLSeguridad.cs:
-        // using BCryptNet = BCrypt.Net.BCrypt; // Alias para evitar colisiones si hubiera otra clase BCrypt
+        #region Encriptación Reversible (Base64 - Requerido por el profesor)
 
-        #region Encriptación Segura (BCrypt)
-
-        // Encripta usando BCrypt con un work factor (costo) adecuado
-        private string EncriptarPassword(string passwordPlana)
+        // Método para "encriptar" una clave en Base64 
+        public static string EncriptarClave(string rawData)
         {
-            if (string.IsNullOrEmpty(passwordPlana)) return string.Empty;
-            // El work factor (ej. 11 o 12) determina la "lentitud" del hash. Más alto = más seguro pero más lento.
-            // BCrypt genera y almacena la "sal" automáticamente dentro del hash resultante.
-            return BCrypt.Net.BCrypt.HashPassword(passwordPlana, workFactor: 11);
+            if (string.IsNullOrEmpty(rawData)) return string.Empty;
+            byte[] encrypted = Encoding.UTF8.GetBytes(rawData);
+            return Convert.ToBase64String(encrypted);
         }
 
-        // Verifica si la contraseña ingresada coincide con el hash almacenado
-        private bool VerificarPassword(string passwordIngresada, string hashAlmacenado)
+        // Método para "desencriptar" una clave de Base64
+        public static string DesencriptarClave(string cadenaADesencriptar)
         {
-            if (string.IsNullOrEmpty(passwordIngresada) || string.IsNullOrEmpty(hashAlmacenado))
-                return false;
-
+            if (string.IsNullOrEmpty(cadenaADesencriptar)) return string.Empty;
             try
             {
-                // BCrypt.Verify extrae la sal del hashAlmacenado y la usa para hashear la passwordIngresada
-                return BCrypt.Net.BCrypt.Verify(passwordIngresada, hashAlmacenado);
+                byte[] decrypted = Convert.FromBase64String(cadenaADesencriptar);
+                return Encoding.UTF8.GetString(decrypted);
             }
-            catch (Exception ex) // Captura posibles errores de BCrypt (ej. hash mal formado)
+            catch (FormatException)
             {
-                Console.WriteLine($"Error al verificar password: {ex.Message}");
-                return false;
+                // Si la contraseña no está en formato Base64 (ej. es un hash BCrypt),
+                // devuelve la cadena original para evitar un crash.
+                return cadenaADesencriptar;
             }
         }
 
@@ -384,18 +334,16 @@ namespace BLL
 
         #region Métodos Auxiliares
 
-        // Método auxiliar recursivo para obtener solo los permisos simples (hojas) de una lista
         private IEnumerable<BEPermisoComponent> ObtenerPermisosSimplesRecursivo(IEnumerable<BEPermisoComponent> componentes)
         {
             foreach (var comp in componentes ?? Enumerable.Empty<BEPermisoComponent>())
             {
-                if (comp is BEPermiso) // Si es un permiso simple (hoja)
+                if (comp is BEPermiso)
                 {
                     yield return comp;
                 }
-                else if (comp is BECategoriaPermiso) // Si es una categoría (compuesto)
+                else if (comp is BECategoriaPermiso)
                 {
-                    // Llama recursivamente para obtener las hojas dentro de la categoría
                     foreach (var hoja in ObtenerPermisosSimplesRecursivo(comp.ObtenerHijos()))
                     {
                         yield return hoja;
