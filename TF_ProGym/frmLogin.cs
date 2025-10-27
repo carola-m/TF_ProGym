@@ -22,6 +22,7 @@ namespace CapaPresentacion
             InitializeComponent();
         }
 
+        // Conecta el evento Click de tu btnIngresar a este método
         private void btnIngresar_Click_1(object sender, EventArgs e)
         {
             string nombreUsuario = txtUsuario.Text.Trim();
@@ -42,8 +43,8 @@ namespace CapaPresentacion
                     // Obtener los permisos consolidados del usuario
                     List<BEPermisoComponent> permisos = bllSeguridad.ObtenerPermisosUsuario(usuario.Id);
 
-        // Iniciar la sesión global
-        Session.ObtenerInstancia.IniciarSesion(usuario, permisos);
+                    // Iniciar la sesión global
+                    Session.ObtenerInstancia.IniciarSesion(usuario, permisos);
 
                     // Verificar si debe cambiar contraseña (y no es admin)
                     if (usuario.DebeCambiarPassword && !usuario.NombreUsuario.Equals("admin", StringComparison.OrdinalIgnoreCase))
@@ -70,20 +71,19 @@ namespace CapaPresentacion
                         }
                     }
                     else
-{
-                        // Abrir el formulario principal (frmInicio)
-                        frmGestionClientes frmPrincipal = new frmGestionClientes();
+                    {
+                        frmInicio frmPrincipal = new frmInicio();
                         frmPrincipal.FormClosed += (s, args) => this.Close(); // Cierra login si se cierra el principal
                         frmPrincipal.Show();
                         this.Hide(); // Ocultar el formulario de login
-}
+                    }
                 }
                 else
-{
-    MessageBox.Show("Usuario o contraseña incorrectos, o usuario inactivo.", "Error de Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
-    txtPassword.Clear();
-    txtUsuario.Focus();
-}
+                {
+                    MessageBox.Show("Usuario o contraseña incorrectos, o usuario inactivo.", "Error de Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    txtPassword.Clear();
+                    txtUsuario.Focus();
+                }
             }
             catch (Exception ex)
             {
@@ -91,20 +91,24 @@ namespace CapaPresentacion
             }
         }
 
+        // Conecta el evento Click de tu btnCancelar a este método
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        // Opcional: Permitir login con Enter
+        // Conecta el evento KeyPress de tu txtPassword a este método
         private void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
                 e.Handled = true; // Evita el sonido 'ding'
+                // Asegúrate de que el nombre del botón sea 'btnIngresar' en el diseñador
                 btnIngresar.PerformClick(); // Simula el clic en el botón Ingresar
             }
         }
+
+        // Conecta el evento KeyPress de tu txtUsuario a este método
         private void txtUsuario_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)

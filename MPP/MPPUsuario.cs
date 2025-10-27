@@ -15,6 +15,8 @@ namespace MPP
         private readonly string archivoUsuarioRol; // = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "datos", "UsuarioRol.xml");
         private readonly XmlHelper.XmlHelper xmlHelper;
 
+        // En MPP/MPPUsuario.cs
+
         public MPPUsuario()
         {
             xmlHelper = new XmlHelper.XmlHelper();
@@ -25,7 +27,7 @@ namespace MPP
             archivo = Path.Combine(dataDirectory, "Usuarios.xml");
             archivoUsuarioRol = Path.Combine(dataDirectory, "UsuarioRol.xml");
 
-            // Asegura que la carpeta 'datos' exista
+            // Asegura que la carpeta 'datos' exista y los archivos
             xmlHelper.AsegurarArchivoXml("Usuarios.xml", "Usuarios");
             xmlHelper.AsegurarArchivoXml("UsuarioRol.xml", "UsuarioRoles");
 
@@ -35,7 +37,8 @@ namespace MPP
             {
                 // --- INICIO DE CORRECCIÓN (Encriptación Base64) ---
                 string adminPasswordPlana = "admin";
-                // Codifica la contraseña en Base64 (reversible)
+
+                // CORRECCIÓN: Hacemos la encriptación aquí mismo, sin llamar a BLL
                 string adminPasswordBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(adminPasswordPlana));
 
                 var adminUser = new XElement("Usuario",
