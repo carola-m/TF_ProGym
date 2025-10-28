@@ -34,9 +34,6 @@
             btnEliminar = new Button();
             btnGuardar = new Button();
             btnNuevo = new Button();
-            chkMembresiaActiva = new CheckBox();
-            txtTelefono = new TextBox();
-            label6 = new Label();
             txtTarifaTurno = new TextBox();
             label5 = new Label();
             txtDescripcionActividad = new TextBox();
@@ -79,56 +76,33 @@
             // 
             // btnEliminar
             // 
-            btnEliminar.Location = new Point(1271, 622);
+            btnEliminar.Location = new Point(1290, 514);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(116, 39);
             btnEliminar.TabIndex = 36;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += btnEliminar_Click;
             // 
             // btnGuardar
             // 
-            btnGuardar.Location = new Point(1088, 622);
+            btnGuardar.Location = new Point(1107, 514);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(116, 39);
             btnGuardar.TabIndex = 35;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += btnGuardar_Click;
             // 
             // btnNuevo
             // 
-            btnNuevo.Location = new Point(904, 622);
+            btnNuevo.Location = new Point(923, 514);
             btnNuevo.Name = "btnNuevo";
             btnNuevo.Size = new Size(116, 39);
             btnNuevo.TabIndex = 34;
             btnNuevo.Text = "Nuevo";
             btnNuevo.UseVisualStyleBackColor = true;
-            // 
-            // chkMembresiaActiva
-            // 
-            chkMembresiaActiva.AutoSize = true;
-            chkMembresiaActiva.Location = new Point(952, 541);
-            chkMembresiaActiva.Name = "chkMembresiaActiva";
-            chkMembresiaActiva.Size = new Size(155, 24);
-            chkMembresiaActiva.TabIndex = 33;
-            chkMembresiaActiva.Text = "Membresia activa?";
-            chkMembresiaActiva.UseVisualStyleBackColor = true;
-            // 
-            // txtTelefono
-            // 
-            txtTelefono.Location = new Point(1017, 471);
-            txtTelefono.Name = "txtTelefono";
-            txtTelefono.Size = new Size(335, 27);
-            txtTelefono.TabIndex = 32;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(939, 478);
-            label6.Name = "label6";
-            label6.Size = new Size(67, 20);
-            label6.TabIndex = 31;
-            label6.Text = "Telefono";
+            btnNuevo.Click += btnNuevo_Click;
             // 
             // txtTarifaTurno
             // 
@@ -232,9 +206,6 @@
             Controls.Add(btnEliminar);
             Controls.Add(btnGuardar);
             Controls.Add(btnNuevo);
-            Controls.Add(chkMembresiaActiva);
-            Controls.Add(txtTelefono);
-            Controls.Add(label6);
             Controls.Add(txtTarifaTurno);
             Controls.Add(label5);
             Controls.Add(txtDescripcionActividad);
@@ -261,9 +232,6 @@
         private Button btnEliminar;
         private Button btnGuardar;
         private Button btnNuevo;
-        private CheckBox chkMembresiaActiva;
-        private TextBox txtTelefono;
-        private Label label6;
         private TextBox txtTarifaTurno;
         private Label label5;
         private TextBox txtDescripcionActividad;

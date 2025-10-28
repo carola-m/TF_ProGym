@@ -152,7 +152,7 @@ namespace CapaPresentacion
 
 
         // Evento Click del botón Guardar (Crea o Modifica)
-        private void btnGuardar_Click(object sender, EventArgs e)
+        private void btnGuardar_Click_1(object sender, EventArgs e)
         {
             try
             {
@@ -269,7 +269,7 @@ namespace CapaPresentacion
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                e.Handled = true; 
+                e.Handled = true;
                 btnBuscar.PerformClick(); // Simula un clic en el botón Buscar
             }
         }

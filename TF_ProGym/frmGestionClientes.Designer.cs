@@ -174,6 +174,7 @@
             btnNuevo.TabIndex = 14;
             btnNuevo.Text = "Nuevo";
             btnNuevo.UseVisualStyleBackColor = true;
+            btnNuevo.Click += btnNuevo_Click;
             // 
             // btnGuardar
             // 
@@ -183,6 +184,7 @@
             btnGuardar.TabIndex = 15;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += btnGuardar_Click_1;
             // 
             // btnEliminar
             // 
@@ -192,6 +194,7 @@
             btnEliminar.TabIndex = 16;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += btnEliminar_Click;
             // 
             // txtBuscar
             // 
@@ -199,6 +202,7 @@
             txtBuscar.Name = "txtBuscar";
             txtBuscar.Size = new Size(335, 27);
             txtBuscar.TabIndex = 18;
+           
             // 
             // label7
             // 
@@ -217,6 +221,7 @@
             btnBuscar.TabIndex = 19;
             btnBuscar.Text = "Buscar";
             btnBuscar.UseVisualStyleBackColor = true;
+            btnBuscar.Click += btnBuscar_Click;
             // 
             // frmGestionClientes
             // 

@@ -62,6 +62,8 @@
             btnGuardarCambio.TabIndex = 2;
             btnGuardarCambio.Text = "GUARDAR";
             btnGuardarCambio.UseVisualStyleBackColor = true;
+            btnGuardarCambio.Click += btnGuardar_Click;
+
             // 
             // btnCancelarCambio
             // 

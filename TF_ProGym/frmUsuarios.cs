@@ -325,6 +325,8 @@ namespace CapaPresentacion
             }
         }
 
+        // En frmUsuarios.cs
+
         private void cbUsuarioEditarEliminar_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbUsuarioEditarEliminar.SelectedItem is BEUsuario usuario)
@@ -332,35 +334,42 @@ namespace CapaPresentacion
                 txtCodigoUsuario.Text = usuario.Id.ToString();
                 txtNombreUsuario.Text = usuario.NombreUsuario;
                 chkActivoUsuario.Checked = usuario.Activo;
-
-                // Lógica del CheckBox "Encriptar/Desencriptar"
-                chkEncriptarDesencriptar_CheckedChanged(sender, e); // Llama al evento para actualizar el textbox
-
                 btnBorrarUsuario.Text = usuario.Activo ? "Baja" : "Reactivar";
+
+                // --- Lógica de Contraseña Corregida ---
+                // 1. Carga la contraseña (siempre encriptada desde BE)
+                txtContraseña.Text = usuario.Password;
+
+                // 2. Llama al evento del checkbox para que decida cómo mostrarla
+                chkEncriptarDesencriptar_CheckedChanged(sender, e);
             }
         }
 
-        // Evento del CheckBox
+        // Evento del CheckBox (Requisito del profesor)
         private void chkEncriptarDesencriptar_CheckedChanged(object sender, EventArgs e)
         {
+            // No hacer nada si no hay un usuario seleccionado
             if (cbUsuarioEditarEliminar.SelectedItem is BEUsuario usuarioSeleccionado)
             {
                 if (chkEncriptarDesencriptar.Checked)
                 {
-                    // Mostrar "Encriptado" (Base64)
-                    txtContraseña.Text = usuarioSeleccionado.Password;
-                    txtContraseña.PasswordChar = '\0'; // Quita el carácter de ocultar
+                    // --- MOSTRAR (Checked) ---
+                    // Desencripta la contraseña y quita la máscara
+                    txtContraseña.Text = BLLSeguridad.DesencriptarClave(usuarioSeleccionado.Password);
+                    txtContraseña.PasswordChar = '\0'; // '\0' significa 'ningún carácter'
                 }
                 else
                 {
-                    // Mostrar Desencriptado (Texto Plano)
-                    txtContraseña.Text = BLLSeguridad.DesencriptarClave(usuarioSeleccionado.Password);
-                    txtContraseña.PasswordChar = '*'; // Vuelve a ocultar
+                    // --- OCULTAR (Unchecked) ---
+                    // Vuelve a mostrar la contraseña encriptada (Base64) y la oculta
+                    txtContraseña.Text = usuarioSeleccionado.Password;
+                    txtContraseña.PasswordChar = '*';
                 }
             }
             else
             {
-                // Si no hay usuario seleccionado, solo alterna el PasswordChar
+                // Si no hay usuario seleccionado (ej. creando uno nuevo)
+                // solo alterna la máscara
                 txtContraseña.PasswordChar = chkEncriptarDesencriptar.Checked ? '\0' : '*';
             }
         }

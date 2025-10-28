@@ -37,6 +37,8 @@
             menuGestionProfesionales = new ToolStripMenuItem();
             menuGestionActividades = new ToolStripMenuItem();
             menuGestionTurnos = new ToolStripMenuItem();
+            subMenuGestionarTurnos = new ToolStripMenuItem();
+            subMenuRegistroAsistencia = new ToolStripMenuItem();
             menuLiquidaciones = new ToolStripMenuItem();
             menuDashboard = new ToolStripMenuItem();
             menuSeguridad = new ToolStripMenuItem();
@@ -137,10 +139,24 @@
             // 
             // menuGestionTurnos
             // 
+            menuGestionTurnos.DropDownItems.AddRange(new ToolStripItem[] { subMenuGestionarTurnos, subMenuRegistroAsistencia });
             menuGestionTurnos.Name = "menuGestionTurnos";
-            menuGestionTurnos.Size = new Size(134, 24);
-            menuGestionTurnos.Text = "Gestionar Turnos";
-            menuGestionTurnos.Click += menuGestionTurnos_Click;
+            menuGestionTurnos.Size = new Size(148, 24);
+            menuGestionTurnos.Text = "Turnos y Asistencia";
+            // 
+            // subMenuGestionarTurnos
+            // 
+            subMenuGestionarTurnos.Name = "subMenuGestionarTurnos";
+            subMenuGestionarTurnos.Size = new Size(221, 26);
+            subMenuGestionarTurnos.Text = "Administrar Turnos";
+            subMenuGestionarTurnos.Click += subMenuGestionarTurnos_Click;
+            // 
+            // subMenuRegistroAsistencia
+            // 
+            subMenuRegistroAsistencia.Name = "subMenuRegistroAsistencia";
+            subMenuRegistroAsistencia.Size = new Size(221, 26);
+            subMenuRegistroAsistencia.Text = "Registrar Asistencia";
+            subMenuRegistroAsistencia.Click += subMenuRegistroAsistencia_Click;
             // 
             // menuLiquidaciones
             // 
@@ -261,5 +277,8 @@
         private System.Windows.Forms.ToolStripMenuItem subMenuBitacora;
         private System.Windows.Forms.Panel panelContenedor;
         private System.Windows.Forms.Label lblTituloFormHijo;
+        // --- Variables añadidas ---
+        private System.Windows.Forms.ToolStripMenuItem subMenuGestionarTurnos;
+        private System.Windows.Forms.ToolStripMenuItem subMenuRegistroAsistencia;
     }
 }

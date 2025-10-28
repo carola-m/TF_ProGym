@@ -36,21 +36,28 @@ namespace CapaPresentacion
             {
                 lblUsuarioLogueado.Text = $"Usuario: {usuario.NombreUsuario}";
 
-                // Habilitar/Deshabilitar menús basados en permisos (NombreInterno)
-                // Asegúrate de que los nombres internos coincidan con los de MPPRol.cs
                 menuGestionClientes.Visible = Session.ObtenerInstancia.TienePermiso("PERM_GEST_CLIENTES");
                 menuGestionProfesionales.Visible = Session.ObtenerInstancia.TienePermiso("PERM_GEST_PROFESIONALES");
                 menuGestionActividades.Visible = Session.ObtenerInstancia.TienePermiso("PERM_GEST_ACTIVIDADES");
-                menuGestionTurnos.Visible = Session.ObtenerInstancia.TienePermiso("PERM_GEST_TURNOS");
 
-                // Asume que el permiso de liquidaciones es PERM_CALC_LIQ o PERM_EMIT_LIQ
+                // --- INICIO DE CORRECCIÓN (Permisos Submenú) ---
+                bool tienePermisoTurnos = Session.ObtenerInstancia.TienePermiso("PERM_GEST_TURNOS");
+                bool tienePermisoAsistencia = Session.ObtenerInstancia.TienePermiso("PERM_REG_ASISTENCIA"); // Asume este permiso
+
+                // El menú padre es visible si tiene al menos un hijo visible
+                menuGestionTurnos.Visible = tienePermisoTurnos || tienePermisoAsistencia;
+                // Asigna visibilidad a cada hijo
+                subMenuGestionarTurnos.Visible = tienePermisoTurnos;
+                subMenuRegistroAsistencia.Visible = tienePermisoAsistencia;
+                // --- FIN DE CORRECCIÓN ---
+
                 menuLiquidaciones.Visible = Session.ObtenerInstancia.TienePermiso("PERM_CALC_LIQ") ||
                                            Session.ObtenerInstancia.TienePermiso("PERM_EMIT_LIQ");
 
                 menuDashboard.Visible = Session.ObtenerInstancia.TienePermiso("PERM_VER_DASHBOARD");
                 menuSeguridad.Visible = Session.ObtenerInstancia.TienePermiso("PERM_GEST_SEGURIDAD");
 
-                // Asume PERM_BACKUP, PERM_RESTORE, PERM_BITACORA (Debes añadirlos a Permisos.xml si no están)
+                // Asume PERM_BACKUP, PERM_RESTORE, PERM_BITACORA
                 bool tienePermisoBackup = Session.ObtenerInstancia.TienePermiso("PERM_BACKUP");
                 bool tienePermisoRestore = Session.ObtenerInstancia.TienePermiso("PERM_RESTORE");
                 bool tienePermisoBitacora = Session.ObtenerInstancia.TienePermiso("PERM_BITACORA");
@@ -67,7 +74,6 @@ namespace CapaPresentacion
             }
         }
 
-        // Método genérico para abrir formularios dentro del panel contenedor
         private void AbrirFormularioHijo(Form formularioHijo)
         {
             if (formularioHijo == null) return;
@@ -128,10 +134,18 @@ namespace CapaPresentacion
             AbrirFormularioHijo(new frmGestionActividades());
         }
 
-        private void menuGestionTurnos_Click(object sender, EventArgs e)
+        // --- MÉTODOS DE SUBMENÚ ---
+        private void subMenuGestionarTurnos_Click(object sender, EventArgs e)
         {
             AbrirFormularioHijo(new frmGestionTurnos());
         }
+
+        private void subMenuRegistroAsistencia_Click(object sender, EventArgs e)
+        {
+            // Asegúrate de haber creado frmRegistroAsistencia.cs
+            AbrirFormularioHijo(new frmRegistroAsistencia());
+        }
+        // --- FIN MÉTODOS DE SUBMENÚ ---
 
         private void menuLiquidaciones_Click(object sender, EventArgs e)
         {
@@ -170,7 +184,7 @@ namespace CapaPresentacion
             {
                 Session.ObtenerInstancia.CerrarSesion();
                 this.Hide();
-                frmLogin loginForm = new frmLogin(); // Usa tu frmLogin
+                frmLogin loginForm = new frmLogin();
                 loginForm.FormClosed += (s, args) => Application.ExitThread();
                 loginForm.Show();
             }

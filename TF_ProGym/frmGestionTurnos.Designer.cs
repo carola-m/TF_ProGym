@@ -63,16 +63,17 @@
             // dtpFechaTurnos
             // 
             dtpFechaTurnos.Format = DateTimePickerFormat.Short;
-            dtpFechaTurnos.Location = new Point(66, 16);
+            dtpFechaTurnos.Location = new Point(1009, 9);
             dtpFechaTurnos.Margin = new Padding(3, 4, 3, 4);
             dtpFechaTurnos.Name = "dtpFechaTurnos";
             dtpFechaTurnos.Size = new Size(114, 27);
             dtpFechaTurnos.TabIndex = 0;
+            this.dtpFechaTurnos.ValueChanged += new System.EventHandler(this.dtpFechaTurnos_ValueChanged);
             // 
             // lblFecha
             // 
             lblFecha.AutoSize = true;
-            lblFecha.Location = new Point(14, 21);
+            lblFecha.Location = new Point(939, 9);
             lblFecha.Name = "lblFecha";
             lblFecha.Size = new Size(50, 20);
             lblFecha.TabIndex = 1;
@@ -80,15 +81,15 @@
             // 
             // dgvTurnosDia
             // 
-            dgvTurnosDia.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvTurnosDia.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvTurnosDia.Location = new Point(14, 55);
-            dgvTurnosDia.Margin = new Padding(3, 4, 3, 4);
-            dgvTurnosDia.Name = "dgvTurnosDia";
-            dgvTurnosDia.RowHeadersWidth = 51;
-            dgvTurnosDia.RowTemplate.Height = 25;
-            dgvTurnosDia.Size = new Size(1130, 256);
-            dgvTurnosDia.TabIndex = 2;
+            this.dgvTurnosDia.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvTurnosDia.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTurnosDia.Location = new System.Drawing.Point(12, 41);
+            this.dgvTurnosDia.Name = "dgvTurnosDia";
+            this.dgvTurnosDia.RowTemplate.Height = 25;
+            this.dgvTurnosDia.Size = new System.Drawing.Size(760, 200);
+            this.dgvTurnosDia.TabIndex = 2;
+            this.dgvTurnosDia.SelectionChanged += new System.EventHandler(this.dgvTurnosDia_SelectionChanged);
             // 
             // gbDetalleTurno
             // 
@@ -158,6 +159,7 @@
             btnGuardarTurno.TabIndex = 11;
             btnGuardarTurno.Text = "Guardar";
             btnGuardarTurno.UseVisualStyleBackColor = true;
+            btnGuardarTurno.Click += btnGuardarTurno_Click;
             // 
             // dtpHoraFin
             // 
@@ -332,6 +334,7 @@
             btnReservarCliente.TabIndex = 2;
             btnReservarCliente.Text = "Reservar";
             btnReservarCliente.UseVisualStyleBackColor = true;
+            btnReservarCliente.Click += btnReservarCliente_Click;
             // 
             // cmbCliente
             // 
@@ -378,6 +381,8 @@
             PerformLayout();
 
         }
+
+    
 
         #endregion
 
