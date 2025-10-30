@@ -63,12 +63,12 @@ namespace CapaPresentacion
                 {
                     dgvClientes.Columns["Id"].Visible = false;
                 }
-                // Puedes ocultar otras columnas si es necesario:
-                // if (dgvClientes.Columns.Contains("FechaRegistro"))
-                // {
-                //     dgvClientes.Columns["FechaRegistro"].HeaderText = "Fecha Reg."; // Cambiar título
-                //     // dgvClientes.Columns["FechaRegistro"].DefaultCellStyle.Format = "dd/MM/yy"; // Formatear fecha
-                // }
+        
+                if (dgvClientes.Columns.Contains("FechaRegistro"))
+                {
+                    dgvClientes.Columns["FechaRegistro"].HeaderText = "Fecha Reg."; // Cambiar título
+                                                                                    // dgvClientes.Columns["FechaRegistro"].DefaultCellStyle.Format = "dd/MM/yy"; // Formatear fecha
+                }
                 if (dgvClientes.Columns.Contains("MembresiaActiva"))
                 {
                     dgvClientes.Columns["MembresiaActiva"].HeaderText = "Activo"; // Cambiar título
@@ -95,8 +95,8 @@ namespace CapaPresentacion
             else
             {
                 // Si no hay selección válida, limpia la referencia
-                // clienteSeleccionado = null;
-                // Opcional: Podrías llamar a LimpiarCamposYSeleccion() si quieres que los campos se limpien al deseleccionar
+                clienteSeleccionado = null;
+             
             }
         }
 

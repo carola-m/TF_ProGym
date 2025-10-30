@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panelTitulo = new Panel();
+            pbLogo = new PictureBox();
             lblUsuarioLogueado = new Label();
             btnCerrarSesion = new Button();
             lblTituloApp = new Label();
@@ -49,13 +50,14 @@
             panelContenedor = new Panel();
             lblTituloFormHijo = new Label();
             panelTitulo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pbLogo).BeginInit();
             menuStripPrincipal.SuspendLayout();
-            panelContenedor.SuspendLayout();
             SuspendLayout();
             // 
             // panelTitulo
             // 
             panelTitulo.BackColor = Color.Black;
+            panelTitulo.Controls.Add(pbLogo);
             panelTitulo.Controls.Add(lblUsuarioLogueado);
             panelTitulo.Controls.Add(btnCerrarSesion);
             panelTitulo.Controls.Add(lblTituloApp);
@@ -65,6 +67,16 @@
             panelTitulo.Name = "panelTitulo";
             panelTitulo.Size = new Size(1125, 93);
             panelTitulo.TabIndex = 0;
+            // 
+            // pbLogo
+            // 
+            pbLogo.Image = Properties.Resources.Captura_de_pantalla_2025_10_30_223244;
+            pbLogo.Location = new Point(14, 12);
+            pbLogo.Name = "pbLogo";
+            pbLogo.Size = new Size(125, 62);
+            pbLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            pbLogo.TabIndex = 3;
+            pbLogo.TabStop = false;
             // 
             // lblUsuarioLogueado
             // 
@@ -210,25 +222,24 @@
             // panelContenedor
             // 
             panelContenedor.BackColor = SystemColors.ControlLight;
-            panelContenedor.Controls.Add(lblTituloFormHijo);
             panelContenedor.Dock = DockStyle.Fill;
-            panelContenedor.Location = new Point(0, 123);
+            panelContenedor.Location = new Point(0, 165);
             panelContenedor.Margin = new Padding(3, 4, 3, 4);
             panelContenedor.Name = "panelContenedor";
-            panelContenedor.Size = new Size(1125, 625);
+            panelContenedor.Size = new Size(1125, 583);
             panelContenedor.TabIndex = 2;
             // 
             // lblTituloFormHijo
             // 
             lblTituloFormHijo.AutoSize = true;
-            lblTituloFormHijo.BackColor = SystemColors.ControlLight;
+            lblTituloFormHijo.BackColor = SystemColors.Control;
             lblTituloFormHijo.Dock = DockStyle.Top;
             lblTituloFormHijo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblTituloFormHijo.Location = new Point(0, 0);
+            lblTituloFormHijo.Location = new Point(0, 123);
             lblTituloFormHijo.Name = "lblTituloFormHijo";
             lblTituloFormHijo.Padding = new Padding(11, 7, 0, 7);
             lblTituloFormHijo.Size = new Size(129, 42);
-            lblTituloFormHijo.TabIndex = 0;
+            lblTituloFormHijo.TabIndex = 3;
             lblTituloFormHijo.Text = "Bienvenido";
             // 
             // frmInicio
@@ -237,6 +248,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1125, 748);
             Controls.Add(panelContenedor);
+            Controls.Add(lblTituloFormHijo);
             Controls.Add(menuStripPrincipal);
             Controls.Add(panelTitulo);
             MainMenuStrip = menuStripPrincipal;
@@ -248,13 +260,11 @@
             Load += frmInicio_Load;
             panelTitulo.ResumeLayout(false);
             panelTitulo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pbLogo).EndInit();
             menuStripPrincipal.ResumeLayout(false);
             menuStripPrincipal.PerformLayout();
-            panelContenedor.ResumeLayout(false);
-            panelContenedor.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
-
         }
 
         #endregion
@@ -277,8 +287,8 @@
         private System.Windows.Forms.ToolStripMenuItem subMenuBitacora;
         private System.Windows.Forms.Panel panelContenedor;
         private System.Windows.Forms.Label lblTituloFormHijo;
-        // --- Variables añadidas ---
         private System.Windows.Forms.ToolStripMenuItem subMenuGestionarTurnos;
         private System.Windows.Forms.ToolStripMenuItem subMenuRegistroAsistencia;
+        private PictureBox pbLogo;
     }
 }

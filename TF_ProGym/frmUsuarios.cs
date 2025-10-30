@@ -348,29 +348,32 @@ namespace CapaPresentacion
         // Evento del CheckBox (Requisito del profesor)
         private void chkEncriptarDesencriptar_CheckedChanged(object sender, EventArgs e)
         {
-            // No hacer nada si no hay un usuario seleccionado
-            if (cbUsuarioEditarEliminar.SelectedItem is BEUsuario usuarioSeleccionado)
+            // Siempre visible, nunca usar asteriscos
+            txtContraseña.PasswordChar = '\0';
+
+            string passMostrada = txtContraseña.Text;
+
+            if (chkEncriptarDesencriptar.Checked)
             {
-                if (chkEncriptarDesencriptar.Checked)
-                {
-                    // --- MOSTRAR (Checked) ---
-                    // Desencripta la contraseña y quita la máscara
-                    txtContraseña.Text = BLLSeguridad.DesencriptarClave(usuarioSeleccionado.Password);
-                    txtContraseña.PasswordChar = '\0'; // '\0' significa 'ningún carácter'
-                }
-                else
-                {
-                    // --- OCULTAR (Unchecked) ---
-                    // Vuelve a mostrar la contraseña encriptada (Base64) y la oculta
-                    txtContraseña.Text = usuarioSeleccionado.Password;
-                    txtContraseña.PasswordChar = '*';
-                }
+                // --- MOSTRAR (Checked) ---
+                // Desencripta la contraseña para ver el texto plano
+                // Usamos el BLL estático para desencriptar
+                txtContraseña.Text = BLLSeguridad.DesencriptarClave(passMostrada);
             }
             else
             {
-                // Si no hay usuario seleccionado (ej. creando uno nuevo)
-                // solo alterna la máscara
-                txtContraseña.PasswordChar = chkEncriptarDesencriptar.Checked ? '\0' : '*';
+                // --- OCULTAR (Unchecked) ---
+                // Vuelve a mostrar la contraseña encriptada (Base64)
+
+                // Comprueba si la contraseña ya está encriptada (Base64)
+                bool estaEncriptada = (passMostrada.Length % 4 == 0) && System.Text.RegularExpressions.Regex.IsMatch(passMostrada, @"^[a-zA-Z0-9\+/]*={0,3}$", System.Text.RegularExpressions.RegexOptions.None);
+
+                if (!estaEncriptada)
+                {
+                    // Si estaba en texto plano (porque el check estaba marcado), la vuelve a encriptar
+                    txtContraseña.Text = BLLSeguridad.EncriptarClave(passMostrada);
+                }
+                // Si ya estaba encriptada (Base64), no hace nada y solo la muestra.
             }
         }
 
@@ -390,8 +393,12 @@ namespace CapaPresentacion
             txtContraseña.Clear();
             txtContraseña.PlaceholderText = "Ingresar nueva contraseña";
             chkActivoUsuario.Checked = true;
-            chkEncriptarDesencriptar.Checked = false; // Por defecto oculto
-            txtContraseña.PasswordChar = '*'; // Asegura que esté oculto
+
+            // --- CORRECCIÓN ---
+            chkEncriptarDesencriptar.Checked = false; // Por defecto desmarcado
+            txtContraseña.PasswordChar = '*'; // Oculto al crear uno NUEVO
+                                              
+
             btnBorrarUsuario.Text = "Baja";
 
             cbUsuarioEditarEliminar.SelectedIndexChanged += cbUsuarioEditarEliminar_SelectedIndexChanged;

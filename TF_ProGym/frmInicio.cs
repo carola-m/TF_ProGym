@@ -24,8 +24,8 @@ namespace CapaPresentacion
         // Evento Load: Se ejecuta cuando el formulario se carga por primera vez
         private void frmInicio_Load(object sender, EventArgs e)
         {
-            PersonalizarUI(); // Aplica permisos a los menús
-            lblTituloFormHijo.Text = "Bienvenido"; // Título inicial
+            PersonalizarUI();
+            lblTituloFormHijo.Text = "Bienvenido";
         }
 
         private void PersonalizarUI()
@@ -40,13 +40,10 @@ namespace CapaPresentacion
                 menuGestionProfesionales.Visible = Session.ObtenerInstancia.TienePermiso("PERM_GEST_PROFESIONALES");
                 menuGestionActividades.Visible = Session.ObtenerInstancia.TienePermiso("PERM_GEST_ACTIVIDADES");
 
-                // --- INICIO DE CORRECCIÓN (Permisos Submenú) ---
                 bool tienePermisoTurnos = Session.ObtenerInstancia.TienePermiso("PERM_GEST_TURNOS");
-                bool tienePermisoAsistencia = Session.ObtenerInstancia.TienePermiso("PERM_REG_ASISTENCIA"); // Asume este permiso
+                bool tienePermisoAsistencia = Session.ObtenerInstancia.TienePermiso("PERM_REG_ASISTENCIA");
 
-                // El menú padre es visible si tiene al menos un hijo visible
                 menuGestionTurnos.Visible = tienePermisoTurnos || tienePermisoAsistencia;
-                // Asigna visibilidad a cada hijo
                 subMenuGestionarTurnos.Visible = tienePermisoTurnos;
                 subMenuRegistroAsistencia.Visible = tienePermisoAsistencia;
 
@@ -56,7 +53,6 @@ namespace CapaPresentacion
                 menuDashboard.Visible = Session.ObtenerInstancia.TienePermiso("PERM_VER_DASHBOARD");
                 menuSeguridad.Visible = Session.ObtenerInstancia.TienePermiso("PERM_GEST_SEGURIDAD");
 
-                // Asume PERM_BACKUP, PERM_RESTORE, PERM_BITACORA
                 bool tienePermisoBackup = Session.ObtenerInstancia.TienePermiso("PERM_BACKUP");
                 bool tienePermisoRestore = Session.ObtenerInstancia.TienePermiso("PERM_RESTORE");
                 bool tienePermisoBitacora = Session.ObtenerInstancia.TienePermiso("PERM_BITACORA");
@@ -93,14 +89,19 @@ namespace CapaPresentacion
             formularioHijo.TopLevel = false;
             formularioHijo.FormBorderStyle = FormBorderStyle.None;
             formularioHijo.Dock = DockStyle.Fill;
+
+            // --- CORRECCIÓN ---
+            // Añade el formulario al panel contenedor, que está DEBAJO del título
             panelContenedor.Controls.Add(formularioHijo);
+            // --- FIN CORRECCIÓN ---
+
             panelContenedor.Tag = formularioHijo;
             formularioHijo.BringToFront();
             formularioHijo.FormClosed += FormularioHijo_FormClosed;
             formularioHijo.Show();
 
             lblTituloFormHijo.Text = formularioHijo.Text;
-            lblTituloFormHijo.BringToFront();
+            // lblTituloFormHijo.BringToFront(); // Ya no es necesario, está fuera del panel
         }
 
         private void FormularioHijo_FormClosed(object sender, FormClosedEventArgs e)
@@ -133,7 +134,6 @@ namespace CapaPresentacion
             AbrirFormularioHijo(new frmGestionActividades());
         }
 
-        // --- MÉTODOS DE SUBMENÚ ---
         private void subMenuGestionarTurnos_Click(object sender, EventArgs e)
         {
             AbrirFormularioHijo(new frmGestionTurnos());
@@ -141,10 +141,8 @@ namespace CapaPresentacion
 
         private void subMenuRegistroAsistencia_Click(object sender, EventArgs e)
         {
-            // Asegúrate de haber creado frmRegistroAsistencia.cs
             AbrirFormularioHijo(new frmRegistroAsistencia());
         }
-        // --- FIN MÉTODOS DE SUBMENÚ ---
 
         private void menuLiquidaciones_Click(object sender, EventArgs e)
         {
