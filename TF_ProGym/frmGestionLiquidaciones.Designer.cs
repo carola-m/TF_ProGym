@@ -104,7 +104,7 @@
             this.btnCalcularLiquidaciones.TabIndex = 2;
             this.btnCalcularLiquidaciones.Text = "Calcular Periodo";
             this.btnCalcularLiquidaciones.UseVisualStyleBackColor = false;
-           // this.btnCalcularLiquidaciones.Click += new System.EventHandler(this.btnCalcularLiquidaciones_Click);
+            this.btnCalcularLiquidaciones.Click += new System.EventHandler(this.btnCalcularLiquidaciones_Click);
             // 
             // dtpHastaCalc
             // 
@@ -168,7 +168,7 @@
             this.btnBuscar.TabIndex = 8;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
-           // this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
+            this.btnBuscar.Click += btnBuscar_Click;
             // 
             // dtpHasta
             // 
@@ -211,9 +211,9 @@
             this.btnExportarPDF.Name = "btnExportarPDF";
             this.btnExportarPDF.Size = new System.Drawing.Size(150, 35);
             this.btnExportarPDF.TabIndex = 11;
-            this.btnExportarPDF.Text = "Exportar PDF (iText)";
+            this.btnExportarPDF.Text = "Exportar PDF";
             this.btnExportarPDF.UseVisualStyleBackColor = true;
-           // this.btnExportarPDF.Click += new System.EventHandler(this.btnExportarPDF_Click);
+            this.btnExportarPDF.Click += new System.EventHandler(this.btnExportarPDF_Click);
             // 
             // frmGestionLiquidaciones
             // 
@@ -226,7 +226,7 @@
             this.Controls.Add(this.dgvLiquidaciones);
             this.Name = "frmGestionLiquidaciones";
             this.Text = "Gestión de Liquidaciones";
-          //  this.Load += new System.EventHandler(this.frmGestionLiquidaciones_Load);
+           this.Load += new System.EventHandler(this.frmGestionLiquidaciones_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLiquidaciones)).EndInit();
             this.gbCalcular.ResumeLayout(false);
             this.gbCalcular.PerformLayout();

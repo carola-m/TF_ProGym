@@ -90,17 +90,22 @@ namespace MPP
             doc.Save(archivo);
         }
 
+        // En MPP/MPPLiquidaciones.cs
+
         public List<BELiquidacion> Listar()
         {
             List<BELiquidacion> lista = new List<BELiquidacion>();
             if (!File.Exists(archivo)) return lista;
-            var doc = XDocument.Load(archivo);
+            var doc = xmlHelper.CargarXml(archivo);
+            if (doc.Root == null) return lista;
 
+            // --- INICIO DE LA PARTE IMPORTANTE ---
             // Precargar profesionales para eficiencia
+            // Esto crea un "diccionario" de profesionales para buscarlos rápido
             var profesionales = new MPPProfesional().Listar().ToDictionary(p => p.Id);
+            // --- FIN DE LA PARTE IMPORTANTE ---
 
-
-            foreach (var nodo in doc.Descendants("Liquidacion"))
+            foreach (var nodo in doc.Root.Elements("Liquidacion")) // Cambiado de Descendants
             {
                 var liquidacion = new BELiquidacion
                 {
@@ -110,7 +115,6 @@ namespace MPP
                     PeriodoHasta = DateTime.ParseExact((string)nodo.Element("PeriodoHasta"), "yyyy-MM-dd", CultureInfo.InvariantCulture),
                     MontoTotal = (decimal?)nodo.Element("MontoTotal") ?? 0m,
                     FechaEmision = DateTime.ParseExact((string)nodo.Element("FechaEmision"), "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                    // Cargar detalle
                     TurnosLiquidados = nodo.Element("TurnosLiquidados")?
                                        .Elements("TurnoLiquidado")
                                        .Select(t => new TurnoLiquidado
@@ -122,10 +126,12 @@ namespace MPP
                                        }).ToList() ?? new List<TurnoLiquidado>()
                 };
 
-                // Enlazar profesional
+                // Asigna el objeto Profesional a la liquidación
                 if (profesionales.ContainsKey(liquidacion.IdProfesional))
+                {
                     liquidacion.Profesional = profesionales[liquidacion.IdProfesional];
-
+                }
+       
 
                 lista.Add(liquidacion);
             }
@@ -143,17 +149,18 @@ namespace MPP
             doc.Save(archivo);
         }
 
+        // En MPP/MPPLiquidaciones.cs
         public BELiquidacion BuscarPorId(int id)
         {
-            // Similar a Listar, pero para uno solo
-            if (!File.Exists(archivo)) return null;
-            var doc = XDocument.Load(archivo);
-            var nodo = doc.Descendants("Liquidacion").FirstOrDefault(l => (int?)l.Element("Id") == id);
+            var doc = xmlHelper.CargarXml(archivo);
+            if (doc.Root == null) return null;
+            var nodo = doc.Root.Elements("Liquidacion").FirstOrDefault(l => (int?)l.Element("Id") == id);
 
             if (nodo != null)
             {
                 var liquidacion = new BELiquidacion
                 {
+                    // ... (mapeo igual que en Listar) ...
                     Id = (int?)nodo.Element("Id") ?? 0,
                     IdProfesional = (int?)nodo.Element("IdProfesional") ?? 0,
                     PeriodoDesde = DateTime.ParseExact((string)nodo.Element("PeriodoDesde"), "yyyy-MM-dd", CultureInfo.InvariantCulture),
@@ -161,17 +168,21 @@ namespace MPP
                     MontoTotal = (decimal?)nodo.Element("MontoTotal") ?? 0m,
                     FechaEmision = DateTime.ParseExact((string)nodo.Element("FechaEmision"), "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                     TurnosLiquidados = nodo.Element("TurnosLiquidados")?
-                                       .Elements("TurnoLiquidado")
-                                       .Select(t => new TurnoLiquidado
-                                       {
-                                           IdTurno = (int?)t.Element("IdTurno") ?? 0,
-                                           FechaHora = DateTime.ParseExact((string)t.Element("FechaHora"), "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                                           NombreActividad = (string)t.Element("NombreActividad"),
-                                           ValorTurno = (decimal?)t.Element("ValorTurno") ?? 0m
-                                       }).ToList() ?? new List<TurnoLiquidado>()
+                                      .Elements("TurnoLiquidado")
+                                      .Select(t => new TurnoLiquidado
+                                      {
+                                          IdTurno = (int?)t.Element("IdTurno") ?? 0,
+                                          FechaHora = DateTime.ParseExact((string)t.Element("FechaHora"), "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
+                                          NombreActividad = (string)t.Element("NombreActividad"),
+                                          ValorTurno = (decimal?)t.Element("ValorTurno") ?? 0m
+                                      }).ToList() ?? new List<TurnoLiquidado>()
                 };
-                // Cargar profesional
+
+                // --- CORRECCIÓN ---
+                // Cargar el profesional asociado
                 liquidacion.Profesional = new MPPProfesional().BuscarPorId(liquidacion.IdProfesional);
+                // --- FIN CORRECCIÓN ---
+
                 return liquidacion;
             }
             return null;

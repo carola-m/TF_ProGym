@@ -49,7 +49,6 @@ namespace CapaPresentacion
                 // Asigna visibilidad a cada hijo
                 subMenuGestionarTurnos.Visible = tienePermisoTurnos;
                 subMenuRegistroAsistencia.Visible = tienePermisoAsistencia;
-                // --- FIN DE CORRECCIÓN ---
 
                 menuLiquidaciones.Visible = Session.ObtenerInstancia.TienePermiso("PERM_CALC_LIQ") ||
                                            Session.ObtenerInstancia.TienePermiso("PERM_EMIT_LIQ");

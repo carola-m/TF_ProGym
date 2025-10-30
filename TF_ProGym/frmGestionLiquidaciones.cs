@@ -1,14 +1,8 @@
 ﻿using BE;
 using BLL;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Diagnostics;
+
 
 namespace CapaPresentacion
 {
@@ -25,17 +19,15 @@ namespace CapaPresentacion
 
         private void frmGestionLiquidaciones_Load(object sender, EventArgs e)
         {
-            // Configurar DGV
             dgvLiquidaciones.AutoGenerateColumns = false;
             ConfigurarColumnasDGV();
             dgvLiquidaciones.ReadOnly = true;
             dgvLiquidaciones.AllowUserToAddRows = false;
             dgvLiquidaciones.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            // Configurar fechas
             dtpDesdeCalc.Value = DateTime.Today.AddMonths(-1).Date;
             dtpHastaCalc.Value = DateTime.Today.Date;
-            dtpDesde.Value = DateTime.Today.AddMonths(-3).Date; // Ver más historial
+            dtpDesde.Value = DateTime.Today.AddMonths(-3).Date;
             dtpHasta.Value = DateTime.Today.Date;
 
             CargarComboProfesionales();
@@ -45,50 +37,12 @@ namespace CapaPresentacion
         private void ConfigurarColumnasDGV()
         {
             dgvLiquidaciones.Columns.Clear();
-            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colId",
-                DataPropertyName = "Id",
-                HeaderText = "ID",
-                Width = 50
-            });
-            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colFechaEmision",
-                DataPropertyName = "FechaEmision",
-                HeaderText = "Fecha Emisión",
-                DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" },
-                Width = 100
-            });
-            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colProfesional",
-                DataPropertyName = "NombreProfesional",
-                HeaderText = "Profesional",
-                Width = 200
-            });
-            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colPeriodo",
-                DataPropertyName = "Periodo",
-                HeaderText = "Período Liquidado",
-                Width = 150
-            });
-            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colCantTurnos",
-                DataPropertyName = "CantidadTurnos",
-                HeaderText = "Turnos",
-                Width = 60
-            });
-            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colMonto",
-                DataPropertyName = "MontoTotal",
-                HeaderText = "Monto Total",
-                DefaultCellStyle = new DataGridViewCellStyle { Format = "C2" }, // Formato Moneda
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-            });
+            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn { Name = "colId", DataPropertyName = "Id", HeaderText = "ID", Width = 50 });
+            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn { Name = "colFechaEmision", DataPropertyName = "FechaEmision", HeaderText = "Fecha Emisión", DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" }, Width = 100 });
+            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn { Name = "colProfesional", DataPropertyName = "NombreProfesional", HeaderText = "Profesional", Width = 200 });
+            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn { Name = "colPeriodo", DataPropertyName = "Periodo", HeaderText = "Período Liquidado", Width = 150 });
+            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCantTurnos", DataPropertyName = "CantidadTurnos", HeaderText = "Turnos", Width = 60 });
+            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn { Name = "colMonto", DataPropertyName = "MontoTotal", HeaderText = "Monto Total", DefaultCellStyle = new DataGridViewCellStyle { Format = "C2" }, AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
         }
 
         private void CargarComboProfesionales()
@@ -96,14 +50,13 @@ namespace CapaPresentacion
             try
             {
                 var lista = bllProfesional.Listar();
-                // Añadir "Todos"
                 lista.Insert(0, new BEProfesional { Id = 0, Apellido = "[Todos]" });
 
                 cmbProfesionalFiltro.DataSource = null;
                 cmbProfesionalFiltro.DataSource = lista;
                 cmbProfesionalFiltro.DisplayMember = "ApellidoNombre"; // Usa la propiedad calculada
                 cmbProfesionalFiltro.ValueMember = "Id";
-                cmbProfesionalFiltro.SelectedIndex = 0; // Seleccionar "Todos"
+                cmbProfesionalFiltro.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
@@ -115,21 +68,19 @@ namespace CapaPresentacion
         {
             try
             {
-                // Obtener filtros
                 int? idProfesional = (int)cmbProfesionalFiltro.SelectedValue;
-                if (idProfesional == 0) idProfesional = null; // Si es "Todos", pasa null
+                if (idProfesional == 0) idProfesional = null;
 
                 DateTime desde = dtpDesde.Value.Date;
                 DateTime hasta = dtpHasta.Value.Date;
 
-                // Buscar
                 _listaActual = bllLiquidacion.Buscar(idProfesional, desde, hasta);
 
-                // Preparar datos para la grilla (con propiedades calculadas)
+                // IMPORTANTE: BLLLiquidacion.Buscar() ahora DEBE devolver BELiquidacion con la prop .Profesional cargada.
                 var dataSource = _listaActual.Select(liq => new {
                     liq.Id,
                     liq.FechaEmision,
-                    NombreProfesional = liq.Profesional?.ApellidoNombre ?? $"ID: {liq.IdProfesional}",
+                    NombreProfesional = liq.Profesional?.ApellidoNombre ?? $"ID: {liq.IdProfesional}", // <--- ESTO AHORA DEBERÍA FUNCIONAR
                     Periodo = $"{liq.PeriodoDesde:dd/MM/yy} al {liq.PeriodoHasta:dd/MM/yy}",
                     CantidadTurnos = liq.TurnosLiquidados?.Count ?? 0,
                     liq.MontoTotal
@@ -168,7 +119,6 @@ namespace CapaPresentacion
             {
                 try
                 {
-                    // Llamar a BLL para generar TODAS las liquidaciones del período
                     var liquidacionesGeneradas = bllLiquidacion.GenerarYGuardarLiquidacionesPeriodo(desde, hasta);
 
                     if (liquidacionesGeneradas.Any())
@@ -180,7 +130,6 @@ namespace CapaPresentacion
                         MessageBox.Show("No se generaron liquidaciones. Es posible que no haya habido turnos dictados en ese período.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
-                    // Recargar la grilla para mostrar los nuevos cálculos
                     CargarGrilla();
                 }
                 catch (Exception ex)
@@ -190,39 +139,35 @@ namespace CapaPresentacion
             }
         }
 
-        // Evento para el botón de exportar PDF (requiere iTextSharp)
+        // Evento para el botón de exportar PDF (DESCOMENTADO)
         private void btnExportarPDF_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("La funcionalidad de exportar a PDF (con iTextSharp) debe implementarse.\n" +
-                            "Descomenta el código en BLLLiquidacion.cs y en este botón, e instala el paquete NuGet 'iTextSharp'.",
-                            "Funcionalidad Pendiente", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            /*
-            // --- CÓDIGO EJEMPLO iTextSharp (DESCOMENTAR CUANDO ESTÉ INSTALADO) ---
             if (dgvLiquidaciones.CurrentRow == null || dgvLiquidaciones.CurrentRow.DataBoundItem == null)
             {
-                 MessageBox.Show("Seleccione una liquidación de la grilla para exportar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                 return;
+                MessageBox.Show("Seleccione una liquidación de la grilla para exportar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
             try
             {
-                 // Obtener el ID del objeto anónimo
-                 int idLiquidacion = (int)dgvLiquidaciones.CurrentRow.Cells["colId"].Value;
-                 
-                 // Llamar a la BLL para generar el PDF
-                 string rutaPDF = bllLiquidacion.EmitirLiquidacionPDF(idLiquidacion); // Asume que BLL lo implementa
+                // Obtener el ID del objeto anónimo
+                int idLiquidacion = (int)dgvLiquidaciones.CurrentRow.Cells["colId"].Value;
 
-                 MessageBox.Show($"PDF generado correctamente en:\n{rutaPDF}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                 
-                 // Abrir el PDF
-                 System.Diagnostics.Process.Start(rutaPDF);
+                // Llamar a la BLL para generar el PDF
+                string rutaPDF = bllLiquidacion.EmitirLiquidacionPDF(idLiquidacion); // BLL lo implementa
+
+                MessageBox.Show($"PDF generado correctamente en:\n{rutaPDF}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Abrir el PDF
+                // Necesitas 'using System.Diagnostics;'
+                // Para .NET Core/8, Process.Start puede necesitar configuración adicional
+                // o simplemente abrir la carpeta
+                Process.Start(new ProcessStartInfo(rutaPDF) { UseShellExecute = true });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                 MessageBox.Show("Error al generar el PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al generar el PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            */
         }
     }
 }

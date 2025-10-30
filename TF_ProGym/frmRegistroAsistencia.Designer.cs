@@ -45,7 +45,7 @@
             this.dtpFechaAsistencia.Name = "dtpFechaAsistencia";
             this.dtpFechaAsistencia.Size = new System.Drawing.Size(120, 23);
             this.dtpFechaAsistencia.TabIndex = 1;
-           // this.dtpFechaAsistencia.ValueChanged += new System.EventHandler(this.dtpFechaAsistencia_ValueChanged);
+           this.dtpFechaAsistencia.ValueChanged += new System.EventHandler(this.dtpFechaAsistencia_ValueChanged);
             // 
             // lblTurno
             // 
@@ -67,7 +67,7 @@
             this.cmbTurnosDelDia.Name = "cmbTurnosDelDia";
             this.cmbTurnosDelDia.Size = new System.Drawing.Size(457, 23);
             this.cmbTurnosDelDia.TabIndex = 3;
-          //  this.cmbTurnosDelDia.SelectedIndexChanged += new System.EventHandler(this.cmbTurnosDelDia_SelectedIndexChanged);
+          this.cmbTurnosDelDia.SelectedIndexChanged += new System.EventHandler(this.cmbTurnosDelDia_SelectedIndexChanged);
             // 
             // gbAsistencia
             // 
@@ -108,7 +108,7 @@
             this.btnGuardarAsistencia.TabIndex = 1;
             this.btnGuardarAsistencia.Text = "Guardar Asistencia";
             this.btnGuardarAsistencia.UseVisualStyleBackColor = false;
-           // this.btnGuardarAsistencia.Click +=btnGuardarAsistencia_Click;
+           this.btnGuardarAsistencia.Click +=btnGuardarAsistencia_Click;
             // 
             // clbClientesInscritos
             // 
@@ -136,7 +136,7 @@
             this.MinimumSize = new System.Drawing.Size(400, 300);
             this.Name = "frmRegistroAsistencia";
             this.Text = "Registro de Asistencia";
-         //   this.Load += new System.EventHandler(this.frmRegistroAsistencia_Load);
+         this.Load += new System.EventHandler(this.frmRegistroAsistencia_Load);
             this.gbAsistencia.ResumeLayout(false);
             this.gbAsistencia.PerformLayout();
             this.ResumeLayout(false);
