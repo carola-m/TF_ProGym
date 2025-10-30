@@ -46,7 +46,7 @@
             this.btnRealizarBackup.TabIndex = 1;
             this.btnRealizarBackup.Text = "Realizar Nuevo Backup";
             this.btnRealizarBackup.UseVisualStyleBackColor = true;
-           // this.btnRealizarBackup.Click += new System.EventHandler(this.btnRealizarBackup_Click);
+            this.btnRealizarBackup.Click += new System.EventHandler(this.btnRealizarBackup_Click);
             // 
             // lblHistorial
             // 
@@ -68,7 +68,7 @@
             this.Controls.Add(this.dgvBackups);
             this.Name = "frmBackup";
             this.Text = "Módulo de Backup";
-          //  this.Load += new System.EventHandler(this.frmBackup_Load);
+            this.Load += new System.EventHandler(this.frmBackup_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvBackups)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

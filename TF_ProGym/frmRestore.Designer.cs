@@ -58,7 +58,7 @@
             this.btnRestore.TabIndex = 3;
             this.btnRestore.Text = "Restaurar Seleccionado";
             this.btnRestore.UseVisualStyleBackColor = false;
-           // this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
+            this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
             // 
             // btnRecargar
             // 
@@ -70,7 +70,7 @@
             this.btnRecargar.TabIndex = 4;
             this.btnRecargar.Text = "Recargar Lista";
             this.btnRecargar.UseVisualStyleBackColor = true;
-           // this.btnRecargar.Click += new System.EventHandler(this.btnRecargar_Click);
+            this.btnRecargar.Click += new System.EventHandler(this.btnRecargar_Click);
             // 
             // lblAdvertencia
             // 
@@ -95,7 +95,7 @@
             this.Controls.Add(this.btnRecargar);
             this.Name = "frmRestore";
             this.Text = "Módulo de Restore";
-           // this.Load += new System.EventHandler(this.frmRestore_Load);
+            this.Load += new System.EventHandler(this.frmRestore_Load);
             this.gbBackups.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
