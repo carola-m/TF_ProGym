@@ -15,9 +15,9 @@ namespace CapaPresentacion
     public partial class frmGestionProfesionales : Form
     {
         private BLLProfesional bllProfesional = new BLLProfesional();
-        private BLLActividad bllActividad = new BLLActividad(); // Para cargar actividades
+        private BLLActividad bllActividad = new BLLActividad();
         private BEProfesional profesionalSeleccionado = null;
-        private List<BEActividad> _listaActividadesDisponibles; // Para el CheckedListBox
+        private List<BEActividad> _listaActividadesDisponibles;
 
         public frmGestionProfesionales()
         {
@@ -26,8 +26,8 @@ namespace CapaPresentacion
 
         private void frmGestionProfesionales_Load(object sender, EventArgs e)
         {
-            // Configurar DataGridView para autogenerar
-            dgvProfesionales.AutoGenerateColumns = true; // <-- Habilitar autogeneración
+            // Configurar DataGridView
+            dgvProfesionales.AutoGenerateColumns = true; // Usar autogeneración
             dgvProfesionales.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvProfesionales.MultiSelect = false;
             dgvProfesionales.ReadOnly = true;
@@ -35,15 +35,12 @@ namespace CapaPresentacion
             dgvProfesionales.AllowUserToDeleteRows = false;
             dgvProfesionales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Cargar datos iniciales
             CargarActividadesDisponibles();
             CargarGrilla();
             LimpiarCamposYSeleccion();
         }
 
-        // Ya NO necesitamos ConfigurarColumnasDGV()
 
-        // Carga las actividades disponibles en el CheckedListBox
         private void CargarActividadesDisponibles()
         {
             try
@@ -59,7 +56,11 @@ namespace CapaPresentacion
                 MessageBox.Show("Error al cargar la lista de actividades: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 clbActividades.Enabled = false;
             }
-            // Desmarcar todos inicialmente
+            DesmarcarActividades();
+        }
+
+        private void DesmarcarActividades()
+        {
             for (int i = 0; i < clbActividades.Items.Count; i++)
             {
                 clbActividades.SetItemChecked(i, false);
@@ -84,30 +85,21 @@ namespace CapaPresentacion
                 }
 
                 dgvProfesionales.DataSource = null;
-                // Selecciona solo las propiedades que quieres mostrar y en el orden deseado
-                // Esto ayuda a controlar qué columnas se autogeneran si no quieres mostrar todo.
-                var dataSource = listaProfesionales.Select(p => new {
-                    p.Id, // Mantenemos ID para lógica interna, luego se oculta
-                    p.DNI,
-                    p.Nombre,
-                    p.Apellido,
-                    p.Especialidad,
-                    p.Email,
-                    p.Telefono
-                    // Omitimos IdsActividadesPuedeDictar para que no se muestre como columna simple
-                }).ToList();
-
-                dgvProfesionales.DataSource = dataSource;
+                dgvProfesionales.DataSource = listaProfesionales; // Bindear la lista completa
 
                 // Ocultar columnas después de asignar el DataSource
                 if (dgvProfesionales.Columns.Contains("Id"))
                 {
                     dgvProfesionales.Columns["Id"].Visible = false;
                 }
-                // Podrías renombrar encabezados si quieres
-                if (dgvProfesionales.Columns.Contains("DNI")) dgvProfesionales.Columns["DNI"].HeaderText = "DNI";
-                // ... etc ...
-
+                if (dgvProfesionales.Columns.Contains("IdsActividadesPuedeDictar"))
+                {
+                    dgvProfesionales.Columns["IdsActividadesPuedeDictar"].Visible = false;
+                }
+                if (dgvProfesionales.Columns.Contains("ApellidoNombre"))
+                {
+                    dgvProfesionales.Columns["ApellidoNombre"].Visible = false;
+                }
             }
             catch (Exception ex)
             {
@@ -117,24 +109,17 @@ namespace CapaPresentacion
 
         private void dgvProfesionales_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvProfesionales.CurrentRow != null)
+            // Lógica de selección simplificada, igual a Clientes
+            if (dgvProfesionales.CurrentRow != null && dgvProfesionales.CurrentRow.DataBoundItem is BEProfesional profesional)
             {
-                // Como el DataSource es una lista anónima, necesitamos obtener el ID
-                // y buscar el objeto BEProfesional completo en la lista original
-                int idSeleccionado = (int)dgvProfesionales.CurrentRow.Cells["Id"].Value; // Obtiene el ID de la fila seleccionada
-                profesionalSeleccionado = bllProfesional.BuscarPorId(idSeleccionado); // Busca el objeto completo
-
-                if (profesionalSeleccionado != null)
-                {
-                    MostrarDatosProfesional(profesionalSeleccionado);
-                    HabilitarCampos(true);
-                    btnEliminar.Enabled = true;
-                }
-                else
-                {
-                    // Si no se encuentra el objeto completo (raro, pero posible)
-                    LimpiarCamposYSeleccion();
-                }
+                profesionalSeleccionado = profesional; // Guardar el objeto completo
+                MostrarDatosProfesional(profesionalSeleccionado);
+                HabilitarCampos(true);
+                btnEliminar.Enabled = true;
+            }
+            else
+            {
+                profesionalSeleccionado = null;
             }
         }
 
@@ -149,12 +134,18 @@ namespace CapaPresentacion
             txtTelefono.Text = profesional.Telefono;
 
             // Marcar las actividades asignadas en el CheckedListBox
-            for (int i = 0; i < clbActividades.Items.Count; i++)
+            DesmarcarActividades(); // Limpiar primero
+            if (profesional.IdsActividadesPuedeDictar != null)
             {
-                if (clbActividades.Items[i] is BEActividad act)
+                for (int i = 0; i < clbActividades.Items.Count; i++)
                 {
-                    bool asignada = profesional.IdsActividadesPuedeDictar?.Contains(act.Id) ?? false;
-                    clbActividades.SetItemChecked(i, asignada);
+                    if (clbActividades.Items[i] is BEActividad act)
+                    {
+                        if (profesional.IdsActividadesPuedeDictar.Contains(act.Id))
+                        {
+                            clbActividades.SetItemChecked(i, true);
+                        }
+                    }
                 }
             }
         }
@@ -170,10 +161,7 @@ namespace CapaPresentacion
             txtEmail.Clear();
             txtTelefono.Clear();
 
-            for (int i = 0; i < clbActividades.Items.Count; i++)
-            {
-                clbActividades.SetItemChecked(i, false);
-            }
+            DesmarcarActividades();
 
             dgvProfesionales.ClearSelection();
             HabilitarCampos(true);
@@ -207,12 +195,12 @@ namespace CapaPresentacion
                     MessageBox.Show("DNI, Nombre y Apellido son obligatorios.", "Campos requeridos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                // ... (Añadir las otras validaciones de BLL aquí si quieres) ...
 
                 BEProfesional profesionalAGuardar;
-                bool esNuevo = string.IsNullOrEmpty(txtIdProfesional.Text) || txtIdProfesional.Text == "0";
+                bool esNuevo = false;
 
-                if (!esNuevo && profesionalSeleccionado != null && profesionalSeleccionado.Id.ToString() == txtIdProfesional.Text)
+                // Lógica Nuevo/Editar idéntica a frmGestionClientes
+                if (profesionalSeleccionado != null && profesionalSeleccionado.Id.ToString() == txtIdProfesional.Text && profesionalSeleccionado.Id != 0)
                 {
                     profesionalAGuardar = profesionalSeleccionado;
                 }
@@ -240,7 +228,6 @@ namespace CapaPresentacion
                     }
                 }
 
-                // Llama a BLL
                 bllProfesional.Guardar(profesionalAGuardar);
 
                 MessageBox.Show(esNuevo ? "Profesional creado correctamente." : "Profesional modificado correctamente.",

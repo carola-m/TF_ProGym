@@ -65,6 +65,7 @@
             btnRecargar.TabIndex = 1;
             btnRecargar.Text = "Recargar Lista";
             btnRecargar.UseVisualStyleBackColor = true;
+            this.btnRecargar.Click += new System.EventHandler(this.btnRecargar_Click);
             // 
             // gbFiltros
             // 
@@ -96,6 +97,7 @@
             btnFiltrar.TabIndex = 7;
             btnFiltrar.Text = "Filtrar";
             btnFiltrar.UseVisualStyleBackColor = true;
+            this.btnFiltrar.Click += new System.EventHandler(this.btnFiltrar_Click);
             // 
             // dtpHasta
             // 

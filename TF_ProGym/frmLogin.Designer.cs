@@ -34,6 +34,8 @@
             label2 = new Label();
             btnIngresar = new Button();
             btnCancelar = new Button();
+            pblogo = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pblogo).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -88,11 +90,22 @@
             btnCancelar.Text = "CANCELAR";
             btnCancelar.UseVisualStyleBackColor = true;
             // 
+            // pblogo
+            // 
+            pblogo.Image = Properties.Resources.Captura_de_pantalla_2025_10_30_223244;
+            pblogo.Location = new Point(12, 12);
+            pblogo.Name = "pblogo";
+            pblogo.Size = new Size(90, 56);
+            pblogo.SizeMode = PictureBoxSizeMode.Zoom;
+            pblogo.TabIndex = 6;
+            pblogo.TabStop = false;
+            // 
             // frmLogin
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(pblogo);
             Controls.Add(btnCancelar);
             Controls.Add(btnIngresar);
             Controls.Add(txtPassword);
@@ -101,6 +114,7 @@
             Controls.Add(label1);
             Name = "frmLogin";
             Text = "frmLogin";
+            ((System.ComponentModel.ISupportInitialize)pblogo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -113,5 +127,6 @@
         private Label label2;
         private Button btnIngresar;
         private Button btnCancelar;
+        private PictureBox pblogo;
     }
 }

@@ -19,18 +19,17 @@ namespace CapaPresentacion
         private BLLProfesional bllProfesional = new BLLProfesional();
         private BLLCliente bllCliente = new BLLCliente();
 
-        private BETurno turnoSeleccionado = null; // Para saber qué turno gestionar
+        private BETurno turnoSeleccionado = null;
 
         public frmGestionTurnos()
         {
-            InitializeComponent(); // Esta línea es fundamental
+            InitializeComponent();
         }
 
-        // El .Designer.cs busca este método
         private void frmGestionTurnos_Load(object sender, EventArgs e)
         {
             // Configurar DataGridView
-            dgvTurnosDia.AutoGenerateColumns = false; // Controlaremos las columnas
+            dgvTurnosDia.AutoGenerateColumns = false;
             ConfigurarColumnasDGV();
             dgvTurnosDia.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvTurnosDia.MultiSelect = false;
@@ -47,7 +46,7 @@ namespace CapaPresentacion
             dtpHoraFin.CustomFormat = "HH:mm";
             dtpHoraFin.ShowUpDown = true;
 
-            // Configurar DateTimePickers para fecha (solo fecha corta)
+            // Configurar DateTimePickers para fecha
             dtpFechaInicio.Format = DateTimePickerFormat.Short;
             dtpFechaFin.Format = DateTimePickerFormat.Short;
 
@@ -68,22 +67,13 @@ namespace CapaPresentacion
         {
             dgvTurnosDia.Columns.Clear();
             dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colId", DataPropertyName = "Id", HeaderText = "ID", Visible = false });
-            dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colHoraInicio", DataPropertyName = "FechaHoraInicio", HeaderText = "Inicio", DefaultCellStyle = new DataGridViewCellStyle { Format = "HH:mm" } });
-            dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colHoraFin", DataPropertyName = "FechaHoraFin", HeaderText = "Fin", DefaultCellStyle = new DataGridViewCellStyle { Format = "HH:mm" } });
-            dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colActividad", DataPropertyName = "ActividadNombre", HeaderText = "Actividad" });
-            dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colProfesional", DataPropertyName = "ProfesionalNombre", HeaderText = "Profesional" });
-            dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCupos", DataPropertyName = "CuposInfo", HeaderText = "Cupos (Ocup/Max)" });
-
-            dgvTurnosDia.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colHoraInicio", DataPropertyName = "FechaHoraInicio", HeaderText = "Inicio", DefaultCellStyle = new DataGridViewCellStyle { Format = "HH:mm" }, Width = 60 });
+            dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colHoraFin", DataPropertyName = "FechaHoraFin", HeaderText = "Fin", DefaultCellStyle = new DataGridViewCellStyle { Format = "HH:mm" }, Width = 60 });
+            dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colActividad", DataPropertyName = "ActividadNombre", HeaderText = "Actividad", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
+            dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colProfesional", DataPropertyName = "ProfesionalNombre", HeaderText = "Profesional", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
+            dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCupos", DataPropertyName = "CuposInfo", HeaderText = "Cupos (Ocup/Max)", Width = 120 });
         }
 
-        // --- Propiedades Calculadas (Añadir a BECliente.cs y BEProfesional.cs) ---
-        // Ve a BECliente.cs y añade:
-        // public string ApellidoNombre => (Id == 0) ? Nombre : $"{Apellido}, {Nombre}";
-        // public string ApellidoNombreDNI => (Id == 0) ? Apellido : $"{Apellido}, {Nombre} ({DNI})";
-
-        // Ve a BEProfesional.cs y añade:
-        // public string ApellidoNombre => (Id == 0) ? Apellido : $"{Apellido}, {Nombre}";
 
         private void CargarComboActividades()
         {
@@ -108,11 +98,7 @@ namespace CapaPresentacion
                 var profesionales = bllProfesional.Listar();
                 profesionales.Insert(0, new BEProfesional { Id = 0, Apellido = "[Seleccione Profesional]" });
                 cmbProfesional.DataSource = profesionales;
-
-                // *** IMPORTANTE: NECESITAS AÑADIR ESTA PROPIEDAD A BEProfesional.cs ***
-                // public string ApellidoNombre => (Id == 0) ? Apellido : $"{Apellido}, {Nombre}";
                 cmbProfesional.DisplayMember = "ApellidoNombre";
-
                 cmbProfesional.ValueMember = "Id";
                 cmbProfesional.SelectedIndex = 0;
             }
@@ -127,18 +113,13 @@ namespace CapaPresentacion
                 var clientes = bllCliente.Listar().Where(c => c.MembresiaActiva).ToList();
                 clientes.Insert(0, new BECliente { Id = 0, Apellido = "[Seleccione Cliente]" });
                 cmbCliente.DataSource = clientes;
-
-                // *** IMPORTANTE: NECESITAS AÑADIR ESTA PROPIEDAD A BECliente.cs ***
-                // public string ApellidoNombreDNI => (Id == 0) ? Apellido : $"{Apellido}, {Nombre} ({DNI})";
                 cmbCliente.DisplayMember = "ApellidoNombreDNI";
-
                 cmbCliente.ValueMember = "Id";
                 cmbCliente.SelectedIndex = 0;
             }
             catch (Exception ex) { MessageBox.Show("Error cargando clientes: " + ex.Message); }
         }
 
-        // El .Designer.cs busca este método
         private void dtpFechaTurnos_ValueChanged(object sender, EventArgs e)
         {
             CargarGrillaTurnos(dtpFechaTurnos.Value);
@@ -154,6 +135,7 @@ namespace CapaPresentacion
             {
                 var turnosDelDia = bllTurno.ListarTurnosPorFecha(fecha);
 
+                // El DataSource se crea con un tipo anónimo
                 var dataSource = turnosDelDia.Select(t => new {
                     t.Id,
                     t.FechaHoraInicio,
@@ -173,15 +155,16 @@ namespace CapaPresentacion
             }
         }
 
-        // El .Designer.cs busca este método
         private void dgvTurnosDia_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvTurnosDia.CurrentRow != null && dgvTurnosDia.CurrentRow.DataBoundItem != null)
             {
                 try
                 {
+                    // Como el DataSource es anónimo, NO podemos castear a BETurno
+                    // Debemos obtener el ID y buscar el objeto completo
                     int idTurnoSeleccionado = (int)dgvTurnosDia.CurrentRow.Cells["colId"].Value;
-                    turnoSeleccionado = bllTurno.BuscarPorId(idTurnoSeleccionado);
+                    turnoSeleccionado = bllTurno.BuscarPorId(idTurnoSeleccionado); // <-- Búsqueda en BLL
 
                     if (turnoSeleccionado != null)
                     {
@@ -231,6 +214,7 @@ namespace CapaPresentacion
 
         private void LimpiarCamposDetalleTurno()
         {
+            turnoSeleccionado = null; // <- CLAVE
             txtIdTurno.Clear();
             cmbActividad.SelectedIndex = 0;
             cmbProfesional.SelectedIndex = 0;
@@ -244,7 +228,6 @@ namespace CapaPresentacion
             btnEliminarTurno.Enabled = false;
         }
 
-        // El .Designer.cs busca este método
         private void btnNuevoTurno_Click(object sender, EventArgs e)
         {
             LimpiarCamposDetalleTurno();
@@ -254,7 +237,6 @@ namespace CapaPresentacion
             cmbActividad.Focus();
         }
 
-        // El .Designer.cs busca este método
         private void btnGuardarTurno_Click(object sender, EventArgs e)
         {
             try
@@ -279,9 +261,10 @@ namespace CapaPresentacion
                 DateTime finCompleto = fechaFin.AddHours(horaFin.Hour).AddMinutes(horaFin.Minute);
 
                 BETurno turnoAGuardar;
-                bool esNuevo = string.IsNullOrEmpty(txtIdTurno.Text) || txtIdTurno.Text == "0";
+                bool esNuevo = false;
 
-                if (!esNuevo && turnoSeleccionado != null && turnoSeleccionado.Id.ToString() == txtIdTurno.Text)
+                // Lógica Nuevo/Editar
+                if (turnoSeleccionado != null && turnoSeleccionado.Id.ToString() == txtIdTurno.Text && turnoSeleccionado.Id != 0)
                 {
                     turnoAGuardar = turnoSeleccionado;
                 }
@@ -312,7 +295,6 @@ namespace CapaPresentacion
             }
         }
 
-        // El .Designer.cs busca este método
         private void btnEliminarTurno_Click(object sender, EventArgs e)
         {
             if (turnoSeleccionado == null)
@@ -366,11 +348,7 @@ namespace CapaPresentacion
                                                   .OrderBy(c => c.Apellido).ThenBy(c => c.Nombre)
                                                   .ToList();
                 lstClientesInscritos.DataSource = clientesInscritos;
-
-                // *** IMPORTANTE: NECESITAS AÑADIR ESTA PROPIEDAD A BECliente.cs ***
-                // public string ApellidoNombreDNI => (Id == 0) ? Apellido : $"{Apellido}, {Nombre} ({DNI})";
                 lstClientesInscritos.DisplayMember = "ApellidoNombreDNI";
-
                 lstClientesInscritos.ValueMember = "Id";
             }
 
@@ -380,7 +358,6 @@ namespace CapaPresentacion
                 lblCupoInfo.Text = "Cupos: -/-";
         }
 
-        // El .Designer.cs busca este método
         private void btnReservarCliente_Click(object sender, EventArgs e)
         {
             if (turnoSeleccionado == null)
@@ -402,9 +379,12 @@ namespace CapaPresentacion
                 bllTurno.ReservarTurno(turnoSeleccionado.Id, idClienteAReservar);
                 MessageBox.Show("Cliente reservado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                // Recargar el turno seleccionado y la grilla
                 turnoSeleccionado = bllTurno.BuscarPorId(turnoSeleccionado.Id);
                 CargarClientesInscritos(turnoSeleccionado);
-                CargarGrillaTurnos(dtpFechaTurnos.Value);
+                CargarGrillaTurnos(dtpFechaTurnos.Value); // Recargar grilla por si cambiaron cupos
+                dgvTurnosDia.ClearSelection(); // Limpiar seleccion para forzar recarga al re-seleccionar
+
                 cmbCliente.SelectedIndex = 0;
                 cmbCliente.Focus();
             }
@@ -414,7 +394,6 @@ namespace CapaPresentacion
             }
         }
 
-        // El .Designer.cs busca este método
         private void btnCancelarReserva_Click(object sender, EventArgs e)
         {
             if (turnoSeleccionado == null)
@@ -441,9 +420,11 @@ namespace CapaPresentacion
                     bllTurno.CancelarReserva(turnoSeleccionado.Id, clienteACancelar.Id);
                     MessageBox.Show("Reserva cancelada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                    // Recargar
                     turnoSeleccionado = bllTurno.BuscarPorId(turnoSeleccionado.Id);
                     CargarClientesInscritos(turnoSeleccionado);
                     CargarGrillaTurnos(dtpFechaTurnos.Value);
+                    dgvTurnosDia.ClearSelection();
                 }
                 catch (Exception ex)
                 {

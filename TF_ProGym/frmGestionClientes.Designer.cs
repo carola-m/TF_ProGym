@@ -287,7 +287,6 @@
 
         #endregion
 
-        // --- Declaraciones (movidas al final) ---
         private System.Windows.Forms.DataGridView dgvClientes;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtIdCliente;

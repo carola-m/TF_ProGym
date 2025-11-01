@@ -25,7 +25,7 @@ namespace CapaPresentacion
         private void frmGestionActividades_Load(object sender, EventArgs e)
         {
             // Configurar DataGridView
-            dgvActividades.AutoGenerateColumns = true; // Dejamos autogenerar por simplicidad
+            dgvActividades.AutoGenerateColumns = true; // Dejamos autogenerar
             dgvActividades.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvActividades.MultiSelect = false;
             dgvActividades.ReadOnly = true;
@@ -35,7 +35,7 @@ namespace CapaPresentacion
 
             // Configurar NumericUpDown
             numCupoMaximo.Minimum = 1;
-            numCupoMaximo.Maximum = 1000; // O un límite más realista
+            numCupoMaximo.Maximum = 1000;
 
             CargarGrilla();
             LimpiarCamposYSeleccion();
@@ -59,11 +59,14 @@ namespace CapaPresentacion
                 dgvActividades.DataSource = listaActividades;
 
                 // Ocultar/personalizar columnas después de asignar datos
-                if (dgvActividades.Columns.Contains("Id")) dgvActividades.Columns["Id"].Visible = false;
+                if (dgvActividades.Columns.Contains("Id"))
+                {
+                    dgvActividades.Columns["Id"].Visible = false;
+                }
                 if (dgvActividades.Columns.Contains("TarifaPorTurno"))
                 {
-                    dgvActividades.Columns["TarifaPorTurno"].HeaderText = "Tarifa x Turno";
-                    dgvActividades.Columns["TarifaPorTurno"].DefaultCellStyle.Format = "C2"; // Formato moneda
+                    dgvActividades.Columns["TarifaPorTurno"].HeaderText = "Tarifa por Turno";
+                    dgvActividades.Columns["TarifaPorTurno"].DefaultCellStyle.Format = "C2"; 
                 }
                 if (dgvActividades.Columns.Contains("CupoMaximo"))
                 {
@@ -86,7 +89,10 @@ namespace CapaPresentacion
                 HabilitarCampos(true);
                 btnEliminar.Enabled = true;
             }
-            // else { LimpiarCamposYSeleccion(); } // Opcional
+            else
+            {
+                actividadSeleccionada = null;
+            }
         }
 
         private void MostrarDatosActividad(BEActividad actividad)
@@ -94,16 +100,16 @@ namespace CapaPresentacion
             txtIdActividad.Text = actividad.Id.ToString();
             txtNombreActividad.Text = actividad.Nombre;
             txtDescripcionActividad.Text = actividad.Descripcion;
-            // Validar valor antes de asignar a NumericUpDown
+
             if (actividad.CupoMaximo >= numCupoMaximo.Minimum && actividad.CupoMaximo <= numCupoMaximo.Maximum)
             {
                 numCupoMaximo.Value = actividad.CupoMaximo;
             }
             else
             {
-                numCupoMaximo.Value = numCupoMaximo.Minimum; // O valor por defecto
+                numCupoMaximo.Value = numCupoMaximo.Minimum;
             }
-            txtTarifaTurno.Text = actividad.TarifaPorTurno.ToString("F2"); // Mostrar con 2 decimales
+            txtTarifaTurno.Text = actividad.TarifaPorTurno.ToString("F2");
         }
 
         private void LimpiarCamposYSeleccion()
@@ -112,8 +118,8 @@ namespace CapaPresentacion
             txtIdActividad.Clear();
             txtNombreActividad.Clear();
             txtDescripcionActividad.Clear();
-            numCupoMaximo.Value = numCupoMaximo.Minimum; // Valor mínimo por defecto
-            txtTarifaTurno.Clear();
+            numCupoMaximo.Value = 1; 
+            txtTarifaTurno.Text = "0.00";
 
             dgvActividades.ClearSelection();
             HabilitarCampos(true);
@@ -152,18 +158,17 @@ namespace CapaPresentacion
                     txtTarifaTurno.Focus();
                     return;
                 }
-                // Cupo máximo ya está validado por el NumericUpDown
 
                 BEActividad actividadAGuardar;
                 bool esNueva = false;
 
                 if (actividadSeleccionada != null && actividadSeleccionada.Id.ToString() == txtIdActividad.Text && actividadSeleccionada.Id != 0)
                 {
-                    actividadAGuardar = actividadSeleccionada; // Modificación
+                    actividadAGuardar = actividadSeleccionada; 
                 }
                 else
                 {
-                    actividadAGuardar = new BEActividad(); // Nueva
+                    actividadAGuardar = new BEActividad(); 
                     esNueva = true;
                 }
 
@@ -173,7 +178,6 @@ namespace CapaPresentacion
                 actividadAGuardar.CupoMaximo = (int)numCupoMaximo.Value;
                 actividadAGuardar.TarifaPorTurno = tarifa;
 
-                // Llama a BLL
                 bllActividad.Guardar(actividadAGuardar);
 
                 MessageBox.Show(esNueva ? "Actividad creada correctamente." : "Actividad modificada correctamente.",
@@ -208,7 +212,7 @@ namespace CapaPresentacion
                     CargarGrilla();
                     LimpiarCamposYSeleccion();
                 }
-                catch (InvalidOperationException exInv) // Captura reglas de negocio (ej. turnos asociados)
+                catch (InvalidOperationException exInv)
                 {
                     MessageBox.Show(exInv.Message, "Operación no permitida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
@@ -232,6 +236,5 @@ namespace CapaPresentacion
                 btnBuscar.PerformClick();
             }
         }
-
     }
 }
