@@ -36,11 +36,6 @@ namespace CapaPresentacion
             }
             _usuario = usuarioLogueado;
 
-            // Opcional: Mostrar para qué usuario se cambia la contraseña
-            // Asegúrate de tener un Label llamado lblInfoUsuario en el diseño
-            // Si no lo tienes, comenta o elimina la línea siguiente:
-            // lblInfoUsuario.Text = $"Estableciendo contraseña para: {_usuario.NombreUsuario}";
-
             this.Text = "Establecer Nueva Contraseña";
         }
 
@@ -86,9 +81,10 @@ namespace CapaPresentacion
 
                 // **Comportamiento de cierre según tu modelo:**
                 // En lugar de DialogResult, mostramos el login y cerramos este form.
-                frmLogin frmLogin = new frmLogin(); // Asegúrate que tu form de login se llame frmLogin
-                frmLogin.Show();
-                this.Close(); // Cierra este formulario (frmCambiarContrasena)
+
+                // --- MODIFICADO: Devuelve DialogResult.OK para que frmLogin sepa qué hacer ---
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             catch (Exception ex)
             {
@@ -118,13 +114,25 @@ namespace CapaPresentacion
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            // Decide qué hacer al cancelar: ¿volver al login? ¿cerrar todo?
-            frmLogin frmLogin = new frmLogin();
-            frmLogin.Show();
+            // --- MODIFICADO: Devuelve DialogResult.Cancel ---
+            this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-       
 
+        // --- NUEVO MÉTODO ---
+        // Evento para el CheckBox de "Mostrar contraseña"
+        private void chkVerPasswordNueva_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkVerPasswordNueva.Checked)
+            {
+                txtNuevaPassword.PasswordChar = '\0';
+                txtConfirmarPassword.PasswordChar = '\0';
+            }
+            else
+            {
+                txtNuevaPassword.PasswordChar = '*';
+                txtConfirmarPassword.PasswordChar = '*';
+            }
+        }
     }
 }
-        

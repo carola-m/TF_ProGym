@@ -1,15 +1,7 @@
 ﻿using BE;
 using BLL;
 using Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace CapaPresentacion
 {
@@ -115,6 +107,20 @@ namespace CapaPresentacion
             {
                 e.Handled = true;
                 txtPassword.Focus(); // Mueve el foco al siguiente campo
+            }
+        }
+
+        // --- NUEVO MÉTODO ---
+        // Evento para el CheckBox de "Mostrar contraseña"
+        private void chkVerPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkVerPassword.Checked)
+            {
+                txtPassword.PasswordChar = '\0'; 
+            }
+            else
+            {
+                txtPassword.PasswordChar = '*';
             }
         }
     }
