@@ -26,9 +26,27 @@ namespace CapaPresentacion
             InitializeComponent();
         }
 
+        // Configuración inicial del formulario, DGV, y ComboBoxes
         private void frmGestionTurnos_Load(object sender, EventArgs e)
         {
-            // Configurar DataGridView
+            // *** CORRECCIÓN DE ANCLAJES ***
+            // 1. Grid (dgvTurnosDia): Anclar Arriba, Izquierda, Derecha. NO Abajo.
+            this.dgvTurnosDia.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+
+            // 2. GroupBox Izquierdo (gbDetalleTurno): Anclar Arriba, Abajo, Izquierda. NO Derecha.
+            //    (El 'Top' es relativo a su posición Y de 322)
+            this.gbDetalleTurno.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)));
+
+            // 3. GroupBox Derecho (gbReservaCliente): Anclar Arriba, Abajo, Izquierda, Derecha.
+            //    (Se anclará al borde derecho del form y al borde izquierdo de gbDetalleTurno)
+            this.gbReservaCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            // *** FIN CORRECCIÓN DE ANCLAJES ***
+
+
             dgvTurnosDia.AutoGenerateColumns = false;
             ConfigurarColumnasDGV();
             dgvTurnosDia.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -37,25 +55,23 @@ namespace CapaPresentacion
             dgvTurnosDia.AllowUserToAddRows = false;
             dgvTurnosDia.AllowUserToDeleteRows = false;
             dgvTurnosDia.RowHeadersVisible = false;
+            dgvTurnosDia.BackgroundColor = Color.White; // Estilo Limpio
+            dgvTurnosDia.BorderStyle = BorderStyle.None; // Estilo Limpio
 
-            // Configurar DateTimePickers para hora
             dtpHoraInicio.Format = DateTimePickerFormat.Custom;
-            dtpHoraInicio.CustomFormat = "HH:mm"; // Mostrar solo Hora:Minuto
+            dtpHoraInicio.CustomFormat = "HH:mm";
             dtpHoraInicio.ShowUpDown = true;
             dtpHoraFin.Format = DateTimePickerFormat.Custom;
             dtpHoraFin.CustomFormat = "HH:mm";
             dtpHoraFin.ShowUpDown = true;
 
-            // Configurar DateTimePickers para fecha
             dtpFechaInicio.Format = DateTimePickerFormat.Short;
             dtpFechaFin.Format = DateTimePickerFormat.Short;
 
-            // Cargar ComboBoxes
             CargarComboActividades();
             CargarComboProfesionales();
             CargarComboClientes();
 
-            // Cargar turnos para el día actual
             dtpFechaTurnos.Value = DateTime.Today;
             CargarGrillaTurnos(DateTime.Today);
 
@@ -63,6 +79,7 @@ namespace CapaPresentacion
             gbReservaCliente.Enabled = false;
         }
 
+        // Define las columnas personalizadas para el DataGridView de turnos
         private void ConfigurarColumnasDGV()
         {
             dgvTurnosDia.Columns.Clear();
@@ -74,7 +91,7 @@ namespace CapaPresentacion
             dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCupos", DataPropertyName = "CuposInfo", HeaderText = "Cupos (Ocup/Max)", Width = 120 });
         }
 
-
+        // Carga el ComboBox de actividades (y añade "Seleccione")
         private void CargarComboActividades()
         {
             try
@@ -90,6 +107,7 @@ namespace CapaPresentacion
             catch (Exception ex) { MessageBox.Show("Error cargando actividades: " + ex.Message); }
         }
 
+        // Carga el ComboBox de profesionales (y añade "Seleccione")
         private void CargarComboProfesionales()
         {
             try
@@ -105,6 +123,7 @@ namespace CapaPresentacion
             catch (Exception ex) { MessageBox.Show("Error cargando profesionales: " + ex.Message); }
         }
 
+        // Carga el ComboBox de clientes (y añade "Seleccione")
         private void CargarComboClientes()
         {
             try
@@ -120,6 +139,7 @@ namespace CapaPresentacion
             catch (Exception ex) { MessageBox.Show("Error cargando clientes: " + ex.Message); }
         }
 
+        // Evento que se dispara al cambiar la fecha principal del formulario
         private void dtpFechaTurnos_ValueChanged(object sender, EventArgs e)
         {
             CargarGrillaTurnos(dtpFechaTurnos.Value);
@@ -129,13 +149,13 @@ namespace CapaPresentacion
             turnoSeleccionado = null;
         }
 
+        // Carga la grilla de turnos para una fecha específica
         private void CargarGrillaTurnos(DateTime fecha)
         {
             try
             {
                 var turnosDelDia = bllTurno.ListarTurnosPorFecha(fecha);
 
-                // El DataSource se crea con un tipo anónimo
                 var dataSource = turnosDelDia.Select(t => new {
                     t.Id,
                     t.FechaHoraInicio,
@@ -155,16 +175,15 @@ namespace CapaPresentacion
             }
         }
 
+        // Evento al seleccionar un turno de la grilla
         private void dgvTurnosDia_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvTurnosDia.CurrentRow != null && dgvTurnosDia.CurrentRow.DataBoundItem != null)
             {
                 try
                 {
-                    // Como el DataSource es anónimo, NO podemos castear a BETurno
-                    // Debemos obtener el ID y buscar el objeto completo
                     int idTurnoSeleccionado = (int)dgvTurnosDia.CurrentRow.Cells["colId"].Value;
-                    turnoSeleccionado = bllTurno.BuscarPorId(idTurnoSeleccionado); // <-- Búsqueda en BLL
+                    turnoSeleccionado = bllTurno.BuscarPorId(idTurnoSeleccionado);
 
                     if (turnoSeleccionado != null)
                     {
@@ -201,6 +220,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Muestra los datos del turno seleccionado en el panel de edición
         private void MostrarDatosTurno(BETurno turno)
         {
             txtIdTurno.Text = turno.Id.ToString();
@@ -212,9 +232,10 @@ namespace CapaPresentacion
             dtpHoraFin.Value = turno.FechaHoraFin;
         }
 
+        // Limpia el panel de edición de turnos
         private void LimpiarCamposDetalleTurno()
         {
-            turnoSeleccionado = null; // <- CLAVE
+            turnoSeleccionado = null;
             txtIdTurno.Clear();
             cmbActividad.SelectedIndex = 0;
             cmbProfesional.SelectedIndex = 0;
@@ -228,6 +249,7 @@ namespace CapaPresentacion
             btnEliminarTurno.Enabled = false;
         }
 
+        // Prepara el formulario para crear un nuevo turno
         private void btnNuevoTurno_Click(object sender, EventArgs e)
         {
             LimpiarCamposDetalleTurno();
@@ -237,6 +259,7 @@ namespace CapaPresentacion
             cmbActividad.Focus();
         }
 
+        // Valida y guarda un turno (nuevo o existente)
         private void btnGuardarTurno_Click(object sender, EventArgs e)
         {
             try
@@ -263,7 +286,6 @@ namespace CapaPresentacion
                 BETurno turnoAGuardar;
                 bool esNuevo = false;
 
-                // Lógica Nuevo/Editar
                 if (turnoSeleccionado != null && turnoSeleccionado.Id.ToString() == txtIdTurno.Text && turnoSeleccionado.Id != 0)
                 {
                     turnoAGuardar = turnoSeleccionado;
@@ -295,6 +317,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Elimina el turno seleccionado, previa confirmación
         private void btnEliminarTurno_Click(object sender, EventArgs e)
         {
             if (turnoSeleccionado == null)
@@ -331,6 +354,7 @@ namespace CapaPresentacion
 
         // --- Sección Reservas ---
 
+        // Limpia el panel de gestión de reservas
         private void LimpiarSeccionReservas()
         {
             cmbCliente.SelectedIndex = 0;
@@ -338,6 +362,7 @@ namespace CapaPresentacion
             lblCupoInfo.Text = "Cupos: -/-";
         }
 
+        // Carga la lista de clientes inscritos en el turno seleccionado
         private void CargarClientesInscritos(BETurno turno)
         {
             lstClientesInscritos.DataSource = null;
@@ -358,6 +383,7 @@ namespace CapaPresentacion
                 lblCupoInfo.Text = "Cupos: -/-";
         }
 
+        // Reserva un cupo para el cliente seleccionado en el turno seleccionado
         private void btnReservarCliente_Click(object sender, EventArgs e)
         {
             if (turnoSeleccionado == null)
@@ -379,11 +405,10 @@ namespace CapaPresentacion
                 bllTurno.ReservarTurno(turnoSeleccionado.Id, idClienteAReservar);
                 MessageBox.Show("Cliente reservado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Recargar el turno seleccionado y la grilla
                 turnoSeleccionado = bllTurno.BuscarPorId(turnoSeleccionado.Id);
                 CargarClientesInscritos(turnoSeleccionado);
-                CargarGrillaTurnos(dtpFechaTurnos.Value); // Recargar grilla por si cambiaron cupos
-                dgvTurnosDia.ClearSelection(); // Limpiar seleccion para forzar recarga al re-seleccionar
+                CargarGrillaTurnos(dtpFechaTurnos.Value);
+                dgvTurnosDia.ClearSelection();
 
                 cmbCliente.SelectedIndex = 0;
                 cmbCliente.Focus();
@@ -394,6 +419,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Cancela la reserva del cliente seleccionado en la lista de inscritos
         private void btnCancelarReserva_Click(object sender, EventArgs e)
         {
             if (turnoSeleccionado == null)
@@ -420,7 +446,6 @@ namespace CapaPresentacion
                     bllTurno.CancelarReserva(turnoSeleccionado.Id, clienteACancelar.Id);
                     MessageBox.Show("Reserva cancelada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Recargar
                     turnoSeleccionado = bllTurno.BuscarPorId(turnoSeleccionado.Id);
                     CargarClientesInscritos(turnoSeleccionado);
                     CargarGrillaTurnos(dtpFechaTurnos.Value);

@@ -14,27 +14,22 @@ namespace CapaPresentacion
 {
     public partial class frmUsuarios : Form
     {
-        // Usamos BLLSeguridad que centraliza la lógica de usuarios, roles y permisos
         private readonly BLLSeguridad bllSeguridad = new BLLSeguridad();
-
-        // Almacenamos la lista de definiciones de permisos para no cargarla cada vez
         private List<BEPermisoComponent> _definicionesPermisosCache;
 
         public frmUsuarios()
         {
             InitializeComponent();
-            // Los eventos se conectan desde el .Designer.cs
         }
 
+        // Cargar datos iniciales al abrir el formulario
         private void frmUsuarios_Load(object sender, EventArgs e)
         {
-            // Cargar datos iniciales al abrir el formulario
             CargarPermisosEnTreeView();
             CargarComboBoxUsuarios();
             CargarComboBoxRoles();
-            MostrarRolesYPermisosDeTodosLosUsuarios(); // Carga la vista general
+            MostrarRolesYPermisosDeTodosLosUsuarios();
 
-            // Estado inicial de los campos
             LimpiarCamposUsuario();
             LimpiarCamposRol();
         }
@@ -46,14 +41,13 @@ namespace CapaPresentacion
         {
             try
             {
-                // Obtiene las definiciones (hojas) desde BLLSeguridad
                 _definicionesPermisosCache = bllSeguridad.ObtenerDefinicionesPermisos();
                 trvwPermisoAasociar.Nodes.Clear();
 
                 foreach (var permiso in _definicionesPermisosCache.OrderBy(p => p.Nombre))
                 {
                     TreeNode nodo = new TreeNode(permiso.Nombre);
-                    nodo.Tag = permiso; // Almacena el objeto BEPermisoComponent completo
+                    nodo.Tag = permiso;
                     trvwPermisoAasociar.Nodes.Add(nodo);
                 }
             }
@@ -68,26 +62,23 @@ namespace CapaPresentacion
         {
             try
             {
-                var rolesTodos = bllSeguridad.ListarTodosRoles(); // Incluye activos e inactivos
+                var rolesTodos = bllSeguridad.ListarTodosRoles();
                 var rolesActivos = rolesTodos.Where(r => r.Activo).ToList();
 
-                // Combo para Editar/Baja (muestra todos)
                 cbRolEditarEliminar.DataSource = null;
                 cbRolEditarEliminar.DataSource = rolesTodos;
                 cbRolEditarEliminar.DisplayMember = "Nombre";
-                cbRolEditarEliminar.ValueMember = "Id"; // Usamos 'Id'
+                cbRolEditarEliminar.ValueMember = "Id";
                 cbRolEditarEliminar.SelectedIndex = -1;
 
-                // Combo para Asignar Permisos a Rol (solo activos)
                 cbRolParaAsociarApermiso.DataSource = null;
-                cbRolParaAsociarApermiso.DataSource = rolesActivos.ToList(); // Copia de la lista
+                cbRolParaAsociarApermiso.DataSource = rolesActivos.ToList();
                 cbRolParaAsociarApermiso.DisplayMember = "Nombre";
                 cbRolParaAsociarApermiso.ValueMember = "Id";
                 cbRolParaAsociarApermiso.SelectedIndex = -1;
 
-                // Combo para Asignar Rol a Usuario (solo activos)
                 cmbRolAasociarAusuario.DataSource = null;
-                cmbRolAasociarAusuario.DataSource = rolesActivos.ToList(); // Copia de la lista
+                cmbRolAasociarAusuario.DataSource = rolesActivos.ToList();
                 cmbRolAasociarAusuario.DisplayMember = "Nombre";
                 cmbRolAasociarAusuario.ValueMember = "Id";
                 cmbRolAasociarAusuario.SelectedIndex = -1;
@@ -106,14 +97,12 @@ namespace CapaPresentacion
                 var usuariosTodos = bllSeguridad.ListarUsuarios();
                 var usuariosActivos = usuariosTodos.Where(u => u.Activo).ToList();
 
-                // Combo para Editar/Baja (muestra todos)
                 cbUsuarioEditarEliminar.DataSource = null;
                 cbUsuarioEditarEliminar.DataSource = usuariosTodos;
                 cbUsuarioEditarEliminar.DisplayMember = "NombreUsuario";
                 cbUsuarioEditarEliminar.ValueMember = "Id";
                 cbUsuarioEditarEliminar.SelectedIndex = -1;
 
-                // Combo para Asignar Rol a Usuario (solo activos)
                 cmbUsuarioAasociarRol.DataSource = null;
                 cmbUsuarioAasociarRol.DataSource = usuariosActivos;
                 cmbUsuarioAasociarRol.DisplayMember = "NombreUsuario";
@@ -167,7 +156,7 @@ namespace CapaPresentacion
 
 
         // Carga el TreeView 'trViewPermisoRol' (Permisos del Rol Seleccionado)
-        private void CargarTreeViewPermisosDelRol(int rolId) // Cambiado a rolId
+        private void CargarTreeViewPermisosDelRol(int rolId)
         {
             trViewPermisoRol.Nodes.Clear();
             try
@@ -196,6 +185,7 @@ namespace CapaPresentacion
 
         #region Lógica Gestión Usuarios
 
+        // Da de alta un nuevo usuario
         private void btnAltaUsuario_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtNombreUsuario.Text) || string.IsNullOrWhiteSpace(txtContraseña.Text))
@@ -226,6 +216,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Modifica los datos del usuario seleccionado
         private void btnEditarUsuario_Click(object sender, EventArgs e)
         {
             if (cbUsuarioEditarEliminar.SelectedItem is BEUsuario usuarioSeleccionado)
@@ -237,30 +228,20 @@ namespace CapaPresentacion
 
                     string nuevaPassword = null;
 
-                    // Si el CheckBox "Encriptar/Desencriptar" NO está marcado,
-                    // significa que el texto en txtContraseña es PLANO y debe encriptarse.
-                    // Si SÍ está marcado, significa que el texto ya está encriptado (Base64)
-                    // y BLLSeguridad debe guardarlo tal cual (o re-encriptarlo si la lógica se hace simple).
-                    // Asumiremos que si el checkbox NO está marcado, es una nueva contraseña.
                     if (!chkEncriptarDesencriptar.Checked && !string.IsNullOrWhiteSpace(txtContraseña.Text))
                     {
                         nuevaPassword = txtContraseña.Text; // Se pasará a BLL para encriptar
                     }
                     else if (chkEncriptarDesencriptar.Checked && !string.IsNullOrWhiteSpace(txtContraseña.Text))
                     {
-                        // El usuario vio la clave en Base64 y la quiere guardar (quizás la pegó)
-                        // Le pasamos la clave Base64 a ModificarUsuario, pero BLL la re-encriptará.
-                        // Para que funcione, ModificarUsuario debe tomar la clave TAL CUAL si no se pasa nuevaPassword
-                        usuarioSeleccionado.Password = txtContraseña.Text; // Pasa la clave (encriptada)
+                        usuarioSeleccionado.Password = txtContraseña.Text;
                         bllSeguridad.ModificarUsuario(usuarioSeleccionado, null); // Llama sin nueva password
                     }
                     else
                     {
-                        // Si el campo está vacío, no se pasa nuevaPassword y no se modifica
                         bllSeguridad.ModificarUsuario(usuarioSeleccionado, null);
                     }
 
-                    // Si se ingresó una nueva contraseña plana (check desmarcado)
                     if (nuevaPassword != null)
                     {
                         bllSeguridad.ModificarUsuario(usuarioSeleccionado, nuevaPassword);
@@ -284,6 +265,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Realiza la baja lógica (Inactivo) o reactiva el usuario seleccionado
         private void btnBorrarUsuario_Click(object sender, EventArgs e)
         {
             if (cbUsuarioEditarEliminar.SelectedItem is BEUsuario usuarioSeleccionado)
@@ -325,8 +307,8 @@ namespace CapaPresentacion
             }
         }
 
-        // En frmUsuarios.cs
 
+        // Al seleccionar un usuario, carga sus datos en los campos de edición
         private void cbUsuarioEditarEliminar_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbUsuarioEditarEliminar.SelectedItem is BEUsuario usuario)
@@ -336,53 +318,40 @@ namespace CapaPresentacion
                 chkActivoUsuario.Checked = usuario.Activo;
                 btnBorrarUsuario.Text = usuario.Activo ? "Baja" : "Reactivar";
 
-                // --- Lógica de Contraseña Corregida ---
-                // 1. Carga la contraseña (siempre encriptada desde BE)
                 txtContraseña.Text = usuario.Password;
 
-                // 2. Llama al evento del checkbox para que decida cómo mostrarla
                 chkEncriptarDesencriptar_CheckedChanged(sender, e);
             }
         }
 
-        // Evento del CheckBox (Requisito del profesor)
+        // Muestra/Oculta la contraseña en texto plano o "encriptada" (Base64)
         private void chkEncriptarDesencriptar_CheckedChanged(object sender, EventArgs e)
         {
-            // Siempre visible, nunca usar asteriscos
             txtContraseña.PasswordChar = '\0';
-
             string passMostrada = txtContraseña.Text;
 
             if (chkEncriptarDesencriptar.Checked)
             {
-                // --- MOSTRAR (Checked) ---
-                // Desencripta la contraseña para ver el texto plano
-                // Usamos el BLL estático para desencriptar
                 txtContraseña.Text = BLLSeguridad.DesencriptarClave(passMostrada);
             }
             else
             {
-                // --- OCULTAR (Unchecked) ---
-                // Vuelve a mostrar la contraseña encriptada (Base64)
-
-                // Comprueba si la contraseña ya está encriptada (Base64)
                 bool estaEncriptada = (passMostrada.Length % 4 == 0) && System.Text.RegularExpressions.Regex.IsMatch(passMostrada, @"^[a-zA-Z0-9\+/]*={0,3}$", System.Text.RegularExpressions.RegexOptions.None);
 
                 if (!estaEncriptada)
                 {
-                    // Si estaba en texto plano (porque el check estaba marcado), la vuelve a encriptar
                     txtContraseña.Text = BLLSeguridad.EncriptarClave(passMostrada);
                 }
-                // Si ya estaba encriptada (Base64), no hace nada y solo la muestra.
             }
         }
 
-
+        // Limpia los campos de gestión de usuarios
         private void btnLimpiarCamposUsuario_Click(object sender, EventArgs e)
         {
             LimpiarCamposUsuario();
         }
 
+        // Resetea los controles del panel de gestión de usuarios a su estado inicial
         private void LimpiarCamposUsuario()
         {
             cbUsuarioEditarEliminar.SelectedIndexChanged -= cbUsuarioEditarEliminar_SelectedIndexChanged;
@@ -394,10 +363,8 @@ namespace CapaPresentacion
             txtContraseña.PlaceholderText = "Ingresar nueva contraseña";
             chkActivoUsuario.Checked = true;
 
-            // --- CORRECCIÓN ---
-            chkEncriptarDesencriptar.Checked = false; // Por defecto desmarcado
-            txtContraseña.PasswordChar = '*'; // Oculto al crear uno NUEVO
-                                              
+            chkEncriptarDesencriptar.Checked = false;
+            txtContraseña.PasswordChar = '*';
 
             btnBorrarUsuario.Text = "Baja";
 
@@ -408,6 +375,7 @@ namespace CapaPresentacion
 
         #region Lógica Gestión Roles
 
+        // Da de alta un nuevo rol
         private void btnAltaRol_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtNombreRol.Text))
@@ -436,6 +404,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Modifica el nombre o estado del rol seleccionado
         private void btnEditarRol_Click(object sender, EventArgs e)
         {
             if (cbRolEditarEliminar.SelectedItem is BERol rolSeleccionado)
@@ -468,6 +437,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Realiza la baja lógica (Inactivo) o reactiva el rol seleccionado
         private void btnBorrarRol_Click(object sender, EventArgs e)
         {
             if (cbRolEditarEliminar.SelectedItem is BERol rolSeleccionado)
@@ -513,6 +483,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Al seleccionar un rol, carga sus datos en los campos de edición
         private void cbRolEditarEliminar_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbRolEditarEliminar.SelectedItem is BERol rol)
@@ -524,11 +495,13 @@ namespace CapaPresentacion
             }
         }
 
+        // Limpia los campos de gestión de roles
         private void btnLimpiarCamposRol_Click(object sender, EventArgs e)
         {
             LimpiarCamposRol();
         }
 
+        // Resetea los controles del panel de gestión de roles a su estado inicial
         private void LimpiarCamposRol()
         {
             cbRolEditarEliminar.SelectedIndexChanged -= cbRolEditarEliminar_SelectedIndexChanged;
@@ -544,6 +517,7 @@ namespace CapaPresentacion
 
         #region Lógica Asignación Permiso <-> Rol
 
+        // Al seleccionar un rol, muestra sus permisos asignados y marca los permisos en la lista general
         private void cbRolParaAsociarApermiso_SelectedIndexChanged(object sender, EventArgs e)
         {
             MarcarNodosRecursivo(trvwPermisoAasociar.Nodes, false);
@@ -578,6 +552,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Marca (check) los nodos del TreeView de permisos que ya están asignados al rol
         private void MarcarPermisosEnTreeView(TreeNodeCollection nodos, List<int> idsPermisos)
         {
             foreach (TreeNode nodo in nodos)
@@ -593,6 +568,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Función auxiliar para marcar o desmarcar todos los nodos de un TreeView
         private void MarcarNodosRecursivo(TreeNodeCollection nodos, bool check)
         {
             foreach (TreeNode nodo in nodos)
@@ -602,6 +578,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Asocia un permiso (seleccionado en 'trvwPermisoAasociar') al rol seleccionado
         private void btnAsociarPermisoArol_Click(object sender, EventArgs e)
         {
             if (cbRolParaAsociarApermiso.SelectedItem is BERol rolSeleccionado && rolSeleccionado.Id != 0 &&
@@ -640,6 +617,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Quita un permiso (seleccionado en 'trViewPermisoRol') del rol seleccionado
         private void btnDesasociarPermisoArol_Click(object sender, EventArgs e)
         {
             if (cbRolParaAsociarApermiso.SelectedItem is BERol rolSeleccionado && rolSeleccionado.Id != 0 &&
@@ -678,6 +656,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Guarda todos los permisos marcados (check) en 'trvwPermisoAasociar' para el rol seleccionado
         private void btnAsociarPermisosMarcados_Click(object sender, EventArgs e)
         {
             if (cbRolParaAsociarApermiso.SelectedItem is BERol rolSeleccionado && rolSeleccionado.Id != 0)
@@ -705,6 +684,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Recorre el TreeView y devuelve una lista de los componentes de permiso marcados (check)
         private List<BEPermisoComponent> ObtenerPermisosSeleccionados(TreeNodeCollection nodos)
         {
             var lista = new List<BEPermisoComponent>();
@@ -727,6 +707,7 @@ namespace CapaPresentacion
 
         #region Lógica Asignación Usuario <-> Rol
 
+        // Asocia el rol seleccionado al usuario seleccionado
         private void btnAsociarUsuarioArol_Click(object sender, EventArgs e)
         {
             if (cmbUsuarioAasociarRol.SelectedItem is BEUsuario usuario && usuario.Id != 0 &&
@@ -757,6 +738,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Quita el rol seleccionado del usuario seleccionado
         private void btnDesasociarUsuarioArol_Click(object sender, EventArgs e)
         {
             if (cmbUsuarioAasociarRol.SelectedItem is BEUsuario usuario && usuario.Id != 0 &&
@@ -792,12 +774,5 @@ namespace CapaPresentacion
         }
 
         #endregion
-
-        // Métodos de evento vacíos (dejados por si el diseñador los conecta)
-        // Comentados para evitar errores si no se conectan
-        // private void trViewPermisoRol_AfterSelect(object sender, TreeViewEventArgs e) { }
-        // private void cmbRolAasociarAusuario_SelectedIndexChanged(object sender, EventArgs e) { }
-        // private void trvRolesyPermisosPorUsuario_AfterSelect(object sender, TreeViewEventArgs e) { }
-        // private void cmbUsuarioAasociarRol_SelectedIndexChanged(object sender, EventArgs e) { }
     }
 }

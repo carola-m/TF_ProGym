@@ -2,15 +2,8 @@
 {
     partial class frmCambiarPassword
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             txtNuevaPassword = new TextBox();
@@ -45,7 +34,7 @@
             txtNuevaPassword.Location = new Point(208, 120);
             txtNuevaPassword.Name = "txtNuevaPassword";
             txtNuevaPassword.PasswordChar = '*';
-            txtNuevaPassword.Size = new Size(250, 29);
+            txtNuevaPassword.Size = new Size(250, 25);
             txtNuevaPassword.TabIndex = 0;
             txtNuevaPassword.KeyPress += txtNuevaContraseña_KeyPress;
             // 
@@ -55,13 +44,14 @@
             txtConfirmarPassword.Location = new Point(208, 154);
             txtConfirmarPassword.Name = "txtConfirmarPassword";
             txtConfirmarPassword.PasswordChar = '*';
-            txtConfirmarPassword.Size = new Size(250, 29);
+            txtConfirmarPassword.Size = new Size(250, 25);
             txtConfirmarPassword.TabIndex = 1;
             txtConfirmarPassword.KeyPress += txtConfirmarContraseña_KeyPress;
             // 
             // btnGuardarCambio
             // 
             btnGuardarCambio.BackColor = Color.SteelBlue;
+            btnGuardarCambio.FlatAppearance.BorderSize = 0;
             btnGuardarCambio.FlatStyle = FlatStyle.Flat;
             btnGuardarCambio.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             btnGuardarCambio.ForeColor = Color.White;
@@ -76,6 +66,7 @@
             // btnCancelarCambio
             // 
             btnCancelarCambio.BackColor = Color.Gainsboro;
+            btnCancelarCambio.FlatAppearance.BorderSize = 0;
             btnCancelarCambio.FlatStyle = FlatStyle.Flat;
             btnCancelarCambio.Font = new Font("Segoe UI", 9.75F);
             btnCancelarCambio.ForeColor = Color.Black;
@@ -90,20 +81,20 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 9.75F);
-            label1.Location = new Point(20, 120);
+            label1.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.Location = new Point(50, 123);
             label1.Name = "label1";
-            label1.Size = new Size(155, 23);
+            label1.Size = new Size(124, 17);
             label1.TabIndex = 4;
             label1.Text = "Nueva Contraseña:";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 9.75F);
-            label3.Location = new Point(12, 160);
+            label3.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            label3.Location = new Point(20, 157);
             label3.Name = "label3";
-            label3.Size = new Size(182, 23);
+            label3.Size = new Size(149, 17);
             label3.TabIndex = 6;
             label3.Text = "Confirmar Contraseña:";
             // 
@@ -123,7 +114,7 @@
             chkVerPasswordNueva.Font = new Font("Segoe UI", 8.25F);
             chkVerPasswordNueva.Location = new Point(208, 189);
             chkVerPasswordNueva.Name = "chkVerPasswordNueva";
-            chkVerPasswordNueva.Size = new Size(151, 23);
+            chkVerPasswordNueva.Size = new Size(128, 17);
             chkVerPasswordNueva.TabIndex = 8;
             chkVerPasswordNueva.Text = "Mostrar contraseña";
             chkVerPasswordNueva.UseVisualStyleBackColor = true;
@@ -132,7 +123,7 @@
             // frmCambiarPassword
             // 
             AcceptButton = btnGuardarCambio;
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             CancelButton = btnCancelarCambio;

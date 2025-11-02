@@ -24,23 +24,25 @@ namespace CapaPresentacion
             InitializeComponent();
         }
 
+        // Carga inicial del formulario, DGV y Carga de Actividades
         private void frmGestionProfesionales_Load(object sender, EventArgs e)
         {
-            // Configurar DataGridView
-            dgvProfesionales.AutoGenerateColumns = true; // Usar autogeneración
+            dgvProfesionales.AutoGenerateColumns = true;
             dgvProfesionales.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvProfesionales.MultiSelect = false;
             dgvProfesionales.ReadOnly = true;
             dgvProfesionales.AllowUserToAddRows = false;
             dgvProfesionales.AllowUserToDeleteRows = false;
             dgvProfesionales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvProfesionales.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            dgvProfesionales.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 
             CargarActividadesDisponibles();
             CargarGrilla();
             LimpiarCamposYSeleccion();
         }
 
-
+        // Obtiene la lista de todas las actividades para el CheckedListBox
         private void CargarActividadesDisponibles()
         {
             try
@@ -59,6 +61,7 @@ namespace CapaPresentacion
             DesmarcarActividades();
         }
 
+        // Desmarca todos los items del CheckedListBox
         private void DesmarcarActividades()
         {
             for (int i = 0; i < clbActividades.Items.Count; i++)
@@ -67,7 +70,7 @@ namespace CapaPresentacion
             }
         }
 
-
+        // Carga la grilla de profesionales, opcionalmente filtrada
         private void CargarGrilla(string filtro = null)
         {
             try
@@ -85,9 +88,8 @@ namespace CapaPresentacion
                 }
 
                 dgvProfesionales.DataSource = null;
-                dgvProfesionales.DataSource = listaProfesionales; // Bindear la lista completa
+                dgvProfesionales.DataSource = listaProfesionales;
 
-                // Ocultar columnas después de asignar el DataSource
                 if (dgvProfesionales.Columns.Contains("Id"))
                 {
                     dgvProfesionales.Columns["Id"].Visible = false;
@@ -107,12 +109,12 @@ namespace CapaPresentacion
             }
         }
 
+        // Muestra los datos del profesional seleccionado en los campos de edición
         private void dgvProfesionales_SelectionChanged(object sender, EventArgs e)
         {
-            // Lógica de selección simplificada, igual a Clientes
             if (dgvProfesionales.CurrentRow != null && dgvProfesionales.CurrentRow.DataBoundItem is BEProfesional profesional)
             {
-                profesionalSeleccionado = profesional; // Guardar el objeto completo
+                profesionalSeleccionado = profesional;
                 MostrarDatosProfesional(profesionalSeleccionado);
                 HabilitarCampos(true);
                 btnEliminar.Enabled = true;
@@ -123,6 +125,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Pasa los datos de un objeto BEProfesional a los controles del formulario
         private void MostrarDatosProfesional(BEProfesional profesional)
         {
             txtIdProfesional.Text = profesional.Id.ToString();
@@ -133,8 +136,7 @@ namespace CapaPresentacion
             txtEmail.Text = profesional.Email;
             txtTelefono.Text = profesional.Telefono;
 
-            // Marcar las actividades asignadas en el CheckedListBox
-            DesmarcarActividades(); // Limpiar primero
+            DesmarcarActividades();
             if (profesional.IdsActividadesPuedeDictar != null)
             {
                 for (int i = 0; i < clbActividades.Items.Count; i++)
@@ -150,6 +152,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Limpia todos los campos de entrada y deselecciona la grilla
         private void LimpiarCamposYSeleccion()
         {
             profesionalSeleccionado = null;
@@ -169,6 +172,7 @@ namespace CapaPresentacion
             txtDNI.Focus();
         }
 
+        // Habilita o deshabilita los controles de edición
         private void HabilitarCampos(bool habilitar)
         {
             txtDNI.Enabled = habilitar;
@@ -181,11 +185,13 @@ namespace CapaPresentacion
             btnGuardar.Enabled = habilitar;
         }
 
+        // Prepara el formulario para la creación de un nuevo profesional
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             LimpiarCamposYSeleccion();
         }
 
+        // Valida y guarda un profesional (nuevo o existente) en la base de datos
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
@@ -199,7 +205,6 @@ namespace CapaPresentacion
                 BEProfesional profesionalAGuardar;
                 bool esNuevo = false;
 
-                // Lógica Nuevo/Editar idéntica a frmGestionClientes
                 if (profesionalSeleccionado != null && profesionalSeleccionado.Id.ToString() == txtIdProfesional.Text && profesionalSeleccionado.Id != 0)
                 {
                     profesionalAGuardar = profesionalSeleccionado;
@@ -210,7 +215,6 @@ namespace CapaPresentacion
                     esNuevo = true;
                 }
 
-                // Asignar valores
                 profesionalAGuardar.DNI = txtDNI.Text.Trim();
                 profesionalAGuardar.Nombre = txtNombre.Text.Trim();
                 profesionalAGuardar.Apellido = txtApellido.Text.Trim();
@@ -218,7 +222,6 @@ namespace CapaPresentacion
                 profesionalAGuardar.Email = txtEmail.Text.Trim();
                 profesionalAGuardar.Telefono = txtTelefono.Text.Trim();
 
-                // Recolectar IDs de actividades seleccionadas
                 profesionalAGuardar.IdsActividadesPuedeDictar = new List<int>();
                 foreach (var item in clbActividades.CheckedItems)
                 {
@@ -242,6 +245,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Elimina el profesional seleccionado, previa confirmación
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (profesionalSeleccionado == null)
@@ -273,11 +277,13 @@ namespace CapaPresentacion
             }
         }
 
+        // Filtra la grilla según el texto ingresado
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             CargarGrilla(txtBuscar.Text.Trim());
         }
 
+        // Permite buscar presionando Enter en el cuadro de texto
         private void txtBuscar_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)

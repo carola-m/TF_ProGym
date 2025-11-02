@@ -1,14 +1,6 @@
 ﻿using BE;
 using Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace CapaPresentacion
 {
@@ -21,7 +13,6 @@ namespace CapaPresentacion
             InitializeComponent();
         }
 
-        // Evento Load: Se ejecuta cuando el formulario se carga por primera vez
         private void frmInicio_Load(object sender, EventArgs e)
         {
             PersonalizarUI();
@@ -36,6 +27,7 @@ namespace CapaPresentacion
             {
                 lblUsuarioLogueado.Text = $"Usuario: {usuario.NombreUsuario}";
 
+                // Visibilidad de menús basada en permisos
                 menuGestionClientes.Visible = Session.ObtenerInstancia.TienePermiso("PERM_GEST_CLIENTES");
                 menuGestionProfesionales.Visible = Session.ObtenerInstancia.TienePermiso("PERM_GEST_PROFESIONALES");
                 menuGestionActividades.Visible = Session.ObtenerInstancia.TienePermiso("PERM_GEST_ACTIVIDADES");
@@ -73,6 +65,7 @@ namespace CapaPresentacion
         {
             if (formularioHijo == null) return;
 
+            // Si el formulario ya está activo, solo traerlo al frente
             if (formularioActivo != null && formularioActivo.GetType() == formularioHijo.GetType())
             {
                 formularioHijo.Dispose();
@@ -80,28 +73,25 @@ namespace CapaPresentacion
                 return;
             }
 
+            // Si hay otro formulario, cerrarlo
             if (formularioActivo != null)
             {
                 formularioActivo.Close();
             }
 
+            // Configurar y mostrar el nuevo formulario
             formularioActivo = formularioHijo;
             formularioHijo.TopLevel = false;
             formularioHijo.FormBorderStyle = FormBorderStyle.None;
             formularioHijo.Dock = DockStyle.Fill;
 
-            // --- CORRECCIÓN ---
-            // Añade el formulario al panel contenedor, que está DEBAJO del título
             panelContenedor.Controls.Add(formularioHijo);
-            // --- FIN CORRECCIÓN ---
-
             panelContenedor.Tag = formularioHijo;
             formularioHijo.BringToFront();
-            formularioHijo.FormClosed += FormularioHijo_FormClosed;
+            formularioHijo.FormClosed += FormularioHijo_FormClosed; // Manejar cierre
             formularioHijo.Show();
 
             lblTituloFormHijo.Text = formularioHijo.Text;
-            // lblTituloFormHijo.BringToFront(); // Ya no es necesario, está fuera del panel
         }
 
         private void FormularioHijo_FormClosed(object sender, FormClosedEventArgs e)
@@ -111,13 +101,14 @@ namespace CapaPresentacion
                 formularioActivo = null;
                 lblTituloFormHijo.Text = "Bienvenido";
             }
+            // Asegurarse de liberar recursos del formulario cerrado
             if (sender is Form form)
             {
                 form.Dispose();
             }
         }
 
-        // --- Eventos Click de los Menús ---
+        #region Eventos Click de los Menús
 
         private void menuGestionClientes_Click(object sender, EventArgs e)
         {
@@ -174,6 +165,8 @@ namespace CapaPresentacion
             AbrirFormularioHijo(new frmBitacora());
         }
 
+        #endregion
+
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
             DialogResult resultado = MessageBox.Show("¿Está seguro que desea cerrar la sesión?", "Cerrar Sesión", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -182,6 +175,7 @@ namespace CapaPresentacion
                 Session.ObtenerInstancia.CerrarSesion();
                 this.Hide();
                 frmLogin loginForm = new frmLogin();
+                // Asegura que la aplicación se cierre si se cierra el login
                 loginForm.FormClosed += (s, args) => Application.ExitThread();
                 loginForm.Show();
             }
@@ -189,16 +183,17 @@ namespace CapaPresentacion
 
         private void frmInicio_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Manejar el cierre con la 'X' de la ventana
             if (e.CloseReason == CloseReason.UserClosing && Session.ObtenerInstancia.IsLoggedIn)
             {
                 DialogResult resultado = MessageBox.Show("¿Está seguro que desea salir de la aplicación?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (resultado == DialogResult.No)
                 {
-                    e.Cancel = true;
+                    e.Cancel = true; // Cancela el cierre
                 }
                 else
                 {
-                    Application.Exit();
+                    Application.Exit(); // Cierra la aplicación
                 }
             }
         }

@@ -2,7 +2,6 @@
 using BLL;
 using Services;
 
-
 namespace CapaPresentacion
 {
     public partial class frmLogin : Form
@@ -14,7 +13,6 @@ namespace CapaPresentacion
             InitializeComponent();
         }
 
-        // Conecta el evento Click de tu btnIngresar a este método
         private void btnIngresar_Click_1(object sender, EventArgs e)
         {
             string nombreUsuario = txtUsuario.Text.Trim();
@@ -58,7 +56,7 @@ namespace CapaPresentacion
                             {
                                 // Si cancela el cambio, cierra la aplicación o lo desloguea
                                 Session.ObtenerInstancia.CerrarSesion();
-                                Application.Exit(); // O cierra solo este form: this.Close();
+                                Application.Exit();
                             }
                         }
                     }
@@ -83,24 +81,20 @@ namespace CapaPresentacion
             }
         }
 
-        // Conecta el evento Click de tu btnCancelar a este método
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        // Conecta el evento KeyPress de tu txtPassword a este método
         private void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
                 e.Handled = true; // Evita el sonido 'ding'
-                // Asegúrate de que el nombre del botón sea 'btnIngresar' en el diseñador
                 btnIngresar.PerformClick(); // Simula el clic en el botón Ingresar
             }
         }
 
-        // Conecta el evento KeyPress de tu txtUsuario a este método
         private void txtUsuario_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
@@ -110,13 +104,11 @@ namespace CapaPresentacion
             }
         }
 
-        // --- NUEVO MÉTODO ---
-        // Evento para el CheckBox de "Mostrar contraseña"
         private void chkVerPassword_CheckedChanged(object sender, EventArgs e)
         {
             if (chkVerPassword.Checked)
             {
-                txtPassword.PasswordChar = '\0'; 
+                txtPassword.PasswordChar = '\0';
             }
             else
             {

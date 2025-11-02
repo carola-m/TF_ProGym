@@ -1,14 +1,7 @@
 ﻿using BE;
 using BLL;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace CapaPresentacion
 {
@@ -31,8 +24,8 @@ namespace CapaPresentacion
             dgvActividades.ReadOnly = true;
             dgvActividades.AllowUserToAddRows = false;
             dgvActividades.AllowUserToDeleteRows = false;
-            // Estilos restaurados a un formato más default
             dgvActividades.RowHeadersVisible = true;
+            dgvActividades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvActividades.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             dgvActividades.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 

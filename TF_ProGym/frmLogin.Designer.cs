@@ -42,10 +42,10 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 9.75F);
+            label1.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             label1.Location = new Point(23, 126);
             label1.Name = "label1";
-            label1.Size = new Size(72, 23);
+            label1.Size = new Size(61, 17);
             label1.TabIndex = 0;
             label1.Text = "Usuario:";
             // 
@@ -54,7 +54,7 @@
             txtUsuario.Font = new Font("Segoe UI", 9.75F);
             txtUsuario.Location = new Point(130, 120);
             txtUsuario.Name = "txtUsuario";
-            txtUsuario.Size = new Size(260, 29);
+            txtUsuario.Size = new Size(260, 25);
             txtUsuario.TabIndex = 1;
             txtUsuario.KeyPress += txtUsuario_KeyPress;
             // 
@@ -64,25 +64,26 @@
             txtPassword.Location = new Point(130, 160);
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
-            txtPassword.Size = new Size(260, 29);
+            txtPassword.Size = new Size(260, 25);
             txtPassword.TabIndex = 3;
             txtPassword.KeyPress += txtPassword_KeyPress;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9.75F);
+            label2.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             label2.Location = new Point(23, 166);
             label2.Name = "label2";
-            label2.Size = new Size(101, 23);
+            label2.Size = new Size(82, 17);
             label2.TabIndex = 2;
             label2.Text = "Contraseña:";
             // 
             // btnIngresar
             // 
             btnIngresar.BackColor = Color.SteelBlue;
+            btnIngresar.FlatAppearance.BorderSize = 0;
             btnIngresar.FlatStyle = FlatStyle.Flat;
-            btnIngresar.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+            btnIngresar.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             btnIngresar.ForeColor = Color.White;
             btnIngresar.Location = new Point(88, 264);
             btnIngresar.Name = "btnIngresar";
@@ -95,6 +96,7 @@
             // btnCancelar
             // 
             btnCancelar.BackColor = Color.Gainsboro;
+            btnCancelar.FlatAppearance.BorderSize = 0;
             btnCancelar.FlatStyle = FlatStyle.Flat;
             btnCancelar.Font = new Font("Segoe UI", 9.75F);
             btnCancelar.ForeColor = Color.Black;
@@ -120,9 +122,9 @@
             // 
             chkVerPassword.AutoSize = true;
             chkVerPassword.Font = new Font("Segoe UI", 8.25F);
-            chkVerPassword.Location = new Point(121, 205);
+            chkVerPassword.Location = new Point(130, 195);
             chkVerPassword.Name = "chkVerPassword";
-            chkVerPassword.Size = new Size(151, 23);
+            chkVerPassword.Size = new Size(128, 17);
             chkVerPassword.TabIndex = 7;
             chkVerPassword.Text = "Mostrar contraseña";
             chkVerPassword.UseVisualStyleBackColor = true;
@@ -131,7 +133,7 @@
             // frmLogin
             // 
             AcceptButton = btnIngresar;
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             CancelButton = btnCancelar;

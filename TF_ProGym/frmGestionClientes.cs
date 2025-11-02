@@ -22,22 +22,25 @@ namespace CapaPresentacion
             InitializeComponent();
         }
 
+        // Configuración inicial del formulario y DGV
         private void frmGestionClientes_Load(object sender, EventArgs e)
         {
-            // Configuración inicial del DataGridView
             dgvClientes.AutoGenerateColumns = true;
             dgvClientes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvClientes.MultiSelect = false;
             dgvClientes.ReadOnly = true;
             dgvClientes.AllowUserToAddRows = false;
             dgvClientes.AllowUserToDeleteRows = false;
-            dgvClientes.RowHeadersVisible = true; // Restaurado a default
-            // dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Eliminado para estilo default
+            dgvClientes.RowHeadersVisible = true;
+            dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvClientes.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            dgvClientes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 
             CargarGrilla();
             LimpiarCamposYSeleccion();
         }
 
+        // Carga la grilla de clientes, opcionalmente filtrada
         private void CargarGrilla(string filtro = null)
         {
             try
@@ -56,7 +59,6 @@ namespace CapaPresentacion
                 dgvClientes.DataSource = null;
                 dgvClientes.DataSource = listaClientes;
 
-                // Ocultar columnas no deseadas después de asignar el DataSource
                 if (dgvClientes.Columns.Contains("Id"))
                 {
                     dgvClientes.Columns["Id"].Visible = false;
@@ -80,9 +82,7 @@ namespace CapaPresentacion
             }
         }
 
-        /// <summary>
-        /// Evento que se dispara al cambiar la selección en la grilla.
-        /// </summary>
+        // Evento que se dispara al cambiar la selección en la grilla
         private void dgvClientes_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvClientes.CurrentRow != null && dgvClientes.CurrentRow.DataBoundItem is BECliente cliente)
@@ -98,9 +98,7 @@ namespace CapaPresentacion
             }
         }
 
-        /// <summary>
-        /// Muestra los datos de un cliente en los controles del formulario.
-        /// </summary>
+        // Muestra los datos de un cliente en los controles del formulario
         private void MostrarDatosCliente(BECliente cliente)
         {
             txtIdCliente.Text = cliente.Id.ToString();
@@ -112,9 +110,7 @@ namespace CapaPresentacion
             chkMembresiaActiva.Checked = cliente.MembresiaActiva;
         }
 
-        /// <summary>
-        /// Limpia los campos del formulario y la selección de la grilla.
-        /// </summary>
+        // Limpia los campos del formulario y la selección de la grilla
         private void LimpiarCamposYSeleccion()
         {
             clienteSeleccionado = null;
@@ -132,9 +128,7 @@ namespace CapaPresentacion
             txtDNI.Focus();
         }
 
-        /// <summary>
-        /// Habilita o deshabilita los campos de edición.
-        /// </summary>
+        // Habilita o deshabilita los campos de edición
         private void HabilitarCampos(bool habilitar)
         {
             txtDNI.Enabled = habilitar;
@@ -146,17 +140,13 @@ namespace CapaPresentacion
             btnGuardar.Enabled = habilitar;
         }
 
-        /// <summary>
-        /// Prepara el formulario para ingresar un nuevo cliente.
-        /// </summary>
+        // Prepara el formulario para ingresar un nuevo cliente
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             LimpiarCamposYSeleccion();
         }
 
-        /// <summary>
-        /// Guarda un cliente nuevo o modifica uno existente.
-        /// </summary>
+        // Guarda un cliente nuevo o modifica uno existente
         private void btnGuardar_Click_1(object sender, EventArgs e)
         {
             try
@@ -182,7 +172,6 @@ namespace CapaPresentacion
                 BECliente clienteAGuardar;
                 bool esNuevo = false;
 
-                // Determina si es un cliente nuevo o una modificación
                 if (clienteSeleccionado != null && clienteSeleccionado.Id.ToString() == txtIdCliente.Text && clienteSeleccionado.Id != 0)
                 {
                     clienteAGuardar = clienteSeleccionado;
@@ -194,7 +183,6 @@ namespace CapaPresentacion
                     esNuevo = true;
                 }
 
-                // Asigna los valores de los controles al objeto
                 clienteAGuardar.DNI = txtDNI.Text.Trim();
                 clienteAGuardar.Nombre = txtNombre.Text.Trim();
                 clienteAGuardar.Apellido = txtApellido.Text.Trim();
@@ -216,9 +204,7 @@ namespace CapaPresentacion
             }
         }
 
-        /// <summary>
-        /// Elimina el cliente seleccionado, previa confirmación.
-        /// </summary>
+        // Elimina el cliente seleccionado, previa confirmación
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (clienteSeleccionado == null)
@@ -252,17 +238,13 @@ namespace CapaPresentacion
             }
         }
 
-        /// <summary>
-        /// Filtra la grilla según el texto ingresado.
-        /// </summary>
+        // Filtra la grilla según el texto ingresado
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             CargarGrilla(txtBuscar.Text.Trim());
         }
 
-        /// <summary>
-        /// Permite buscar presionando Enter en el cuadro de texto.
-        /// </summary>
+        // Permite buscar presionando Enter en el cuadro de texto
         private void txtBuscar_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
