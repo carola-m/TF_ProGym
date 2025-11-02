@@ -17,130 +17,131 @@
 
         private void InitializeComponent()
         {
-            this.lblFecha = new System.Windows.Forms.Label();
-            this.dtpFechaAsistencia = new System.Windows.Forms.DateTimePicker();
-            this.lblTurno = new System.Windows.Forms.Label();
-            this.cmbTurnosDelDia = new System.Windows.Forms.ComboBox();
-            this.gbAsistencia = new System.Windows.Forms.GroupBox();
-            this.lblInfoCupo = new System.Windows.Forms.Label();
-            this.btnGuardarAsistencia = new System.Windows.Forms.Button();
-            this.clbClientesInscritos = new System.Windows.Forms.CheckedListBox();
-            this.gbAsistencia.SuspendLayout();
-            this.SuspendLayout();
+            lblFecha = new Label();
+            dtpFechaAsistencia = new DateTimePicker();
+            lblTurno = new Label();
+            cmbTurnosDelDia = new ComboBox();
+            gbAsistencia = new GroupBox();
+            lblInfoCupo = new Label();
+            btnGuardarAsistencia = new Button();
+            clbClientesInscritos = new CheckedListBox();
+            gbAsistencia.SuspendLayout();
+            SuspendLayout();
             // 
             // lblFecha
             // 
-            this.lblFecha.AutoSize = true;
-            this.lblFecha.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblFecha.Location = new System.Drawing.Point(12, 15);
-            this.lblFecha.Name = "lblFecha";
-            this.lblFecha.Size = new System.Drawing.Size(99, 15);
-            this.lblFecha.TabIndex = 0;
-            this.lblFecha.Text = "Seleccionar Día:";
+            lblFecha.AutoSize = true;
+            lblFecha.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblFecha.Location = new Point(14, 20);
+            lblFecha.Name = "lblFecha";
+            lblFecha.Size = new Size(118, 20);
+            lblFecha.TabIndex = 0;
+            lblFecha.Text = "Seleccionar Día:";
             // 
             // dtpFechaAsistencia
             // 
-            this.dtpFechaAsistencia.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFechaAsistencia.Location = new System.Drawing.Point(115, 12);
-            this.dtpFechaAsistencia.Name = "dtpFechaAsistencia";
-            this.dtpFechaAsistencia.Size = new System.Drawing.Size(120, 23);
-            this.dtpFechaAsistencia.TabIndex = 1;
-           this.dtpFechaAsistencia.ValueChanged += new System.EventHandler(this.dtpFechaAsistencia_ValueChanged);
+            dtpFechaAsistencia.Format = DateTimePickerFormat.Short;
+            dtpFechaAsistencia.Location = new Point(131, 16);
+            dtpFechaAsistencia.Margin = new Padding(3, 4, 3, 4);
+            dtpFechaAsistencia.Name = "dtpFechaAsistencia";
+            dtpFechaAsistencia.Size = new Size(137, 27);
+            dtpFechaAsistencia.TabIndex = 1;
+            dtpFechaAsistencia.ValueChanged += dtpFechaAsistencia_ValueChanged;
             // 
             // lblTurno
             // 
-            this.lblTurno.AutoSize = true;
-            this.lblTurno.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblTurno.Location = new System.Drawing.Point(12, 50);
-            this.lblTurno.Name = "lblTurno";
-            this.lblTurno.Size = new System.Drawing.Size(107, 15);
-            this.lblTurno.TabIndex = 2;
-            this.lblTurno.Text = "Seleccionar Turno:";
+            lblTurno.AutoSize = true;
+            lblTurno.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblTurno.Location = new Point(14, 67);
+            lblTurno.Name = "lblTurno";
+            lblTurno.Size = new Size(136, 20);
+            lblTurno.TabIndex = 2;
+            lblTurno.Text = "Seleccionar Turno:";
             // 
             // cmbTurnosDelDia
             // 
-            this.cmbTurnosDelDia.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbTurnosDelDia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTurnosDelDia.FormattingEnabled = true;
-            this.cmbTurnosDelDia.Location = new System.Drawing.Point(115, 47);
-            this.cmbTurnosDelDia.Name = "cmbTurnosDelDia";
-            this.cmbTurnosDelDia.Size = new System.Drawing.Size(457, 23);
-            this.cmbTurnosDelDia.TabIndex = 3;
-          this.cmbTurnosDelDia.SelectedIndexChanged += new System.EventHandler(this.cmbTurnosDelDia_SelectedIndexChanged);
+            cmbTurnosDelDia.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            cmbTurnosDelDia.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTurnosDelDia.FormattingEnabled = true;
+            cmbTurnosDelDia.Location = new Point(155, 64);
+            cmbTurnosDelDia.Margin = new Padding(3, 4, 3, 4);
+            cmbTurnosDelDia.Name = "cmbTurnosDelDia";
+            cmbTurnosDelDia.Size = new Size(492, 28);
+            cmbTurnosDelDia.TabIndex = 3;
+            cmbTurnosDelDia.SelectedIndexChanged += cmbTurnosDelDia_SelectedIndexChanged;
             // 
             // gbAsistencia
             // 
-            this.gbAsistencia.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbAsistencia.Controls.Add(this.lblInfoCupo);
-            this.gbAsistencia.Controls.Add(this.btnGuardarAsistencia);
-            this.gbAsistencia.Controls.Add(this.clbClientesInscritos);
-            this.gbAsistencia.Enabled = false; // Inicia deshabilitado
-            this.gbAsistencia.Location = new System.Drawing.Point(12, 85);
-            this.gbAsistencia.Name = "gbAsistencia";
-            this.gbAsistencia.Size = new System.Drawing.Size(560, 364);
-            this.gbAsistencia.TabIndex = 4;
-            this.gbAsistencia.TabStop = false;
-            this.gbAsistencia.Text = "Marcar Asistencia (Presente)";
+            gbAsistencia.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            gbAsistencia.Controls.Add(lblInfoCupo);
+            gbAsistencia.Controls.Add(btnGuardarAsistencia);
+            gbAsistencia.Controls.Add(clbClientesInscritos);
+            gbAsistencia.Enabled = false;
+            gbAsistencia.Location = new Point(14, 113);
+            gbAsistencia.Margin = new Padding(3, 4, 3, 4);
+            gbAsistencia.Name = "gbAsistencia";
+            gbAsistencia.Padding = new Padding(3, 4, 3, 4);
+            gbAsistencia.Size = new Size(640, 485);
+            gbAsistencia.TabIndex = 4;
+            gbAsistencia.TabStop = false;
+            gbAsistencia.Text = "Marcar Asistencia (Presente)";
             // 
             // lblInfoCupo
             // 
-            this.lblInfoCupo.AutoSize = true;
-            this.lblInfoCupo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblInfoCupo.Location = new System.Drawing.Point(6, 25);
-            this.lblInfoCupo.Name = "lblInfoCupo";
-            this.lblInfoCupo.Size = new System.Drawing.Size(91, 15);
-            this.lblInfoCupo.TabIndex = 2;
-            this.lblInfoCupo.Text = "Inscritos: 0 / 0";
+            lblInfoCupo.AutoSize = true;
+            lblInfoCupo.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblInfoCupo.Location = new Point(7, 33);
+            lblInfoCupo.Name = "lblInfoCupo";
+            lblInfoCupo.Size = new Size(110, 20);
+            lblInfoCupo.TabIndex = 2;
+            lblInfoCupo.Text = "Inscritos: 0 / 0";
             // 
             // btnGuardarAsistencia
             // 
-            this.btnGuardarAsistencia.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGuardarAsistencia.BackColor = System.Drawing.Color.DarkGreen;
-            this.btnGuardarAsistencia.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnGuardarAsistencia.ForeColor = System.Drawing.Color.White;
-            this.btnGuardarAsistencia.Location = new System.Drawing.Point(6, 310);
-            this.btnGuardarAsistencia.Name = "btnGuardarAsistencia";
-            this.btnGuardarAsistencia.Size = new System.Drawing.Size(548, 45);
-            this.btnGuardarAsistencia.TabIndex = 1;
-            this.btnGuardarAsistencia.Text = "Guardar Asistencia";
-            this.btnGuardarAsistencia.UseVisualStyleBackColor = false;
-           this.btnGuardarAsistencia.Click +=btnGuardarAsistencia_Click;
+            btnGuardarAsistencia.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnGuardarAsistencia.BackColor = Color.DarkGreen;
+            btnGuardarAsistencia.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            btnGuardarAsistencia.ForeColor = Color.White;
+            btnGuardarAsistencia.Location = new Point(7, 413);
+            btnGuardarAsistencia.Margin = new Padding(3, 4, 3, 4);
+            btnGuardarAsistencia.Name = "btnGuardarAsistencia";
+            btnGuardarAsistencia.Size = new Size(626, 60);
+            btnGuardarAsistencia.TabIndex = 1;
+            btnGuardarAsistencia.Text = "Guardar Asistencia";
+            btnGuardarAsistencia.UseVisualStyleBackColor = false;
+            btnGuardarAsistencia.Click += btnGuardarAsistencia_Click;
             // 
             // clbClientesInscritos
             // 
-            this.clbClientesInscritos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.clbClientesInscritos.CheckOnClick = true;
-            this.clbClientesInscritos.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.clbClientesInscritos.FormattingEnabled = true;
-            this.clbClientesInscritos.Location = new System.Drawing.Point(6, 45);
-            this.clbClientesInscritos.Name = "clbClientesInscritos";
-            this.clbClientesInscritos.Size = new System.Drawing.Size(548, 264);
-            this.clbClientesInscritos.TabIndex = 0;
+            clbClientesInscritos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            clbClientesInscritos.CheckOnClick = true;
+            clbClientesInscritos.Font = new Font("Segoe UI", 9.75F);
+            clbClientesInscritos.FormattingEnabled = true;
+            clbClientesInscritos.Location = new Point(7, 60);
+            clbClientesInscritos.Margin = new Padding(3, 4, 3, 4);
+            clbClientesInscritos.Name = "clbClientesInscritos";
+            clbClientesInscritos.Size = new Size(626, 340);
+            clbClientesInscritos.TabIndex = 0;
             // 
             // frmRegistroAsistencia
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 461);
-            this.Controls.Add(this.gbAsistencia);
-            this.Controls.Add(this.cmbTurnosDelDia);
-            this.Controls.Add(this.lblTurno);
-            this.Controls.Add(this.dtpFechaAsistencia);
-            this.Controls.Add(this.lblFecha);
-            this.MinimumSize = new System.Drawing.Size(400, 300);
-            this.Name = "frmRegistroAsistencia";
-            this.Text = "Registro de Asistencia";
-         this.Load += new System.EventHandler(this.frmRegistroAsistencia_Load);
-            this.gbAsistencia.ResumeLayout(false);
-            this.gbAsistencia.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(667, 615);
+            Controls.Add(gbAsistencia);
+            Controls.Add(cmbTurnosDelDia);
+            Controls.Add(lblTurno);
+            Controls.Add(dtpFechaAsistencia);
+            Controls.Add(lblFecha);
+            Margin = new Padding(3, 4, 3, 4);
+            MinimumSize = new Size(455, 384);
+            Name = "frmRegistroAsistencia";
+            Text = "Registro de Asistencia";
+            Load += frmRegistroAsistencia_Load;
+            gbAsistencia.ResumeLayout(false);
+            gbAsistencia.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

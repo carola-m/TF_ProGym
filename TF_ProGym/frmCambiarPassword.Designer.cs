@@ -28,132 +28,132 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtNuevaPassword = new System.Windows.Forms.TextBox();
-            this.txtConfirmarPassword = new System.Windows.Forms.TextBox();
-            this.btnGuardarCambio = new System.Windows.Forms.Button();
-            this.btnCancelarCambio = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.pbLogo = new System.Windows.Forms.PictureBox();
-            this.chkVerPasswordNueva = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
-            this.SuspendLayout();
+            txtNuevaPassword = new TextBox();
+            txtConfirmarPassword = new TextBox();
+            btnGuardarCambio = new Button();
+            btnCancelarCambio = new Button();
+            label1 = new Label();
+            label3 = new Label();
+            pbLogo = new PictureBox();
+            chkVerPasswordNueva = new CheckBox();
+            ((System.ComponentModel.ISupportInitialize)pbLogo).BeginInit();
+            SuspendLayout();
             // 
             // txtNuevaPassword
             // 
-            this.txtNuevaPassword.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtNuevaPassword.Location = new System.Drawing.Point(170, 117);
-            this.txtNuevaPassword.Name = "txtNuevaPassword";
-            this.txtNuevaPassword.PasswordChar = '*';
-            this.txtNuevaPassword.Size = new System.Drawing.Size(250, 25);
-            this.txtNuevaPassword.TabIndex = 0;
-            this.txtNuevaPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNuevaContraseña_KeyPress);
+            txtNuevaPassword.Font = new Font("Segoe UI", 9.75F);
+            txtNuevaPassword.Location = new Point(208, 120);
+            txtNuevaPassword.Name = "txtNuevaPassword";
+            txtNuevaPassword.PasswordChar = '*';
+            txtNuevaPassword.Size = new Size(250, 29);
+            txtNuevaPassword.TabIndex = 0;
+            txtNuevaPassword.KeyPress += txtNuevaContraseña_KeyPress;
             // 
             // txtConfirmarPassword
             // 
-            this.txtConfirmarPassword.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtConfirmarPassword.Location = new System.Drawing.Point(170, 157);
-            this.txtConfirmarPassword.Name = "txtConfirmarPassword";
-            this.txtConfirmarPassword.PasswordChar = '*';
-            this.txtConfirmarPassword.Size = new System.Drawing.Size(250, 25);
-            this.txtConfirmarPassword.TabIndex = 1;
-            this.txtConfirmarPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtConfirmarContraseña_KeyPress);
+            txtConfirmarPassword.Font = new Font("Segoe UI", 9.75F);
+            txtConfirmarPassword.Location = new Point(208, 154);
+            txtConfirmarPassword.Name = "txtConfirmarPassword";
+            txtConfirmarPassword.PasswordChar = '*';
+            txtConfirmarPassword.Size = new Size(250, 29);
+            txtConfirmarPassword.TabIndex = 1;
+            txtConfirmarPassword.KeyPress += txtConfirmarContraseña_KeyPress;
             // 
             // btnGuardarCambio
             // 
-            this.btnGuardarCambio.BackColor = System.Drawing.Color.SteelBlue;
-            this.btnGuardarCambio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGuardarCambio.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnGuardarCambio.ForeColor = System.Drawing.Color.White;
-            this.btnGuardarCambio.Location = new System.Drawing.Point(170, 230);
-            this.btnGuardarCambio.Name = "btnGuardarCambio";
-            this.btnGuardarCambio.Size = new System.Drawing.Size(120, 35);
-            this.btnGuardarCambio.TabIndex = 2;
-            this.btnGuardarCambio.Text = "GUARDAR";
-            this.btnGuardarCambio.UseVisualStyleBackColor = false;
-            this.btnGuardarCambio.Click += new System.EventHandler(this.btnGuardar_Click);
+            btnGuardarCambio.BackColor = Color.SteelBlue;
+            btnGuardarCambio.FlatStyle = FlatStyle.Flat;
+            btnGuardarCambio.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+            btnGuardarCambio.ForeColor = Color.White;
+            btnGuardarCambio.Location = new Point(126, 260);
+            btnGuardarCambio.Name = "btnGuardarCambio";
+            btnGuardarCambio.Size = new Size(120, 35);
+            btnGuardarCambio.TabIndex = 2;
+            btnGuardarCambio.Text = "GUARDAR";
+            btnGuardarCambio.UseVisualStyleBackColor = false;
+            btnGuardarCambio.Click += btnGuardar_Click;
             // 
             // btnCancelarCambio
             // 
-            this.btnCancelarCambio.BackColor = System.Drawing.Color.Gainsboro;
-            this.btnCancelarCambio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancelarCambio.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnCancelarCambio.ForeColor = System.Drawing.Color.Black;
-            this.btnCancelarCambio.Location = new System.Drawing.Point(300, 230);
-            this.btnCancelarCambio.Name = "btnCancelarCambio";
-            this.btnCancelarCambio.Size = new System.Drawing.Size(120, 35);
-            this.btnCancelarCambio.TabIndex = 3;
-            this.btnCancelarCambio.Text = "CANCELAR";
-            this.btnCancelarCambio.UseVisualStyleBackColor = false;
-            this.btnCancelarCambio.Click += new System.EventHandler(this.btnCancelar_Click);
+            btnCancelarCambio.BackColor = Color.Gainsboro;
+            btnCancelarCambio.FlatStyle = FlatStyle.Flat;
+            btnCancelarCambio.Font = new Font("Segoe UI", 9.75F);
+            btnCancelarCambio.ForeColor = Color.Black;
+            btnCancelarCambio.Location = new Point(289, 260);
+            btnCancelarCambio.Name = "btnCancelarCambio";
+            btnCancelarCambio.Size = new Size(120, 35);
+            btnCancelarCambio.TabIndex = 3;
+            btnCancelarCambio.Text = "CANCELAR";
+            btnCancelarCambio.UseVisualStyleBackColor = false;
+            btnCancelarCambio.Click += btnCancelar_Click;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(20, 120);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(120, 17);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Nueva Contraseña:";
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9.75F);
+            label1.Location = new Point(20, 120);
+            label1.Name = "label1";
+            label1.Size = new Size(155, 23);
+            label1.TabIndex = 4;
+            label1.Text = "Nueva Contraseña:";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(20, 160);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(141, 17);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Confirmar Contraseña:";
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 9.75F);
+            label3.Location = new Point(12, 160);
+            label3.Name = "label3";
+            label3.Size = new Size(182, 23);
+            label3.TabIndex = 6;
+            label3.Text = "Confirmar Contraseña:";
             // 
             // pbLogo
             // 
-            this.pbLogo.Image = global::CapaPresentacion.Properties.Resources.Captura_de_pantalla_2025_10_30_223244;
-            this.pbLogo.Location = new System.Drawing.Point(150, 20);
-            this.pbLogo.Name = "pbLogo";
-            this.pbLogo.Size = new System.Drawing.Size(150, 80);
-            this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbLogo.TabIndex = 7;
-            this.pbLogo.TabStop = false;
+            pbLogo.Image = Properties.Resources.Captura_de_pantalla_2025_10_30_223244;
+            pbLogo.Location = new Point(182, 21);
+            pbLogo.Name = "pbLogo";
+            pbLogo.Size = new Size(150, 80);
+            pbLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            pbLogo.TabIndex = 7;
+            pbLogo.TabStop = false;
             // 
             // chkVerPasswordNueva
             // 
-            this.chkVerPasswordNueva.AutoSize = true;
-            this.chkVerPasswordNueva.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.chkVerPasswordNueva.Location = new System.Drawing.Point(170, 192);
-            this.chkVerPasswordNueva.Name = "chkVerPasswordNueva";
-            this.chkVerPasswordNueva.Size = new System.Drawing.Size(129, 17);
-            this.chkVerPasswordNueva.TabIndex = 8;
-            this.chkVerPasswordNueva.Text = "Mostrar contraseña";
-            this.chkVerPasswordNueva.UseVisualStyleBackColor = true;
-            this.chkVerPasswordNueva.CheckedChanged += new System.EventHandler(this.chkVerPasswordNueva_CheckedChanged);
+            chkVerPasswordNueva.AutoSize = true;
+            chkVerPasswordNueva.Font = new Font("Segoe UI", 8.25F);
+            chkVerPasswordNueva.Location = new Point(208, 189);
+            chkVerPasswordNueva.Name = "chkVerPasswordNueva";
+            chkVerPasswordNueva.Size = new Size(151, 23);
+            chkVerPasswordNueva.TabIndex = 8;
+            chkVerPasswordNueva.Text = "Mostrar contraseña";
+            chkVerPasswordNueva.UseVisualStyleBackColor = true;
+            chkVerPasswordNueva.CheckedChanged += chkVerPasswordNueva_CheckedChanged;
             // 
             // frmCambiarPassword
             // 
-            this.AcceptButton = this.btnGuardarCambio;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.CancelButton = this.btnCancelarCambio;
-            this.ClientSize = new System.Drawing.Size(434, 301);
-            this.Controls.Add(this.chkVerPasswordNueva);
-            this.Controls.Add(this.pbLogo);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnCancelarCambio);
-            this.Controls.Add(this.btnGuardarCambio);
-            this.Controls.Add(this.txtConfirmarPassword);
-            this.Controls.Add(this.txtNuevaPassword);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "frmCambiarPassword";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Cambiar Contraseña";
-            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AcceptButton = btnGuardarCambio;
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
+            CancelButton = btnCancelarCambio;
+            ClientSize = new Size(526, 366);
+            Controls.Add(chkVerPasswordNueva);
+            Controls.Add(pbLogo);
+            Controls.Add(label3);
+            Controls.Add(label1);
+            Controls.Add(btnCancelarCambio);
+            Controls.Add(btnGuardarCambio);
+            Controls.Add(txtConfirmarPassword);
+            Controls.Add(txtNuevaPassword);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "frmCambiarPassword";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Cambiar Contraseña";
+            ((System.ComponentModel.ISupportInitialize)pbLogo).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

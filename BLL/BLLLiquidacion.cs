@@ -3,12 +3,10 @@ using MPP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-// --- INICIO PDF ---
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
-using System.Diagnostics; // Para Process.Start
-// --- FIN PDF ---
+using System.Diagnostics;
 
 namespace BLL
 {
@@ -35,12 +33,9 @@ namespace BLL
             DateTime inicioPeriodo = periodoDesde.Date;
             DateTime finPeriodo = periodoHasta.Date.AddDays(1).AddTicks(-1);
 
-            // Asumimos que BLLTurno.Listar... ya trae Actividad y Profesional cargado
-            var turnosDictados = bllTurno.ListarTurnosPorProfesionalYPeriodo(idProfesional, inicioPeriodo, finPeriodo);
-
-            // Filtramos turnos que ya ocurrieron
-            turnosDictados = turnosDictados.Where(t => t.FechaHoraInicio <= DateTime.Now).ToList();
-
+            var turnosDictados = bllTurno.ListarTurnosPorProfesionalYPeriodo(idProfesional, inicioPeriodo, finPeriodo)
+                                        .Where(t => t.FechaHoraInicio <= DateTime.Now)
+                                        .ToList();
 
             if (!turnosDictados.Any())
             {
@@ -72,7 +67,6 @@ namespace BLL
             {
                 if (turno.Actividad == null)
                 {
-                    // Intenta recargar la actividad si falta
                     turno.Actividad = bllActividad.BuscarPorId(turno.IdActividad);
                 }
 
@@ -91,6 +85,7 @@ namespace BLL
                 }
                 else
                 {
+                    // Log de advertencia: no se pudo encontrar la actividad
                     Console.WriteLine($"Advertencia: No se encontró la actividad con ID {turno.IdActividad} para el turno {turno.Id}. No se incluirá en la liquidación.");
                 }
             }
@@ -131,13 +126,10 @@ namespace BLL
                         GuardarLiquidacionCalculada(liq);
                         liquidacionesGeneradas.Add(liq);
                     }
-                    else
-                    {
-                        Console.WriteLine($"Profesional {prof.Nombre} {prof.Apellido} no tuvo turnos en el período.");
-                    }
                 }
                 catch (Exception ex)
                 {
+                    // Log de error por profesional
                     Console.WriteLine($"Error al calcular/guardar liquidación para {prof.Nombre} {prof.Apellido}: {ex.Message}");
                 }
             }
@@ -157,12 +149,15 @@ namespace BLL
 
         public List<BELiquidacion> Buscar(int? idProfesional = null, DateTime? desde = null, DateTime? hasta = null)
         {
-            // BLL llama a MPP, MPP carga el Profesional.
             return mppLiquidacion.Buscar(idProfesional, desde, hasta);
         }
 
 
-        // --- Generación de PDF (DESCOMENTADO) ---
+        /// <summary>
+        /// Genera un archivo PDF para una liquidación específica.
+        /// </summary>
+        /// <param name="idLiquidacion">El ID de la liquidación a emitir.</param>
+        /// <returns>La ruta completa del archivo PDF generado.</returns>
         public string EmitirLiquidacionPDF(int idLiquidacion)
         {
             var liquidacion = BuscarPorId(idLiquidacion);
@@ -172,7 +167,7 @@ namespace BLL
             string carpetaReportes = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiquidacionesPDF");
             Directory.CreateDirectory(carpetaReportes);
 
-            string nombreArchivo = $"Liquidacion_{liquidacion.Profesional.Apellido}_{liquidacion.Profesional.Nombre}_{liquidacion.PeriodoDesde:yyyyMMdd}_{liquidacion.PeriodoHasta:yyyyMMdd}.pdf";
+            string nombreArchivo = $"Liquidacion_{liquidacion.Profesional.Apellido}_{liquidacion.PeriodoDesde:yyyyMMdd}.pdf";
             string rutaCompleta = Path.Combine(carpetaReportes, nombreArchivo);
 
             try
@@ -183,66 +178,93 @@ namespace BLL
                     PdfWriter writer = PdfWriter.GetInstance(doc, fs);
                     doc.Open();
 
-                    // --- Contenido del PDF ---
-                    Font tituloFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16);
-                    Font subtituloFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
-                    Font normalFont = FontFactory.GetFont(FontFactory.HELVETICA, 10);
-                    Font boldFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
+                    // --- Definición de Fuentes ---
+                    Font tituloFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.BLACK);
+                    Font subTituloFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.BLACK);
+                    Font boldFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.BLACK);
+                    Font normalFont = FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.BLACK);
+                    Font headerTableFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.WHITE);
 
-                    // Encabezado
-                    Paragraph titulo = new Paragraph("Liquidación de Honorarios", tituloFont) { Alignment = Element.ALIGN_CENTER };
-                    doc.Add(titulo);
+                    // --- Encabezado del Documento ---
+                    Paragraph tituloApp = new Paragraph("ProGym", tituloFont) { Alignment = Element.ALIGN_LEFT };
+                    Paragraph tituloDoc = new Paragraph("Liquidación de Honorarios", subTituloFont) { Alignment = Element.ALIGN_RIGHT };
+
+                    PdfPTable headerTable = new PdfPTable(2) { WidthPercentage = 100 };
+                    headerTable.SetWidths(new float[] { 50f, 50f });
+                    headerTable.DefaultCell.Border = PdfPCell.NO_BORDER;
+                    headerTable.AddCell(tituloApp);
+                    headerTable.AddCell(tituloDoc);
+                    doc.Add(headerTable);
+
+                    Paragraph fechaEmision = new Paragraph($"Fecha Emisión: {liquidacion.FechaEmision:dd/MM/yyyy HH:mm}", normalFont) { Alignment = Element.ALIGN_RIGHT };
+                    doc.Add(fechaEmision);
+
                     doc.Add(Chunk.NEWLINE);
 
-                    doc.Add(new Paragraph($"Período: {liquidacion.PeriodoDesde:dd/MM/yyyy} - {liquidacion.PeriodoHasta:dd/MM/yyyy}", subtituloFont));
-                    doc.Add(new Paragraph($"Fecha Emisión: {liquidacion.FechaEmision:dd/MM/yyyy HH:mm}", normalFont));
+                    // --- Datos del Profesional ---
+                    PdfPTable infoTable = new PdfPTable(2) { WidthPercentage = 100 };
+                    infoTable.DefaultCell.Border = PdfPCell.NO_BORDER;
+                    infoTable.SetWidths(new float[] { 20f, 80f });
+
+                    infoTable.AddCell(new Phrase("Profesional:", boldFont));
+                    infoTable.AddCell(new Phrase($"{liquidacion.Profesional.Nombre} {liquidacion.Profesional.Apellido}", normalFont));
+                    infoTable.AddCell(new Phrase("DNI:", boldFont));
+                    infoTable.AddCell(new Phrase(liquidacion.Profesional.DNI, normalFont));
+                    infoTable.AddCell(new Phrase("Especialidad:", boldFont));
+                    infoTable.AddCell(new Phrase(liquidacion.Profesional.Especialidad, normalFont));
+                    infoTable.AddCell(new Phrase("Período:", boldFont));
+                    infoTable.AddCell(new Phrase($"{liquidacion.PeriodoDesde:dd/MM/yyyy} al {liquidacion.PeriodoHasta:dd/MM/yyyy}", normalFont));
+                    doc.Add(infoTable);
+
                     doc.Add(Chunk.NEWLINE);
 
-                    doc.Add(new Paragraph("Datos del Profesional:", subtituloFont));
-                    doc.Add(new Paragraph($"Nombre: {liquidacion.Profesional.Nombre} {liquidacion.Profesional.Apellido}", normalFont));
-                    doc.Add(new Paragraph($"DNI: {liquidacion.Profesional.DNI}", normalFont));
-                    doc.Add(new Paragraph($"Especialidad: {liquidacion.Profesional.Especialidad}", normalFont));
+                    // --- Línea Separadora ---
+                    //doc.Add(new iTextSharp.text.pdf.draw.PdfLineSeparator(0.5f, 100, BaseColor.GRAY, Element.ALIGN_CENTER, 1));
                     doc.Add(Chunk.NEWLINE);
 
-                    // Detalle de Turnos
-                    doc.Add(new Paragraph("Detalle de Turnos Dictados:", subtituloFont));
+                    // --- Detalle de Turnos ---
+                    doc.Add(new Paragraph("Detalle de Turnos Dictados", subTituloFont) { SpacingAfter = 10f });
+
                     if (liquidacion.TurnosLiquidados.Any())
                     {
-                        PdfPTable tabla = new PdfPTable(3); // Fecha, Actividad, Valor
-                        tabla.WidthPercentage = 100;
-                        tabla.SetWidths(new float[] { 30f, 50f, 20f });
+                        PdfPTable tablaDetalle = new PdfPTable(3); // Fecha, Actividad, Valor
+                        tablaDetalle.WidthPercentage = 100;
+                        tablaDetalle.SetWidths(new float[] { 30f, 50f, 20f });
 
-                        // Encabezados tabla
-                        tabla.AddCell(new Phrase("Fecha y Hora", boldFont));
-                        tabla.AddCell(new Phrase("Actividad", boldFont));
+                        // Encabezados de tabla
+                        PdfPCell cellFecha = new PdfPCell(new Phrase("Fecha y Hora", headerTableFont)) { BackgroundColor = BaseColor.DARK_GRAY, HorizontalAlignment = Element.ALIGN_CENTER, Padding = 5 };
+                        PdfPCell cellAct = new PdfPCell(new Phrase("Actividad", headerTableFont)) { BackgroundColor = BaseColor.DARK_GRAY, HorizontalAlignment = Element.ALIGN_CENTER, Padding = 5 };
+                        PdfPCell cellValor = new PdfPCell(new Phrase("Valor", headerTableFont)) { BackgroundColor = BaseColor.DARK_GRAY, HorizontalAlignment = Element.ALIGN_CENTER, Padding = 5 };
+                        tablaDetalle.AddCell(cellFecha);
+                        tablaDetalle.AddCell(cellAct);
+                        tablaDetalle.AddCell(cellValor);
 
-                        PdfPCell headerCell = new PdfPCell(new Phrase("Valor", boldFont));
-                        headerCell.HorizontalAlignment = Element.ALIGN_RIGHT; // Alinea la CELDA
-                        tabla.AddCell(headerCell);
-    
-
-                        // Filas tabla
+                        // Filas de tabla
                         foreach (var turnoLiq in liquidacion.TurnosLiquidados.OrderBy(t => t.FechaHora))
                         {
-                            tabla.AddCell(new Phrase(turnoLiq.FechaHora.ToString("g"), normalFont));
-                            tabla.AddCell(new Phrase(turnoLiq.NombreActividad, normalFont));
+                            tablaDetalle.AddCell(new Phrase(turnoLiq.FechaHora.ToString("g"), normalFont) { Leading = 12f });
+                            tablaDetalle.AddCell(new Phrase(turnoLiq.NombreActividad, normalFont) { Leading = 12f });
 
-    
-                            PdfPCell dataCell = new PdfPCell(new Phrase(turnoLiq.ValorTurno.ToString("C2"), normalFont));
-                            dataCell.HorizontalAlignment = Element.ALIGN_RIGHT; // Alinea la CELDA
-                            tabla.AddCell(dataCell);
-         
+                            PdfPCell cellMonto = new PdfPCell(new Phrase(turnoLiq.ValorTurno.ToString("C2"), normalFont) { Leading = 12f });
+                            cellMonto.HorizontalAlignment = Element.ALIGN_RIGHT;
+                            tablaDetalle.AddCell(cellMonto);
                         }
-                        doc.Add(tabla);
+                        doc.Add(tablaDetalle);
                     }
                     else
                     {
                         doc.Add(new Paragraph("No se registraron turnos dictados en este período.", normalFont));
                     }
+
                     doc.Add(Chunk.NEWLINE);
 
-                    // Total
-                    Paragraph total = new Paragraph($"Monto Total a Pagar: {liquidacion.MontoTotal:C2}", subtituloFont) { Alignment = Element.ALIGN_RIGHT };
+                    // --- Total ---
+                    Font totalFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.BLACK);
+                    Paragraph total = new Paragraph($"Monto Total a Pagar: {liquidacion.MontoTotal:C2}", totalFont)
+                    {
+                        Alignment = Element.ALIGN_RIGHT,
+                        SpacingBefore = 15f
+                    };
                     doc.Add(total);
 
                     doc.Close();

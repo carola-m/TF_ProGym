@@ -25,13 +25,17 @@ namespace CapaPresentacion
         private void frmGestionActividades_Load(object sender, EventArgs e)
         {
             // Configurar DataGridView
-            dgvActividades.AutoGenerateColumns = true; // Dejamos autogenerar
+            dgvActividades.AutoGenerateColumns = true;
             dgvActividades.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvActividades.MultiSelect = false;
             dgvActividades.ReadOnly = true;
             dgvActividades.AllowUserToAddRows = false;
             dgvActividades.AllowUserToDeleteRows = false;
-            dgvActividades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            // Estilos restaurados a un formato más default
+            dgvActividades.RowHeadersVisible = true;
+            dgvActividades.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            dgvActividades.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+
 
             // Configurar NumericUpDown
             numCupoMaximo.Minimum = 1;
@@ -41,6 +45,9 @@ namespace CapaPresentacion
             LimpiarCamposYSeleccion();
         }
 
+        /// <summary>
+        /// Carga la grilla de actividades, opcionalmente filtrada.
+        /// </summary>
         private void CargarGrilla(string filtro = null)
         {
             try
@@ -65,8 +72,8 @@ namespace CapaPresentacion
                 }
                 if (dgvActividades.Columns.Contains("TarifaPorTurno"))
                 {
-                    dgvActividades.Columns["TarifaPorTurno"].HeaderText = "Tarifa por Turno";
-                    dgvActividades.Columns["TarifaPorTurno"].DefaultCellStyle.Format = "C2"; 
+                    dgvActividades.Columns["TarifaPorTurno"].HeaderText = "Tarifa x Turno";
+                    dgvActividades.Columns["TarifaPorTurno"].DefaultCellStyle.Format = "C2";
                 }
                 if (dgvActividades.Columns.Contains("CupoMaximo"))
                 {
@@ -80,6 +87,9 @@ namespace CapaPresentacion
             }
         }
 
+        /// <summary>
+        /// Evento al seleccionar una fila: carga los datos en los campos de edición.
+        /// </summary>
         private void dgvActividades_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvActividades.CurrentRow != null && dgvActividades.CurrentRow.DataBoundItem is BEActividad actividad)
@@ -95,6 +105,9 @@ namespace CapaPresentacion
             }
         }
 
+        /// <summary>
+        /// Rellena los campos del formulario con los datos de la actividad seleccionada.
+        /// </summary>
         private void MostrarDatosActividad(BEActividad actividad)
         {
             txtIdActividad.Text = actividad.Id.ToString();
@@ -112,13 +125,16 @@ namespace CapaPresentacion
             txtTarifaTurno.Text = actividad.TarifaPorTurno.ToString("F2");
         }
 
+        /// <summary>
+        /// Limpia los campos de edición y deselecciona la grilla.
+        /// </summary>
         private void LimpiarCamposYSeleccion()
         {
             actividadSeleccionada = null;
             txtIdActividad.Clear();
             txtNombreActividad.Clear();
             txtDescripcionActividad.Clear();
-            numCupoMaximo.Value = 1; 
+            numCupoMaximo.Value = 1;
             txtTarifaTurno.Text = "0.00";
 
             dgvActividades.ClearSelection();
@@ -136,11 +152,17 @@ namespace CapaPresentacion
             btnGuardar.Enabled = habilitar;
         }
 
+        /// <summary>
+        /// Prepara el formulario para crear una nueva actividad.
+        /// </summary>
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             LimpiarCamposYSeleccion();
         }
 
+        /// <summary>
+        /// Guarda una actividad nueva o actualiza una existente.
+        /// </summary>
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
@@ -162,13 +184,14 @@ namespace CapaPresentacion
                 BEActividad actividadAGuardar;
                 bool esNueva = false;
 
+                // Determina si es una actividad nueva o una modificación
                 if (actividadSeleccionada != null && actividadSeleccionada.Id.ToString() == txtIdActividad.Text && actividadSeleccionada.Id != 0)
                 {
-                    actividadAGuardar = actividadSeleccionada; 
+                    actividadAGuardar = actividadSeleccionada;
                 }
                 else
                 {
-                    actividadAGuardar = new BEActividad(); 
+                    actividadAGuardar = new BEActividad();
                     esNueva = true;
                 }
 
@@ -192,6 +215,9 @@ namespace CapaPresentacion
             }
         }
 
+        /// <summary>
+        /// Elimina la actividad seleccionada, previa confirmación.
+        /// </summary>
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (actividadSeleccionada == null)
