@@ -91,8 +91,8 @@ namespace CapaPresentacion
                     .Count(a => a.FechaHoraRegistro >= desde && a.FechaHoraRegistro <= hasta && a.Presente);
                 lblKPIAsistenciasPeriodo.Text = asistenciasPeriodo.ToString();
 
-                decimal totalLiquidado = bllLiquidacion.Buscar(null, desde.Date, hasta.Date)
-                    .Sum(l => l.MontoTotal);
+                decimal totalLiquidado = bllLiquidacion.Buscar(null, desde, hasta)
+                     .Sum(l => l.MontoTotal);
                 lblKPITotalLiquidado.Text = "$" + totalLiquidado.ToString("N0");
             }
             catch (Exception ex)
@@ -210,7 +210,7 @@ namespace CapaPresentacion
                 chartIngresos.Titles.Clear();
                 chartIngresos.Legends.Clear();
 
-                var liquidacionesPeriodo = bllLiquidacion.Buscar(null, desde.Date, hasta.Date);
+                var liquidacionesPeriodo = bllLiquidacion.Buscar(null, desde, hasta);
 
                 var ingresosPorMes = liquidacionesPeriodo
                     .GroupBy(l => new { l.PeriodoDesde.Year, l.PeriodoDesde.Month })
@@ -353,7 +353,7 @@ namespace CapaPresentacion
                 chartRendimientoProf.Titles.Clear();
                 chartRendimientoProf.Legends.Clear();
 
-                var liquidacionesPeriodo = bllLiquidacion.Buscar(null, desde.Date, hasta.Date);
+                var liquidacionesPeriodo = bllLiquidacion.Buscar(null, desde, hasta);
                 var profesionalesDict = bllProfesional.Listar().ToDictionary(p => p.Id);
 
                 var rendimiento = liquidacionesPeriodo

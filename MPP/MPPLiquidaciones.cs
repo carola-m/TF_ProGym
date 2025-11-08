@@ -182,11 +182,11 @@ namespace MPP
             }
             if (desde.HasValue)
             {
-                query = query.Where(l => l.PeriodoDesde.Date >= desde.Value.Date);
+                query = query.Where(l => l.FechaEmision.Date >= desde.Value.Date);
             }
             if (hasta.HasValue)
             {
-                query = query.Where(l => l.PeriodoHasta.Date <= hasta.Value.Date);
+                query = query.Where(l => l.FechaEmision <= hasta.Value);
             }
 
             return query.OrderByDescending(l => l.FechaEmision).ToList(); 
