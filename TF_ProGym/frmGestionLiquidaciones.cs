@@ -45,7 +45,7 @@ namespace CapaPresentacion
             dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn { Name = "colProfesional", DataPropertyName = "NombreProfesional", HeaderText = "Profesional", Width = 200 });
             dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn { Name = "colPeriodo", DataPropertyName = "Periodo", HeaderText = "Período Liquidado", Width = 150 });
             dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCantTurnos", DataPropertyName = "CantidadTurnos", HeaderText = "Turnos", Width = 60 });
-            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn { Name = "colMonto", DataPropertyName = "MontoTotal", HeaderText = "Monto Total", DefaultCellStyle = new DataGridViewCellStyle { Format = "C2" }, AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
+            dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn { Name = "colMonto", DataPropertyName = "MontoTotal", HeaderText = "Monto Total", DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleLeft },AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill});
         }
 
         // Carga el ComboBox de profesionales con la opción "[Todos]"
@@ -87,7 +87,7 @@ namespace CapaPresentacion
                     NombreProfesional = liq.Profesional?.ApellidoNombre ?? $"ID: {liq.IdProfesional}",
                     Periodo = $"{liq.PeriodoDesde:dd/MM/yy} al {liq.PeriodoHasta:dd/MM/yy}",
                     CantidadTurnos = liq.TurnosLiquidados?.Count ?? 0,
-                    liq.MontoTotal
+                    MontoTotal = $"${liq.MontoTotal:N2}"
                 }).ToList();
 
                 dgvLiquidaciones.DataSource = null;

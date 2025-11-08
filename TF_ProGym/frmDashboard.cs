@@ -1,14 +1,16 @@
-﻿
+﻿using BE;
 using BLL;
+using System;
 using System.Data;
-
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace CapaPresentacion
 {
     public partial class frmDashboard : Form
     {
-        // Instanciar todas las BLL necesarias
         private BLLTurno bllTurno = new BLLTurno();
         private BLLAsistencia bllAsistencia = new BLLAsistencia();
         private BLLLiquidacion bllLiquidacion = new BLLLiquidacion();
@@ -91,7 +93,7 @@ namespace CapaPresentacion
 
                 decimal totalLiquidado = bllLiquidacion.Buscar(null, desde.Date, hasta.Date)
                     .Sum(l => l.MontoTotal);
-                lblKPITotalLiquidado.Text = totalLiquidado.ToString("C2");
+                lblKPITotalLiquidado.Text = "$" + totalLiquidado.ToString("N0");
             }
             catch (Exception ex)
             {
@@ -110,6 +112,7 @@ namespace CapaPresentacion
 
             try
             {
+                // Limpiar gráfico PRIMERO
                 chartOcupacion.Series.Clear();
                 chartOcupacion.Titles.Clear();
                 chartOcupacion.Legends.Clear();
@@ -136,6 +139,7 @@ namespace CapaPresentacion
 
                 chartOcupacion.Titles.Add($"Ocupación por Actividad ({desde:dd/MM} - {hasta:dd/MM})");
 
+                // RESETEAR ChartArea COMPLETAMENTE
                 ChartArea areaOcupacion = chartOcupacion.ChartAreas[0];
                 areaOcupacion.AxisX.Minimum = Double.NaN;
                 areaOcupacion.AxisX.Maximum = Double.NaN;
@@ -147,7 +151,7 @@ namespace CapaPresentacion
                 if (!ocupacionPorActividad.Any())
                 {
                     chartOcupacion.Titles.Add("No hay datos de ocupación para este período.");
-                    return;
+                    return; // IMPORTANTE: Salir si no hay datos
                 }
 
                 // Configurar Ejes SOLO si hay datos
@@ -201,6 +205,7 @@ namespace CapaPresentacion
 
             try
             {
+                // Limpiar gráfico PRIMERO
                 chartIngresos.Series.Clear();
                 chartIngresos.Titles.Clear();
                 chartIngresos.Legends.Clear();
@@ -219,6 +224,7 @@ namespace CapaPresentacion
 
                 chartIngresos.Titles.Add($"Total Liquidado por Mes ({desde:MMM yyyy} - {hasta:MMM yyyy})");
 
+             
                 ChartArea areaIngresos = chartIngresos.ChartAreas[0];
                 areaIngresos.AxisX.Minimum = Double.NaN;
                 areaIngresos.AxisX.Maximum = Double.NaN;
@@ -237,7 +243,7 @@ namespace CapaPresentacion
                 areaIngresos.AxisY.Title = "Monto Total ($)";
                 areaIngresos.AxisX.LabelStyle.Format = "";
                 areaIngresos.AxisX.Interval = 1;
-                areaIngresos.AxisY.LabelStyle.Format = "C0";
+                areaIngresos.AxisY.LabelStyle.Format = "$#,##0"; 
                 areaIngresos.AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dot;
                 areaIngresos.AxisX.MajorGrid.Enabled = false;
                 areaIngresos.AxisY.Minimum = 0;
@@ -249,13 +255,13 @@ namespace CapaPresentacion
                     YValueType = ChartValueType.Double,
                     BorderWidth = 3,
                     IsValueShownAsLabel = true,
-                    LabelFormat = "C0",
-                    ToolTip = "#VALY{C2}"
+                    ToolTip = "$#,##0.00" // Formato $ explícito en tooltip
                 };
 
                 foreach (var dato in ingresosPorMes)
                 {
-                    serieIngresos.Points.AddXY(dato.Periodo.ToString("MMM yyyy"), (double)dato.TotalLiquidado);
+                    var point = serieIngresos.Points.AddXY(dato.Periodo.ToString("MMM yyyy"), (double)dato.TotalLiquidado);
+                    serieIngresos.Points[point].Label = "$" + ((double)dato.TotalLiquidado).ToString("N0");
                 }
 
                 chartIngresos.Series.Add(serieIngresos);
@@ -342,6 +348,7 @@ namespace CapaPresentacion
 
             try
             {
+                // Limpiar gráfico PRIMERO
                 chartRendimientoProf.Series.Clear();
                 chartRendimientoProf.Titles.Clear();
                 chartRendimientoProf.Legends.Clear();
@@ -364,6 +371,7 @@ namespace CapaPresentacion
 
                 chartRendimientoProf.Titles.Add($"Rendimiento por Profesional ({desde:dd/MM} - {hasta:dd/MM})");
 
+                // RESETEAR ChartArea COMPLETAMENTE
                 ChartArea areaRendimiento = chartRendimientoProf.ChartAreas[0];
                 areaRendimiento.AxisX.Minimum = Double.NaN;
                 areaRendimiento.AxisX.Maximum = Double.NaN;
@@ -378,12 +386,13 @@ namespace CapaPresentacion
                 if (!rendimiento.Any())
                 {
                     chartRendimientoProf.Titles.Add("No hay datos de rendimiento para este período.");
-                    return; 
+                    return; // IMPORTANTE: Salir si no hay datos
                 }
 
+                // Configurar Ejes SOLO si hay datos
                 areaRendimiento.AxisX.Title = "Profesional";
                 areaRendimiento.AxisY.Title = "Monto Liquidado ($)";
-                areaRendimiento.AxisY.LabelStyle.Format = "C0";
+                areaRendimiento.AxisY.LabelStyle.Format = "$#,##0"; // Formato $ explícito
                 areaRendimiento.AxisX.Interval = 1;
                 areaRendimiento.AxisX.LabelStyle.Angle = -45;
                 areaRendimiento.AxisX.MajorGrid.Enabled = false;
@@ -402,8 +411,7 @@ namespace CapaPresentacion
                     ChartType = SeriesChartType.Column,
                     YAxisType = AxisType.Primary,
                     IsValueShownAsLabel = true,
-                    LabelFormat = "C0",
-                    ToolTip = "#VALY{C2}"
+                    ToolTip = "$#,##0.00" // Formato $ explícito
                 };
 
                 var serieTurnos = new Series("Turnos Dictados")
@@ -421,7 +429,9 @@ namespace CapaPresentacion
 
                 foreach (var dato in rendimiento)
                 {
-                    serieMonto.Points.AddXY(dato.NombreProfesional, (double)dato.MontoTotalGenerado);
+                    var pointMonto = serieMonto.Points.AddXY(dato.NombreProfesional, (double)dato.MontoTotalGenerado);
+                    serieMonto.Points[pointMonto].Label = "$" + ((double)dato.MontoTotalGenerado).ToString("N0");
+
                     serieTurnos.Points.AddXY(dato.NombreProfesional, dato.TurnosDictados);
                 }
 

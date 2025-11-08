@@ -332,9 +332,7 @@
             // 
             this.chartIngresos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             chartArea2.Name = "ChartArea1";
-            // --- INICIO CORRECCIÓN DE ERROR ---
             chartArea2.AxisY.Minimum = 0;
-            // --- FIN CORRECCIÓN DE ERROR ---
             this.chartIngresos.ChartAreas.Add(chartArea2);
             legend2.Name = "Legend1";
             this.chartIngresos.Legends.Add(legend2);

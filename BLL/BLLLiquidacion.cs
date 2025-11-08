@@ -240,8 +240,7 @@ namespace BLL
                             tablaDetalle.AddCell(new Phrase(turnoLiq.FechaHora.ToString("g"), normalFont) { Leading = 12f });
                             tablaDetalle.AddCell(new Phrase(turnoLiq.NombreActividad, normalFont) { Leading = 12f });
 
-                            PdfPCell cellMonto = new PdfPCell(new Phrase(turnoLiq.ValorTurno.ToString("C2"), normalFont) { Leading = 12f });
-                            cellMonto.HorizontalAlignment = Element.ALIGN_RIGHT;
+                            PdfPCell cellMonto = new PdfPCell(new Phrase($"${turnoLiq.ValorTurno:N2}", normalFont) { Leading = 12f }); cellMonto.HorizontalAlignment = Element.ALIGN_RIGHT;
                             tablaDetalle.AddCell(cellMonto);
                         }
                         doc.Add(tablaDetalle);
@@ -255,7 +254,7 @@ namespace BLL
 
                     // --- Total ---
                     Font totalFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.BLACK);
-                    Paragraph total = new Paragraph($"Monto Total a Pagar: {liquidacion.MontoTotal:C2}", totalFont)
+                    Paragraph total = new Paragraph($"Monto Total a Pagar: ${liquidacion.MontoTotal:N2}", totalFont)
                     {
                         Alignment = Element.ALIGN_RIGHT,
                         SpacingBefore = 15f

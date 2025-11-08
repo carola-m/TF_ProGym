@@ -2,7 +2,6 @@
 using BLL;
 using System.Data;
 
-
 namespace CapaPresentacion
 {
     public partial class frmGestionActividades : Form
@@ -28,7 +27,6 @@ namespace CapaPresentacion
             dgvActividades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvActividades.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             dgvActividades.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-
 
             // Configurar NumericUpDown
             numCupoMaximo.Minimum = 1;
@@ -66,17 +64,17 @@ namespace CapaPresentacion
                 if (dgvActividades.Columns.Contains("TarifaPorTurno"))
                 {
                     dgvActividades.Columns["TarifaPorTurno"].HeaderText = "Tarifa x Turno";
-                    dgvActividades.Columns["TarifaPorTurno"].DefaultCellStyle.Format = "C2";
+                    dgvActividades.Columns["TarifaPorTurno"].DefaultCellStyle.Format = "$#,##0.00";
                 }
                 if (dgvActividades.Columns.Contains("CupoMaximo"))
                 {
                     dgvActividades.Columns["CupoMaximo"].HeaderText = "Cupo";
                 }
-
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar la lista de actividades: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al cargar la lista de actividades: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -115,7 +113,9 @@ namespace CapaPresentacion
             {
                 numCupoMaximo.Value = numCupoMaximo.Minimum;
             }
-            txtTarifaTurno.Text = actividad.TarifaPorTurno.ToString("F2");
+
+          
+            txtTarifaTurno.Text = "$" + actividad.TarifaPorTurno.ToString("N2");
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace CapaPresentacion
             txtNombreActividad.Clear();
             txtDescripcionActividad.Clear();
             numCupoMaximo.Value = 1;
-            txtTarifaTurno.Text = "0.00";
+            txtTarifaTurno.Text = "$0.00"; 
 
             dgvActividades.ClearSelection();
             HabilitarCampos(true);
@@ -163,13 +163,19 @@ namespace CapaPresentacion
                 // Validaciones
                 if (string.IsNullOrWhiteSpace(txtNombreActividad.Text))
                 {
-                    MessageBox.Show("El nombre de la actividad es obligatorio.", "Campo requerido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("El nombre de la actividad es obligatorio.",
+                        "Campo requerido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtNombreActividad.Focus();
                     return;
                 }
-                if (!decimal.TryParse(txtTarifaTurno.Text, out decimal tarifa) || tarifa < 0)
+
+                // CAMBIADO: Limpiar el símbolo $ antes de parsear
+                string tarifaTexto = txtTarifaTurno.Text.Replace("$", "").Replace(",", "").Trim();
+
+                if (!decimal.TryParse(tarifaTexto, out decimal tarifa) || tarifa < 0)
                 {
-                    MessageBox.Show("La tarifa por turno debe ser un número válido no negativo.", "Tarifa inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("La tarifa por turno debe ser un número válido no negativo.",
+                        "Tarifa inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtTarifaTurno.Focus();
                     return;
                 }
@@ -204,7 +210,8 @@ namespace CapaPresentacion
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar la actividad: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al guardar la actividad: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -215,7 +222,8 @@ namespace CapaPresentacion
         {
             if (actividadSeleccionada == null)
             {
-                MessageBox.Show("Seleccione una actividad de la lista para eliminar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Seleccione una actividad de la lista para eliminar.",
+                    "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -227,17 +235,20 @@ namespace CapaPresentacion
                 try
                 {
                     bllActividad.Eliminar(actividadSeleccionada.Id);
-                    MessageBox.Show("Actividad eliminada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Actividad eliminada correctamente.",
+                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CargarGrilla();
                     LimpiarCamposYSeleccion();
                 }
                 catch (InvalidOperationException exInv)
                 {
-                    MessageBox.Show(exInv.Message, "Operación no permitida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(exInv.Message, "Operación no permitida",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error al eliminar la actividad: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Error al eliminar la actividad: " + ex.Message,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
