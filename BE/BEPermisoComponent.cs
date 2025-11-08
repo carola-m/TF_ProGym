@@ -2,12 +2,11 @@
 
 namespace BE
 {
-    // Componente abstracto para patrón Composite (Permisos simples y familias)
     public abstract class BEPermisoComponent
     {
-        public int Id { get; set; } // Identificador del permiso o familia
-        public string Nombre { get; set; } // Nombre descriptivo (ej: "Gestionar Clientes")
-        public string NombreInterno { get; set; } // Identificador único interno (ej: "PERMISO_GESTION_CLIENTES")
+        public int Id { get; set; } 
+        public string Nombre { get; set; } 
+        public string NombreInterno { get; set; } 
 
         // Métodos abstractos para manejar la estructura jerárquica
         public abstract void AgregarHijo(BEPermisoComponent c);
@@ -18,15 +17,12 @@ namespace BE
         {
             return Nombre;
         }
-
-        // Sobrescribir Equals y GetHashCode para comparaciones correctas
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
             BEPermisoComponent other = (BEPermisoComponent)obj;
-            // Comparar por NombreInterno asegura unicidad
             return (!string.IsNullOrEmpty(NombreInterno) && NombreInterno.Equals(other.NombreInterno));
         }
 

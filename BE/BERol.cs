@@ -6,9 +6,8 @@ namespace BE
     {
         public int Id { get; set; }
         public string Nombre { get; set; }
-        public bool Activo { get; set; } // Para bajas lógicas
+        public bool Activo { get; set; } 
 
-        // Lista de permisos asociados directamente (simplificado, podría usar BEPermisoComponent)
         public List<BEPermiso> Permisos { get; set; } = new List<BEPermiso>();
 
         public BERol()

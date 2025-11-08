@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            // --- INICIO: Definiciones de Gráficos (¡Importante!) ---
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -38,8 +37,6 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            // --- FIN: Definiciones de Gráficos ---
-
             this.dtpDesde = new System.Windows.Forms.DateTimePicker();
             this.dtpHasta = new System.Windows.Forms.DateTimePicker();
             this.btnActualizarDashboard = new System.Windows.Forms.Button();
@@ -62,23 +59,24 @@
             this.panelKPILiquidado = new System.Windows.Forms.Panel();
             this.lblKPITotalLiquidado = new System.Windows.Forms.Label();
             this.lblKPILiquidadoTitulo = new System.Windows.Forms.Label();
-
-            // --- INICIO: Declaración de Controles de Gráfico ---
             this.chartOcupacion = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartIngresos = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartRendimientoProf = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            // --- FIN: Declaración de Controles de Gráfico ---
-
+            this.flpFiltrosRapidos = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnFiltroHoy = new System.Windows.Forms.Button();
+            this.btnFiltroAyer = new System.Windows.Forms.Button();
+            this.btnFiltroUltimos7Dias = new System.Windows.Forms.Button();
+            this.btnFiltroMesActual = new System.Windows.Forms.Button();
+            this.btnFiltroUltimoMes = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientesFrecuentes)).BeginInit();
             this.panelKPIClientes.SuspendLayout();
             this.panelKPIProfesionales.SuspendLayout();
             this.panelKPIAsistencias.SuspendLayout();
             this.panelKPILiquidado.SuspendLayout();
-            // --- INICIO: Inicialización de Gráficos ---
             ((System.ComponentModel.ISupportInitialize)(this.chartOcupacion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartIngresos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartRendimientoProf)).BeginInit();
-            // --- FIN: Inicialización de Gráficos ---
+            this.flpFiltrosRapidos.SuspendLayout();
             this.SuspendLayout();
             // 
             // dtpDesde
@@ -308,13 +306,15 @@
             this.lblKPILiquidadoTitulo.TabIndex = 0;
             this.lblKPILiquidadoTitulo.Text = "Total Liquidado (Per.)";
             // 
-            // --- INICIO: Definición de Gráficos ---
-            // 
             // chartOcupacion
             // 
             this.chartOcupacion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             chartArea1.Name = "ChartArea1";
+            // --- INICIO CORRECCIÓN DE ERROR ---
+            chartArea1.AxisY.Minimum = 0;
+            chartArea1.AxisY.Maximum = 100;
+            // --- FIN CORRECCIÓN DE ERROR ---
             this.chartOcupacion.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chartOcupacion.Legends.Add(legend1);
@@ -332,6 +332,9 @@
             // 
             this.chartIngresos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             chartArea2.Name = "ChartArea1";
+            // --- INICIO CORRECCIÓN DE ERROR ---
+            chartArea2.AxisY.Minimum = 0;
+            // --- FIN CORRECCIÓN DE ERROR ---
             this.chartIngresos.ChartAreas.Add(chartArea2);
             legend2.Name = "Legend1";
             this.chartIngresos.Legends.Add(legend2);
@@ -351,6 +354,10 @@
             | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             chartArea3.Name = "ChartArea1";
+            // --- INICIO CORRECCIÓN DE ERROR ---
+            chartArea3.AxisY.Minimum = 0;
+            chartArea3.AxisY2.Minimum = 0; // Eje secundario también
+            // --- FIN CORRECCIÓN DE ERROR ---
             this.chartRendimientoProf.ChartAreas.Add(chartArea3);
             legend3.Name = "Legend1";
             this.chartRendimientoProf.Legends.Add(legend3);
@@ -363,13 +370,70 @@
             this.chartRendimientoProf.Size = new System.Drawing.Size(429, 193);
             this.chartRendimientoProf.TabIndex = 6;
             this.chartRendimientoProf.Text = "Rendimiento Profesionales";
-            // --- FIN: Definición de Gráficos ---
+            // 
+            // flpFiltrosRapidos
+            // 
+            this.flpFiltrosRapidos.Controls.Add(this.btnFiltroHoy);
+            this.flpFiltrosRapidos.Controls.Add(this.btnFiltroAyer);
+            this.flpFiltrosRapidos.Controls.Add(this.btnFiltroUltimos7Dias);
+            this.flpFiltrosRapidos.Controls.Add(this.btnFiltroMesActual);
+            this.flpFiltrosRapidos.Controls.Add(this.btnFiltroUltimoMes);
+            this.flpFiltrosRapidos.Location = new System.Drawing.Point(14, 16);
+            this.flpFiltrosRapidos.Name = "flpFiltrosRapidos";
+            this.flpFiltrosRapidos.Size = new System.Drawing.Size(360, 36);
+            this.flpFiltrosRapidos.TabIndex = 17;
+            // 
+            // btnFiltroHoy
+            // 
+            this.btnFiltroHoy.Location = new System.Drawing.Point(3, 3);
+            this.btnFiltroHoy.Name = "btnFiltroHoy";
+            this.btnFiltroHoy.Size = new System.Drawing.Size(50, 30);
+            this.btnFiltroHoy.TabIndex = 0;
+            this.btnFiltroHoy.Text = "Hoy";
+            this.btnFiltroHoy.UseVisualStyleBackColor = true;
+            // 
+            // btnFiltroAyer
+            // 
+            this.btnFiltroAyer.Location = new System.Drawing.Point(59, 3);
+            this.btnFiltroAyer.Name = "btnFiltroAyer";
+            this.btnFiltroAyer.Size = new System.Drawing.Size(50, 30);
+            this.btnFiltroAyer.TabIndex = 1;
+            this.btnFiltroAyer.Text = "Ayer";
+            this.btnFiltroAyer.UseVisualStyleBackColor = true;
+            // 
+            // btnFiltroUltimos7Dias
+            // 
+            this.btnFiltroUltimos7Dias.Location = new System.Drawing.Point(115, 3);
+            this.btnFiltroUltimos7Dias.Name = "btnFiltroUltimos7Dias";
+            this.btnFiltroUltimos7Dias.Size = new System.Drawing.Size(80, 30);
+            this.btnFiltroUltimos7Dias.TabIndex = 2;
+            this.btnFiltroUltimos7Dias.Text = "7 Días";
+            this.btnFiltroUltimos7Dias.UseVisualStyleBackColor = true;
+            // 
+            // btnFiltroMesActual
+            // 
+            this.btnFiltroMesActual.Location = new System.Drawing.Point(201, 3);
+            this.btnFiltroMesActual.Name = "btnFiltroMesActual";
+            this.btnFiltroMesActual.Size = new System.Drawing.Size(75, 30);
+            this.btnFiltroMesActual.TabIndex = 3;
+            this.btnFiltroMesActual.Text = "Este Mes";
+            this.btnFiltroMesActual.UseVisualStyleBackColor = true;
+            // 
+            // btnFiltroUltimoMes
+            // 
+            this.btnFiltroUltimoMes.Location = new System.Drawing.Point(282, 3);
+            this.btnFiltroUltimoMes.Name = "btnFiltroUltimoMes";
+            this.btnFiltroUltimoMes.Size = new System.Drawing.Size(70, 30);
+            this.btnFiltroUltimoMes.TabIndex = 4;
+            this.btnFiltroUltimoMes.Text = "30 Días";
+            this.btnFiltroUltimoMes.UseVisualStyleBackColor = true;
             // 
             // frmDashboard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F); // .NET 8
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(896, 641);
+            this.Controls.Add(this.flpFiltrosRapidos);
             this.Controls.Add(this.panelKPILiquidado);
             this.Controls.Add(this.panelKPIAsistencias);
             this.Controls.Add(this.panelKPIProfesionales);
@@ -384,9 +448,9 @@
             this.Controls.Add(this.btnActualizarDashboard);
             this.Controls.Add(this.dtpHasta);
             this.Controls.Add(this.dtpDesde);
-            this.Controls.Add(this.chartOcupacion); // Añadido
-            this.Controls.Add(this.chartIngresos); // Añadido
-            this.Controls.Add(this.chartRendimientoProf); // Añadido
+            this.Controls.Add(this.chartOcupacion);
+            this.Controls.Add(this.chartIngresos);
+            this.Controls.Add(this.chartRendimientoProf);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmDashboard";
             this.Text = "Dashboard Gerencial";
@@ -400,13 +464,13 @@
             this.panelKPIAsistencias.PerformLayout();
             this.panelKPILiquidado.ResumeLayout(false);
             this.panelKPILiquidado.PerformLayout();
-            // --- INICIO: Finalización de Gráficos ---
             ((System.ComponentModel.ISupportInitialize)(this.chartOcupacion)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartIngresos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartRendimientoProf)).EndInit();
-            // --- FIN: Finalización de Gráficos ---
+            this.flpFiltrosRapidos.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -438,5 +502,13 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chartOcupacion;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartIngresos;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartRendimientoProf;
+
+        // --- Variables de Botones NUEVOS ---
+        private System.Windows.Forms.FlowLayoutPanel flpFiltrosRapidos;
+        private System.Windows.Forms.Button btnFiltroHoy;
+        private System.Windows.Forms.Button btnFiltroAyer;
+        private System.Windows.Forms.Button btnFiltroUltimos7Dias;
+        private System.Windows.Forms.Button btnFiltroMesActual;
+        private System.Windows.Forms.Button btnFiltroUltimoMes;
     }
 }

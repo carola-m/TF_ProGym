@@ -1,15 +1,13 @@
 ﻿using BE;
 using MPP;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 
 namespace BLL
 {
     public class BLLActividad
     {
         private readonly MPPActividad mppActividad;
-        private readonly MPPTurno mppTurno; // Para validaciones
+        private readonly MPPTurno mppTurno; 
 
         public BLLActividad()
         {

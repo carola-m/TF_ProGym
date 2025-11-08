@@ -2,15 +2,8 @@
 {
     partial class frmGestionLiquidaciones
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,12 +15,10 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvLiquidaciones = new System.Windows.Forms.DataGridView();
             this.gbCalcular = new System.Windows.Forms.GroupBox();
             this.lblHastaCalc = new System.Windows.Forms.Label();
@@ -54,7 +45,25 @@
             this.dgvLiquidaciones.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvLiquidaciones.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dgvLiquidaciones.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLiquidaciones.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvLiquidaciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvLiquidaciones.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvLiquidaciones.Location = new System.Drawing.Point(12, 160);
             this.dgvLiquidaciones.Name = "dgvLiquidaciones";
             this.dgvLiquidaciones.RowTemplate.Height = 25;
@@ -68,6 +77,7 @@
             this.gbCalcular.Controls.Add(this.btnCalcularLiquidaciones);
             this.gbCalcular.Controls.Add(this.dtpHastaCalc);
             this.gbCalcular.Controls.Add(this.dtpDesdeCalc);
+            this.gbCalcular.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.gbCalcular.Location = new System.Drawing.Point(12, 12);
             this.gbCalcular.Name = "gbCalcular";
             this.gbCalcular.Size = new System.Drawing.Size(200, 140);
@@ -78,6 +88,7 @@
             // lblHastaCalc
             // 
             this.lblHastaCalc.AutoSize = true;
+            this.lblHastaCalc.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblHastaCalc.Location = new System.Drawing.Point(10, 58);
             this.lblHastaCalc.Name = "lblHastaCalc";
             this.lblHastaCalc.Size = new System.Drawing.Size(40, 15);
@@ -87,6 +98,7 @@
             // lblDesdeCalc
             // 
             this.lblDesdeCalc.AutoSize = true;
+            this.lblDesdeCalc.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblDesdeCalc.Location = new System.Drawing.Point(10, 28);
             this.lblDesdeCalc.Name = "lblDesdeCalc";
             this.lblDesdeCalc.Size = new System.Drawing.Size(42, 15);
@@ -96,6 +108,8 @@
             // btnCalcularLiquidaciones
             // 
             this.btnCalcularLiquidaciones.BackColor = System.Drawing.Color.DarkGreen;
+            this.btnCalcularLiquidaciones.FlatAppearance.BorderSize = 0;
+            this.btnCalcularLiquidaciones.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCalcularLiquidaciones.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnCalcularLiquidaciones.ForeColor = System.Drawing.Color.White;
             this.btnCalcularLiquidaciones.Location = new System.Drawing.Point(10, 90);
@@ -108,18 +122,20 @@
             // 
             // dtpHastaCalc
             // 
+            this.dtpHastaCalc.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.dtpHastaCalc.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpHastaCalc.Location = new System.Drawing.Point(60, 55);
             this.dtpHastaCalc.Name = "dtpHastaCalc";
-            this.dtpHastaCalc.Size = new System.Drawing.Size(130, 23);
+            this.dtpHastaCalc.Size = new System.Drawing.Size(130, 25);
             this.dtpHastaCalc.TabIndex = 1;
             // 
             // dtpDesdeCalc
             // 
+            this.dtpDesdeCalc.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.dtpDesdeCalc.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpDesdeCalc.Location = new System.Drawing.Point(60, 25);
             this.dtpDesdeCalc.Name = "dtpDesdeCalc";
-            this.dtpDesdeCalc.Size = new System.Drawing.Size(130, 23);
+            this.dtpDesdeCalc.Size = new System.Drawing.Size(130, 25);
             this.dtpDesdeCalc.TabIndex = 0;
             // 
             // gbFiltros
@@ -133,6 +149,7 @@
             this.gbFiltros.Controls.Add(this.lblHasta);
             this.gbFiltros.Controls.Add(this.dtpDesde);
             this.gbFiltros.Controls.Add(this.lblDesde);
+            this.gbFiltros.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.gbFiltros.Location = new System.Drawing.Point(225, 12);
             this.gbFiltros.Name = "gbFiltros";
             this.gbFiltros.Size = new System.Drawing.Size(547, 140);
@@ -143,15 +160,17 @@
             // cmbProfesionalFiltro
             // 
             this.cmbProfesionalFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProfesionalFiltro.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cmbProfesionalFiltro.FormattingEnabled = true;
             this.cmbProfesionalFiltro.Location = new System.Drawing.Point(80, 27);
             this.cmbProfesionalFiltro.Name = "cmbProfesionalFiltro";
-            this.cmbProfesionalFiltro.Size = new System.Drawing.Size(200, 23);
+            this.cmbProfesionalFiltro.Size = new System.Drawing.Size(200, 25);
             this.cmbProfesionalFiltro.TabIndex = 10;
             // 
             // lblProfFiltro
             // 
             this.lblProfFiltro.AutoSize = true;
+            this.lblProfFiltro.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblProfFiltro.Location = new System.Drawing.Point(10, 30);
             this.lblProfFiltro.Name = "lblProfFiltro";
             this.lblProfFiltro.Size = new System.Drawing.Size(69, 15);
@@ -161,26 +180,32 @@
             // btnBuscar
             // 
             this.btnBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBuscar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnBuscar.BackColor = System.Drawing.Color.Gainsboro;
+            this.btnBuscar.FlatAppearance.BorderSize = 0;
+            this.btnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBuscar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnBuscar.ForeColor = System.Drawing.Color.Black;
             this.btnBuscar.Location = new System.Drawing.Point(440, 95);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(90, 30);
             this.btnBuscar.TabIndex = 8;
             this.btnBuscar.Text = "Buscar";
-            this.btnBuscar.UseVisualStyleBackColor = true;
-            this.btnBuscar.Click += btnBuscar_Click;
+            this.btnBuscar.UseVisualStyleBackColor = false;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // dtpHasta
             // 
+            this.dtpHasta.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.dtpHasta.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpHasta.Location = new System.Drawing.Point(80, 90);
             this.dtpHasta.Name = "dtpHasta";
-            this.dtpHasta.Size = new System.Drawing.Size(130, 23);
+            this.dtpHasta.Size = new System.Drawing.Size(130, 25);
             this.dtpHasta.TabIndex = 7;
             // 
             // lblHasta
             // 
             this.lblHasta.AutoSize = true;
+            this.lblHasta.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblHasta.Location = new System.Drawing.Point(10, 93);
             this.lblHasta.Name = "lblHasta";
             this.lblHasta.Size = new System.Drawing.Size(61, 15);
@@ -189,36 +214,44 @@
             // 
             // dtpDesde
             // 
+            this.dtpDesde.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.dtpDesde.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpDesde.Location = new System.Drawing.Point(80, 60);
             this.dtpDesde.Name = "dtpDesde";
-            this.dtpDesde.Size = new System.Drawing.Size(130, 23);
+            this.dtpDesde.Size = new System.Drawing.Size(130, 25);
             this.dtpDesde.TabIndex = 5;
             // 
             // lblDesde
             // 
             this.lblDesde.AutoSize = true;
+            this.lblDesde.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblDesde.Location = new System.Drawing.Point(10, 63);
             this.lblDesde.Name = "lblDesde";
-            this.lblDesde.Size = new System.Drawing.Size(63, 15);
+            this.lblDesde.Size = new System.Drawing.Size(62, 15);
             this.lblDesde.TabIndex = 4;
             this.lblDesde.Text = "Ver Desde:";
             // 
             // btnExportarPDF
             // 
             this.btnExportarPDF.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExportarPDF.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnExportarPDF.FlatAppearance.BorderSize = 0;
+            this.btnExportarPDF.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportarPDF.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnExportarPDF.ForeColor = System.Drawing.Color.White;
             this.btnExportarPDF.Location = new System.Drawing.Point(622, 425);
             this.btnExportarPDF.Name = "btnExportarPDF";
             this.btnExportarPDF.Size = new System.Drawing.Size(150, 35);
             this.btnExportarPDF.TabIndex = 11;
             this.btnExportarPDF.Text = "Exportar PDF";
-            this.btnExportarPDF.UseVisualStyleBackColor = true;
+            this.btnExportarPDF.UseVisualStyleBackColor = false;
             this.btnExportarPDF.Click += new System.EventHandler(this.btnExportarPDF_Click);
             // 
             // frmGestionLiquidaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(784, 471);
             this.Controls.Add(this.btnExportarPDF);
             this.Controls.Add(this.gbFiltros);
@@ -226,7 +259,7 @@
             this.Controls.Add(this.dgvLiquidaciones);
             this.Name = "frmGestionLiquidaciones";
             this.Text = "Gestión de Liquidaciones";
-           this.Load += new System.EventHandler(this.frmGestionLiquidaciones_Load);
+            this.Load += new System.EventHandler(this.frmGestionLiquidaciones_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLiquidaciones)).EndInit();
             this.gbCalcular.ResumeLayout(false);
             this.gbCalcular.PerformLayout();

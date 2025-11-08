@@ -19,12 +19,11 @@ namespace BE
             return $"{Nombre} {Apellido} ({Especialidad})";
         }
 
-        // Propiedad calculada para ComboBox de Turnos
         public string ApellidoNombre
         {
             get
             {
-                if (Id == 0) return Apellido; // Para el item "[Seleccione Profesional]"
+                if (Id == 0) return Apellido; 
                 return $"{Apellido}, {Nombre}";
             }
         }

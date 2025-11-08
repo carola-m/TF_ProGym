@@ -1,10 +1,5 @@
 ﻿using BE;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Xml.Linq;
-using XmlHelper;
 
 namespace MPP
 {
@@ -36,7 +31,7 @@ namespace MPP
             var doc = XDocument.Load(archivo);
             var root = doc.Element("Actividades");
 
-            // Validar nombre duplicado si es necesario
+            // Validar nombre duplicado
             var duplicado = root.Elements("Actividad")
                 .FirstOrDefault(x => ((string)x.Element("Nombre")).Equals(actividad.Nombre, StringComparison.OrdinalIgnoreCase)
                                      && (int?)x.Element("Id") != actividad.Id);
@@ -89,9 +84,6 @@ namespace MPP
 
         public void Eliminar(int idActividad)
         {
-            // IMPORTANTE: Aquí deberías añadir lógica para verificar si la actividad
-            // está asignada a turnos futuros antes de permitir la eliminación.
-
             var doc = XDocument.Load(archivo);
             var actividad = doc.Descendants("Actividad")
                                .FirstOrDefault(a => (int?)a.Element("Id") == idActividad);

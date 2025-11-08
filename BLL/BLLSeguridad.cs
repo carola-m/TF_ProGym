@@ -1,9 +1,6 @@
 ﻿using BE;
 using MPP;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text; // <--- Necesario para Base64
+using System.Text; 
 
 namespace BLL
 {
@@ -32,10 +29,10 @@ namespace BLL
             var usuario = mppUsuario.BuscarPorNombre(nombreUsuario);
 
             // Encriptamos la contraseña ingresada para compararla
-            string passwordEncriptada = EncriptarClave(password); // <--- CAMBIO
+            string passwordEncriptada = EncriptarClave(password); 
 
-            // Verifica si el usuario existe, está activo y la contraseña encriptada coincide  -- && usuario.Password == passwordEncriptada
-            if (usuario != null && usuario.Activo )
+            // Verifica si el usuario existe, está activo y la contraseña encriptada coincide  --
+            if (usuario != null && usuario.Activo && usuario.Password == passwordEncriptada)
             {
                 return usuario;
             }
@@ -50,7 +47,7 @@ namespace BLL
             if (usuario.Password.Length < 4) throw new ArgumentException("La contraseña debe tener al menos 4 caracteres.");
 
             // Encripta la contraseña antes de guardarla
-            usuario.Password = EncriptarClave(usuario.Password); // <--- CAMBIO
+            usuario.Password = EncriptarClave(usuario.Password);
             usuario.Activo = true;
             usuario.DebeCambiarPassword = !usuario.NombreUsuario.Equals("admin", StringComparison.OrdinalIgnoreCase);
 
@@ -72,12 +69,8 @@ namespace BLL
             if (!string.IsNullOrWhiteSpace(nuevaPassword))
             {
                 if (nuevaPassword.Length < 4) throw new ArgumentException("La nueva contraseña debe tener al menos 4 caracteres.");
-                usuarioExistente.Password = EncriptarClave(nuevaPassword); // <--- CAMBIO
+                usuarioExistente.Password = EncriptarClave(nuevaPassword); 
             }
-            // Importante: Si 'nuevaPassword' es null, NO tocamos la existente.
-            // Si el CheckBox "Encriptar/Desencriptar" está marcado, el frmUsuarios
-            // debe pasar la contraseña ya encriptada (Base64) en el objeto 'usuario'.
-            // Para eso, modificamos la lógica de 'Guardar' en 'frmUsuarios.cs' (ver Paso 3).
 
             mppUsuario.Guardar(usuarioExistente);
         }
@@ -94,11 +87,11 @@ namespace BLL
             var usuario = mppUsuario.BuscarPorId(idUsuario);
             if (usuario == null) throw new KeyNotFoundException("Usuario no encontrado.");
 
-            // Verificar contraseña actual (comparando encriptadas)
-            if (EncriptarClave(passwordActual) != usuario.Password) // <--- CAMBIO
+            // Verificar contraseña actual 
+            if (EncriptarClave(passwordActual) != usuario.Password)
                 throw new UnauthorizedAccessException("La contraseña actual es incorrecta.");
 
-            usuario.Password = EncriptarClave(nuevaPassword); // <--- CAMBIO
+            usuario.Password = EncriptarClave(nuevaPassword);
             usuario.DebeCambiarPassword = false;
             mppUsuario.Guardar(usuario);
         }
@@ -130,9 +123,6 @@ namespace BLL
         #endregion
 
         #region Gestión Roles
-
-        // ... (Los métodos CrearRol, ModificarRol, BajaRol, ReactivarRol, ListarRoles, ListarTodosRoles son idénticos) ...
-
         public void CrearRol(BERol rol)
         {
             if (rol == null) throw new ArgumentNullException("El rol no puede ser nulo.");
@@ -197,8 +187,7 @@ namespace BLL
 
         #region Gestión Permisos y Asignación
 
-        // ... (Todos los métodos de esta región son idénticos) ...
-
+      
         public List<BEPermisoComponent> ObtenerDefinicionesPermisos()
         {
             return mppPermiso.ListarDefiniciones();
@@ -236,7 +225,6 @@ namespace BLL
 
         #region Gestión Usuario-Rol
 
-        // ... (Todos los métodos de esta región son idénticos) ...
 
         public void AsignarRolAUsuario(int idUsuario, int idRol)
         {
@@ -291,10 +279,9 @@ namespace BLL
 
         #endregion
 
-        // --- INICIO DE CAMBIO DE ENCRIPTACIÓN ---
         #region Encriptación Reversible (Base64 - Requerido por el profesor)
-
-        // Método para "encriptar" una clave en Base64 (es codificación, no encriptación real)
+        
+        // Método para encriptar
         public static string EncriptarClave(string rawData)
         {
             if (string.IsNullOrEmpty(rawData)) return string.Empty;
@@ -313,17 +300,11 @@ namespace BLL
             }
             catch (FormatException)
             {
-                // Si la contraseña no está en formato Base64 (ej. es un hash BCrypt),
-                // devuelve la cadena original para evitar un crash.
                 return cadenaADesencriptar;
             }
         }
 
-        // El método VerificarPassword ya no es necesario si comparamos claves encriptadas en Login()
-        // private bool VerificarPassword(string passwordIngresada, string passwordAlmacenada) ...
-
         #endregion
-        // --- FIN DE CAMBIO DE ENCRIPTACIÓN ---
 
 
         #region Métodos Auxiliares

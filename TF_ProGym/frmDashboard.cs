@@ -1,11 +1,8 @@
-﻿using BE;
+﻿
 using BLL;
-using System;
 using System.Data;
-using System.Drawing; // Para Color
-using System.Linq;
-using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting; // Para Chart
+
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace CapaPresentacion
 {
@@ -26,10 +23,15 @@ namespace CapaPresentacion
 
         private void frmDashboard_Load(object sender, EventArgs e)
         {
-            // Configurar fechas por defecto (ej. último mes)
-            dtpDesde.Value = DateTime.Today.AddMonths(-1);
+            dtpDesde.Value = DateTime.Today.AddDays(-29);
             dtpHasta.Value = DateTime.Today;
-            // Cargar datos al abrir
+
+            btnFiltroHoy.Click += btnFiltroHoy_Click;
+            btnFiltroAyer.Click += btnFiltroAyer_Click;
+            btnFiltroUltimos7Dias.Click += btnFiltroUltimos7Dias_Click;
+            btnFiltroMesActual.Click += btnFiltroMesActual_Click;
+            btnFiltroUltimoMes.Click += btnFiltroUltimoMes_Click;
+
             CargarDashboard();
         }
 
@@ -42,12 +44,13 @@ namespace CapaPresentacion
         {
             if (dtpDesde.Value.Date > dtpHasta.Value.Date)
             {
-                MessageBox.Show("La fecha 'Desde' no puede ser posterior a la fecha 'Hasta'.", "Rango Inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("La fecha 'Desde' no puede ser posterior a la fecha 'Hasta'.",
+                    "Rango Inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             DateTime desde = dtpDesde.Value.Date;
-            DateTime hasta = dtpHasta.Value.Date.AddDays(1).AddTicks(-1); // Incluye todo el día
+            DateTime hasta = dtpHasta.Value.Date.AddDays(1).AddTicks(-1);
 
             try
             {
@@ -59,43 +62,41 @@ namespace CapaPresentacion
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error general al actualizar el dashboard: " + ex.Message, "Error de Carga", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error general al actualizar el dashboard: " + ex.Message,
+                    "Error de Carga", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Cargar KPIs (Indicadores Clave)
         private void CargarKPIs(DateTime desde, DateTime hasta)
         {
-            // Asegurarse de que los controles Label de KPI existan
-            if (lblKPIClientesActivos == null || lblKPIProfesionalesActivos == null || lblKPIAsistenciasPeriodo == null || lblKPITotalLiquidado == null)
+            if (lblKPIClientesActivos == null || lblKPIProfesionalesActivos == null ||
+                lblKPIAsistenciasPeriodo == null || lblKPITotalLiquidado == null)
             {
-                MessageBox.Show("Error de diseño: Faltan controles Label para KPIs.", "Error de Diseño", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error de diseño: Faltan controles Label para KPIs.",
+                    "Error de Diseño", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             try
             {
-                // Total Clientes Activos (según MembresiaActiva)
                 int clientesActivos = bllCliente.Listar().Count(c => c.MembresiaActiva);
                 lblKPIClientesActivos.Text = clientesActivos.ToString();
 
-                // Total Profesionales
                 int profActivos = bllProfesional.Listar().Count();
                 lblKPIProfesionalesActivos.Text = profActivos.ToString();
 
-                // Total Asistencias en el Período
                 int asistenciasPeriodo = bllAsistencia.Listar()
-                                           .Count(a => a.FechaHoraRegistro >= desde && a.FechaHoraRegistro <= hasta && a.Presente);
+                    .Count(a => a.FechaHoraRegistro >= desde && a.FechaHoraRegistro <= hasta && a.Presente);
                 lblKPIAsistenciasPeriodo.Text = asistenciasPeriodo.ToString();
 
-                // Total Liquidado a Profesionales en el Período
                 decimal totalLiquidado = bllLiquidacion.Buscar(null, desde.Date, hasta.Date)
-                                           .Sum(l => l.MontoTotal);
-                lblKPITotalLiquidado.Text = totalLiquidado.ToString("C2"); // Formato Moneda
+                    .Sum(l => l.MontoTotal);
+                lblKPITotalLiquidado.Text = totalLiquidado.ToString("C2");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar los KPIs: " + ex.Message, "Error KPIs", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Error al cargar los KPIs: " + ex.Message,
+                    "Error KPIs", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 lblKPIClientesActivos.Text = "Err";
                 lblKPIProfesionalesActivos.Text = "Err";
                 lblKPIAsistenciasPeriodo.Text = "Err";
@@ -103,25 +104,26 @@ namespace CapaPresentacion
             }
         }
 
-        // Carga el gráfico de % de Ocupación por Actividad
         private void CargarGraficoOcupacion(DateTime desde, DateTime hasta)
         {
-            if (this.chartOcupacion == null) return; // Seguridad
+            if (this.chartOcupacion == null) return;
 
             try
             {
+                chartOcupacion.Series.Clear();
+                chartOcupacion.Titles.Clear();
+                chartOcupacion.Legends.Clear();
+
                 var turnosPeriodo = bllTurno.ListarTurnosPorPeriodo(desde, hasta);
-                // El ListarTurnosPorPeriodo ya debería cargar Actividad, si no, se necesita un diccionario
-                // var actividadesDict = bllActividad.Listar().ToDictionary(act => act.Id);
 
                 var ocupacionPorActividad = turnosPeriodo
-                    .Where(t => t.Actividad != null && t.Actividad.CupoMaximo > 0) // Asegura que Actividad esté cargada y cupo sea válido
-                    .GroupBy(t => t.Actividad.Nombre) // Agrupa por nombre
+                    .Where(t => t.Actividad != null && t.Actividad.CupoMaximo > 0)
+                    .GroupBy(t => t.Actividad.Nombre)
                     .Select(g => new
                     {
                         Actividad = g.Key,
                         TotalCuposOfrecidos = g.Sum(t => t.Actividad.CupoMaximo),
-                        TotalOcupados = g.Sum(t => t.CuposOcupados) // Usa la propiedad calculada de BETurno
+                        TotalOcupados = g.Sum(t => t.CuposOcupados)
                     })
                     .Where(x => x.TotalCuposOfrecidos > 0)
                     .Select(x => new
@@ -132,14 +134,23 @@ namespace CapaPresentacion
                     .OrderByDescending(x => x.OcupacionPorcentaje)
                     .ToList();
 
-                // Limpiar gráfico
-                chartOcupacion.Series.Clear();
-                chartOcupacion.Titles.Clear();
-                chartOcupacion.Legends.Clear();
-
-                // Configurar Ejes y Título
                 chartOcupacion.Titles.Add($"Ocupación por Actividad ({desde:dd/MM} - {hasta:dd/MM})");
+
                 ChartArea areaOcupacion = chartOcupacion.ChartAreas[0];
+                areaOcupacion.AxisX.Minimum = Double.NaN;
+                areaOcupacion.AxisX.Maximum = Double.NaN;
+                areaOcupacion.AxisY.Minimum = Double.NaN;
+                areaOcupacion.AxisY.Maximum = Double.NaN;
+                areaOcupacion.AxisX.Interval = Double.NaN;
+                areaOcupacion.AxisY.Interval = Double.NaN;
+
+                if (!ocupacionPorActividad.Any())
+                {
+                    chartOcupacion.Titles.Add("No hay datos de ocupación para este período.");
+                    return;
+                }
+
+                // Configurar Ejes SOLO si hay datos
                 areaOcupacion.AxisX.Title = "Actividad";
                 areaOcupacion.AxisY.Title = "Ocupación (%)";
                 areaOcupacion.AxisY.Maximum = 100;
@@ -147,10 +158,11 @@ namespace CapaPresentacion
                 areaOcupacion.AxisX.Interval = 1;
                 areaOcupacion.AxisX.LabelStyle.Angle = -30;
                 areaOcupacion.AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dot;
+                areaOcupacion.AxisX.MajorGrid.Enabled = false;
 
                 var serieOcupacion = new Series("Ocupacion")
                 {
-                    ChartType = SeriesChartType.Bar, // Barras Verticales
+                    ChartType = SeriesChartType.Bar,
                     XValueType = ChartValueType.String,
                     YValueType = ChartValueType.Double,
                     IsValueShownAsLabel = true,
@@ -158,14 +170,13 @@ namespace CapaPresentacion
                     ToolTip = "#VALY{N1}%"
                 };
 
-                // Añadir datos a la serie
                 foreach (var dato in ocupacionPorActividad)
                 {
                     DataPoint dp = new DataPoint();
                     dp.SetValueXY(dato.Actividad, dato.OcupacionPorcentaje);
-                    dp.Color = dato.OcupacionPorcentaje > 90 ? Color.FromArgb(220, 53, 69)  // Rojo
-                           : dato.OcupacionPorcentaje > 75 ? Color.FromArgb(255, 193, 7)   // Amarillo
-                           : Color.FromArgb(40, 167, 69); // Verde
+                    dp.Color = dato.OcupacionPorcentaje > 90 ? Color.FromArgb(220, 53, 69)
+                           : dato.OcupacionPorcentaje > 75 ? Color.FromArgb(255, 193, 7)
+                           : Color.FromArgb(40, 167, 69);
                     serieOcupacion.Points.Add(dp);
                 }
 
@@ -173,7 +184,8 @@ namespace CapaPresentacion
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error cargando gráfico de ocupación: " + ex.Message, "Error Gráfico", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Error cargando gráfico de ocupación: " + ex.Message,
+                    "Error Gráfico", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 if (this.chartOcupacion != null)
                 {
                     chartOcupacion.Series.Clear();
@@ -183,16 +195,18 @@ namespace CapaPresentacion
             }
         }
 
-        // Carga el gráfico de Liquidaciones
         private void CargarGraficoIngresos(DateTime desde, DateTime hasta)
         {
-            if (this.chartIngresos == null) return; // Seguridad
+            if (this.chartIngresos == null) return;
 
             try
             {
+                chartIngresos.Series.Clear();
+                chartIngresos.Titles.Clear();
+                chartIngresos.Legends.Clear();
+
                 var liquidacionesPeriodo = bllLiquidacion.Buscar(null, desde.Date, hasta.Date);
 
-                // Agrupa por mes
                 var ingresosPorMes = liquidacionesPeriodo
                     .GroupBy(l => new { l.PeriodoDesde.Year, l.PeriodoDesde.Month })
                     .Select(g => new
@@ -203,30 +217,37 @@ namespace CapaPresentacion
                     .OrderBy(x => x.Periodo)
                     .ToList();
 
-                // Limpiar gráfico
-                chartIngresos.Series.Clear();
-                chartIngresos.Titles.Clear();
-                chartIngresos.Legends.Clear();
-
                 chartIngresos.Titles.Add($"Total Liquidado por Mes ({desde:MMM yyyy} - {hasta:MMM yyyy})");
+
                 ChartArea areaIngresos = chartIngresos.ChartAreas[0];
+                areaIngresos.AxisX.Minimum = Double.NaN;
+                areaIngresos.AxisX.Maximum = Double.NaN;
+                areaIngresos.AxisY.Minimum = Double.NaN;
+                areaIngresos.AxisY.Maximum = Double.NaN;
+                areaIngresos.AxisX.Interval = Double.NaN;
+                areaIngresos.AxisY.Interval = Double.NaN;
+
+                if (!ingresosPorMes.Any())
+                {
+                    chartIngresos.Titles.Add("No hay datos de liquidaciones para este período.");
+                    return; // Salir si no hay datos
+                }
+
                 areaIngresos.AxisX.Title = "Mes";
                 areaIngresos.AxisY.Title = "Monto Total ($)";
-                areaIngresos.AxisX.LabelStyle.Format = "MMM yyyy";
-                areaIngresos.AxisX.IntervalType = DateTimeIntervalType.Months;
+                areaIngresos.AxisX.LabelStyle.Format = "";
                 areaIngresos.AxisX.Interval = 1;
                 areaIngresos.AxisY.LabelStyle.Format = "C0";
                 areaIngresos.AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dot;
                 areaIngresos.AxisX.MajorGrid.Enabled = false;
+                areaIngresos.AxisY.Minimum = 0;
 
                 var serieIngresos = new Series("Total Liquidado")
                 {
-                    ChartType = SeriesChartType.Line,
-                    XValueType = ChartValueType.Date,
+                    ChartType = SeriesChartType.Column,
+                    XValueType = ChartValueType.String,
                     YValueType = ChartValueType.Double,
                     BorderWidth = 3,
-                    MarkerStyle = MarkerStyle.Circle,
-                    MarkerSize = 8,
                     IsValueShownAsLabel = true,
                     LabelFormat = "C0",
                     ToolTip = "#VALY{C2}"
@@ -234,14 +255,15 @@ namespace CapaPresentacion
 
                 foreach (var dato in ingresosPorMes)
                 {
-                    serieIngresos.Points.AddXY(dato.Periodo, (double)dato.TotalLiquidado);
+                    serieIngresos.Points.AddXY(dato.Periodo.ToString("MMM yyyy"), (double)dato.TotalLiquidado);
                 }
 
                 chartIngresos.Series.Add(serieIngresos);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error cargando gráfico de liquidaciones: " + ex.Message, "Error Gráfico", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Error cargando gráfico de liquidaciones: " + ex.Message,
+                    "Error Gráfico", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 if (this.chartIngresos != null)
                 {
                     chartIngresos.Series.Clear();
@@ -251,10 +273,9 @@ namespace CapaPresentacion
             }
         }
 
-        // Carga la grilla de Top 10 Clientes
         private void CargarGridClientesFrecuentes(DateTime desde, DateTime hasta)
         {
-            if (this.dgvClientesFrecuentes == null) return; // Seguridad
+            if (this.dgvClientesFrecuentes == null) return;
 
             try
             {
@@ -268,14 +289,14 @@ namespace CapaPresentacion
                     .Select(g => new
                     {
                         IdCliente = g.Key,
-                        NombreCliente = clientesDict.ContainsKey(g.Key) ? clientesDict[g.Key].ApellidoNombreDNI : $"ID: {g.Key}", // Usa ApellidoNombreDNI
+                        NombreCliente = clientesDict.ContainsKey(g.Key) ?
+                            clientesDict[g.Key].ApellidoNombreDNI : $"ID: {g.Key}",
                         CantidadAsistencias = g.Count()
                     })
                     .OrderByDescending(x => x.CantidadAsistencias)
                     .Take(10)
                     .ToList();
 
-                // Configuración de la grilla
                 dgvClientesFrecuentes.DataSource = null;
                 dgvClientesFrecuentes.AutoGenerateColumns = false;
                 dgvClientesFrecuentes.Columns.Clear();
@@ -293,12 +314,13 @@ namespace CapaPresentacion
                     HeaderText = "Asistencias",
                     Name = "colAsistencias",
                     AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells,
-                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter }
+                    DefaultCellStyle = new DataGridViewCellStyle
+                    {
+                        Alignment = DataGridViewContentAlignment.MiddleCenter
+                    }
                 });
 
                 dgvClientesFrecuentes.DataSource = topClientes;
-
-                // Estilos
                 dgvClientesFrecuentes.ReadOnly = true;
                 dgvClientesFrecuentes.AllowUserToAddRows = false;
                 dgvClientesFrecuentes.AllowUserToDeleteRows = false;
@@ -307,18 +329,23 @@ namespace CapaPresentacion
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error cargando clientes frecuentes: " + ex.Message, "Error Grilla", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                if (this.dgvClientesFrecuentes != null) dgvClientesFrecuentes.DataSource = null;
+                MessageBox.Show("Error cargando clientes frecuentes: " + ex.Message,
+                    "Error Grilla", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (this.dgvClientesFrecuentes != null)
+                    dgvClientesFrecuentes.DataSource = null;
             }
         }
 
-        // Carga el gráfico de Rendimiento de Profesionales
         private void CargarGraficoRendimientoProfesionales(DateTime desde, DateTime hasta)
         {
-            if (this.chartRendimientoProf == null) return; // Seguridad
+            if (this.chartRendimientoProf == null) return;
 
             try
             {
+                chartRendimientoProf.Series.Clear();
+                chartRendimientoProf.Titles.Clear();
+                chartRendimientoProf.Legends.Clear();
+
                 var liquidacionesPeriodo = bllLiquidacion.Buscar(null, desde.Date, hasta.Date);
                 var profesionalesDict = bllProfesional.Listar().ToDictionary(p => p.Id);
 
@@ -327,20 +354,33 @@ namespace CapaPresentacion
                     .Select(g => new
                     {
                         IdProfesional = g.Key,
-                        NombreProfesional = profesionalesDict.ContainsKey(g.Key) ? profesionalesDict[g.Key].ApellidoNombre : $"ID: {g.Key}", // Usa ApellidoNombre
+                        NombreProfesional = profesionalesDict.ContainsKey(g.Key) ?
+                            profesionalesDict[g.Key].ApellidoNombre : $"ID: {g.Key}",
                         MontoTotalGenerado = g.Sum(l => l.MontoTotal),
-                        TurnosDictados = g.Sum(l => l.TurnosLiquidados?.Count ?? 0) // Suma los turnos
+                        TurnosDictados = g.Sum(l => l.TurnosLiquidados?.Count ?? 0)
                     })
                     .OrderByDescending(x => x.MontoTotalGenerado)
                     .ToList();
 
-                // Limpiar gráfico
-                chartRendimientoProf.Series.Clear();
-                chartRendimientoProf.Titles.Clear();
-                chartRendimientoProf.Legends.Clear();
-
                 chartRendimientoProf.Titles.Add($"Rendimiento por Profesional ({desde:dd/MM} - {hasta:dd/MM})");
+
                 ChartArea areaRendimiento = chartRendimientoProf.ChartAreas[0];
+                areaRendimiento.AxisX.Minimum = Double.NaN;
+                areaRendimiento.AxisX.Maximum = Double.NaN;
+                areaRendimiento.AxisY.Minimum = Double.NaN;
+                areaRendimiento.AxisY.Maximum = Double.NaN;
+                areaRendimiento.AxisY2.Minimum = Double.NaN;
+                areaRendimiento.AxisY2.Maximum = Double.NaN;
+                areaRendimiento.AxisX.Interval = Double.NaN;
+                areaRendimiento.AxisY.Interval = Double.NaN;
+                areaRendimiento.AxisY2.Interval = Double.NaN;
+
+                if (!rendimiento.Any())
+                {
+                    chartRendimientoProf.Titles.Add("No hay datos de rendimiento para este período.");
+                    return; 
+                }
+
                 areaRendimiento.AxisX.Title = "Profesional";
                 areaRendimiento.AxisY.Title = "Monto Liquidado ($)";
                 areaRendimiento.AxisY.LabelStyle.Format = "C0";
@@ -348,6 +388,7 @@ namespace CapaPresentacion
                 areaRendimiento.AxisX.LabelStyle.Angle = -45;
                 areaRendimiento.AxisX.MajorGrid.Enabled = false;
                 areaRendimiento.AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dot;
+                areaRendimiento.AxisY.Minimum = 0;
 
                 // Configurar Eje Y Secundario
                 areaRendimiento.AxisY2.Enabled = AxisEnabled.True;
@@ -364,20 +405,20 @@ namespace CapaPresentacion
                     LabelFormat = "C0",
                     ToolTip = "#VALY{C2}"
                 };
+
                 var serieTurnos = new Series("Turnos Dictados")
                 {
-                    ChartType = SeriesChartType.Line,
+                    ChartType = SeriesChartType.Spline,
                     YAxisType = AxisType.Secondary,
                     BorderWidth = 3,
                     MarkerStyle = MarkerStyle.Circle,
                     MarkerSize = 7,
-                    Color = Color.FromArgb(255, 128, 0), // Naranja oscuro
+                    Color = Color.FromArgb(255, 128, 0),
                     IsValueShownAsLabel = true,
                     LabelFormat = "N0",
                     ToolTip = "#VALY Turnos"
                 };
 
-                // Añadir datos
                 foreach (var dato in rendimiento)
                 {
                     serieMonto.Points.AddXY(dato.NombreProfesional, (double)dato.MontoTotalGenerado);
@@ -391,7 +432,8 @@ namespace CapaPresentacion
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error cargando gráfico de rendimiento: " + ex.Message, "Error Gráfico", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Error cargando gráfico de rendimiento: " + ex.Message,
+                    "Error Gráfico", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 if (this.chartRendimientoProf != null)
                 {
                     chartRendimientoProf.Series.Clear();
@@ -400,5 +442,45 @@ namespace CapaPresentacion
                 }
             }
         }
+
+        #region Filtros Rápidos
+
+        private void btnFiltroHoy_Click(object sender, EventArgs e)
+        {
+            dtpDesde.Value = DateTime.Today;
+            dtpHasta.Value = DateTime.Today;
+            CargarDashboard();
+        }
+
+        private void btnFiltroAyer_Click(object sender, EventArgs e)
+        {
+            dtpDesde.Value = DateTime.Today.AddDays(-1);
+            dtpHasta.Value = DateTime.Today.AddDays(-1);
+            CargarDashboard();
+        }
+
+        private void btnFiltroUltimos7Dias_Click(object sender, EventArgs e)
+        {
+            dtpDesde.Value = DateTime.Today.AddDays(-6);
+            dtpHasta.Value = DateTime.Today;
+            CargarDashboard();
+        }
+
+        private void btnFiltroMesActual_Click(object sender, EventArgs e)
+        {
+            var today = DateTime.Today;
+            dtpDesde.Value = new DateTime(today.Year, today.Month, 1);
+            dtpHasta.Value = today;
+            CargarDashboard();
+        }
+
+        private void btnFiltroUltimoMes_Click(object sender, EventArgs e)
+        {
+            dtpDesde.Value = DateTime.Today.AddDays(-29);
+            dtpHasta.Value = DateTime.Today;
+            CargarDashboard();
+        }
+
+        #endregion
     }
 }

@@ -4,7 +4,7 @@ namespace BE
 {
     public class BECliente
     {
-        public int Id { get; set; } // Identificador único
+        public int Id { get; set; } 
         public string DNI { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
@@ -22,7 +22,7 @@ namespace BE
         {
             get
             {
-                if (Id == 0) return Apellido; // Para el item "[Seleccione Cliente]"
+                if (Id == 0) return Apellido; 
                 return $"{Apellido}, {Nombre} ({DNI})";
             }
         }

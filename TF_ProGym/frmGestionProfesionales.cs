@@ -24,7 +24,6 @@ namespace CapaPresentacion
             InitializeComponent();
         }
 
-        // Carga inicial del formulario, DGV y Carga de Actividades
         private void frmGestionProfesionales_Load(object sender, EventArgs e)
         {
             dgvProfesionales.AutoGenerateColumns = true;
@@ -70,7 +69,7 @@ namespace CapaPresentacion
             }
         }
 
-        // Carga la grilla de profesionales, opcionalmente filtrada
+        // Carga la grilla de profesionales
         private void CargarGrilla(string filtro = null)
         {
             try
@@ -191,7 +190,7 @@ namespace CapaPresentacion
             LimpiarCamposYSeleccion();
         }
 
-        // Valida y guarda un profesional (nuevo o existente) en la base de datos
+        // Valida y guarda un profesional (nuevo o existente) 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try

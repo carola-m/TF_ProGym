@@ -1,10 +1,6 @@
 ﻿using BE;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Xml.Linq;
-using XmlHelper;
+
 
 namespace MPP
 {
@@ -61,7 +57,5 @@ namespace MPP
             return ListarDefiniciones().FirstOrDefault(p => p.Id == id);
         }
 
-        // NO hay método Guardar/Eliminar aquí, la definición de permisos se maneja manualmente en el XML
-        // o a través de una herramienta de configuración separada.
     }
 }

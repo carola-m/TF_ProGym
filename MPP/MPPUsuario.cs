@@ -1,21 +1,15 @@
 ﻿using BE;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text; // <--- Añade este using
+using System.Text; 
 using System.Xml.Linq;
-using XmlHelper;
+
 
 namespace MPP
 {
     public class MPPUsuario
     {
-        private readonly string archivo; // = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "datos", "Usuarios.xml");
-        private readonly string archivoUsuarioRol; // = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "datos", "UsuarioRol.xml");
+        private readonly string archivo; 
+        private readonly string archivoUsuarioRol;
         private readonly XmlHelper.XmlHelper xmlHelper;
-
-        // En MPP/MPPUsuario.cs
 
         public MPPUsuario()
         {
@@ -27,7 +21,6 @@ namespace MPP
             archivo = Path.Combine(dataDirectory, "Usuarios.xml");
             archivoUsuarioRol = Path.Combine(dataDirectory, "UsuarioRol.xml");
 
-            // Asegura que la carpeta 'datos' exista y los archivos
             xmlHelper.AsegurarArchivoXml("Usuarios.xml", "Usuarios");
             xmlHelper.AsegurarArchivoXml("UsuarioRol.xml", "UsuarioRoles");
 
@@ -35,16 +28,14 @@ namespace MPP
             var doc = xmlHelper.CargarXml(archivo);
             if (doc.Root != null && !doc.Root.HasElements)
             {
-                // --- INICIO DE CORRECCIÓN (Encriptación Base64) ---
                 string adminPasswordPlana = "admin";
 
-                // CORRECCIÓN: Hacemos la encriptación aquí mismo, sin llamar a BLL
                 string adminPasswordBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(adminPasswordPlana));
 
                 var adminUser = new XElement("Usuario",
                     new XElement("Id", 1),
                     new XElement("NombreUsuario", "admin"),
-                    new XElement("Password", adminPasswordBase64), // Guarda la clave en Base64
+                    new XElement("Password", adminPasswordBase64), 
                     new XElement("DebeCambiarPassword", false),
                     new XElement("Activo", true));
 
@@ -66,7 +57,7 @@ namespace MPP
             var doc = xmlHelper.CargarXml(archivo);
             if (doc.Root == null) return new List<BEUsuario>();
 
-            return doc.Root.Elements("Usuario") // Cambiado de Descendants a Elements
+            return doc.Root.Elements("Usuario") 
                          .Select(u => MapearElementoAUsuario(u))
                          .ToList();
         }
@@ -91,7 +82,6 @@ namespace MPP
             if (existente != null) // Actualizar
             {
                 existente.SetElementValue("NombreUsuario", usuario.NombreUsuario);
-                // BLLSeguridad ya debe pasar la contraseña encriptada (Base64)
                 if (!string.IsNullOrEmpty(usuario.Password))
                 {
                     existente.SetElementValue("Password", usuario.Password);
@@ -109,7 +99,7 @@ namespace MPP
                 root.Add(new XElement("Usuario",
                     new XElement("Id", usuario.Id),
                     new XElement("NombreUsuario", usuario.NombreUsuario),
-                    new XElement("Password", usuario.Password), // BLL debe pasarla encriptada (Base64)
+                    new XElement("Password", usuario.Password), 
                     new XElement("DebeCambiarPassword", usuario.DebeCambiarPassword),
                     new XElement("Activo", usuario.Activo)
                  ));
@@ -117,7 +107,7 @@ namespace MPP
             xmlHelper.GuardarXml(doc, archivo);
         }
 
-        public void Eliminar(int idUsuario) // Baja lógica
+        public void Eliminar(int idUsuario) 
         {
             var usuario = BuscarPorId(idUsuario);
             if (usuario != null)
@@ -126,7 +116,7 @@ namespace MPP
                 {
                     throw new InvalidOperationException("No se puede eliminar al usuario administrador.");
                 }
-                usuario.Activo = false; // Baja lógica
+                usuario.Activo = false; 
                 Guardar(usuario);
             }
         }

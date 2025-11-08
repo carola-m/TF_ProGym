@@ -1,12 +1,8 @@
 ﻿using BE;
 using MPP;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System.IO;
-using System.Diagnostics;
+
 
 namespace BLL
 {
@@ -219,7 +215,6 @@ namespace BLL
                     doc.Add(Chunk.NEWLINE);
 
                     // --- Línea Separadora ---
-                    //doc.Add(new iTextSharp.text.pdf.draw.PdfLineSeparator(0.5f, 100, BaseColor.GRAY, Element.ALIGN_CENTER, 1));
                     doc.Add(Chunk.NEWLINE);
 
                     // --- Detalle de Turnos ---
@@ -227,7 +222,7 @@ namespace BLL
 
                     if (liquidacion.TurnosLiquidados.Any())
                     {
-                        PdfPTable tablaDetalle = new PdfPTable(3); // Fecha, Actividad, Valor
+                        PdfPTable tablaDetalle = new PdfPTable(3);
                         tablaDetalle.WidthPercentage = 100;
                         tablaDetalle.SetWidths(new float[] { 30f, 50f, 20f });
 

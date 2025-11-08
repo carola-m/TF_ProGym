@@ -29,7 +29,6 @@ namespace MPP
                 var doc = new XDocument(new XElement("Turnos"));
                 doc.Save(archivo);
             }
-            // Asegurarse de que los archivos referenciados existan
             if (!File.Exists(archivoActividades)) new XDocument(new XElement("Actividades")).Save(archivoActividades);
             if (!File.Exists(archivoProfesionales)) new XDocument(new XElement("Profesionales")).Save(archivoProfesionales);
             if (!File.Exists(archivoClientes)) new XDocument(new XElement("Clientes")).Save(archivoClientes);
@@ -59,7 +58,7 @@ namespace MPP
             if (!docProfesionales.Descendants("Profesional").Any(p => (int?)p.Element("Id") == turno.IdProfesional))
                 throw new KeyNotFoundException($"El Profesional con Id {turno.IdProfesional} no existe.");
 
-            // Validar Clientes inscritos (si hay alguno)
+            // Validar Clientes inscritos 
             if (turno.IdClientesInscritos.Any())
             {
                 var docClientes = XDocument.Load(archivoClientes);
@@ -70,7 +69,6 @@ namespace MPP
                         throw new KeyNotFoundException($"El Cliente con Id {idCliente} no existe.");
                 }
             }
-            // --- Fin Validaciones ---
 
 
             var existente = root.Elements("Turno").FirstOrDefault(x => (int?)x.Element("Id") == turno.Id);
@@ -84,9 +82,8 @@ namespace MPP
             {
                 existente.SetElementValue("IdActividad", turno.IdActividad);
                 existente.SetElementValue("IdProfesional", turno.IdProfesional);
-                existente.SetElementValue("FechaHoraInicio", turno.FechaHoraInicio.ToString("o")); // Formato ISO 8601
+                existente.SetElementValue("FechaHoraInicio", turno.FechaHoraInicio.ToString("o"));
                 existente.SetElementValue("FechaHoraFin", turno.FechaHoraFin.ToString("o"));
-                // Reemplazar la lista de clientes
                 existente.Element("IdClientesInscritos")?.Remove();
                 existente.Add(nodoClientes);
 
@@ -100,7 +97,7 @@ namespace MPP
                     new XElement("IdProfesional", turno.IdProfesional),
                     new XElement("FechaHoraInicio", turno.FechaHoraInicio.ToString("o")),
                     new XElement("FechaHoraFin", turno.FechaHoraFin.ToString("o")),
-                    nodoClientes // Agregar la lista de clientes
+                    nodoClientes 
                 );
                 root.Add(nuevo);
             }
@@ -116,7 +113,6 @@ namespace MPP
             // Precargar datos relacionados para eficiencia
             var actividades = new MPPActividad().Listar().ToDictionary(a => a.Id);
             var profesionales = new MPPProfesional().Listar().ToDictionary(p => p.Id);
-            // Clientes podrían cargarse bajo demanda si son muchos
 
             foreach (var nodo in doc.Descendants("Turno"))
             {
@@ -149,7 +145,6 @@ namespace MPP
 
         public void Eliminar(int idTurno)
         {
-            // Podrías añadir validación: No eliminar si ya pasó o si tiene asistencias registradas.
             var doc = XDocument.Load(archivo);
             var turno = doc.Descendants("Turno").FirstOrDefault(t => (int?)t.Element("Id") == idTurno);
             turno?.Remove();
@@ -158,7 +153,6 @@ namespace MPP
 
         public BETurno BuscarPorId(int id)
         {
-            // Similar a Listar pero buscando uno solo y cargando relaciones
             if (!File.Exists(archivo)) return null;
             var doc = XDocument.Load(archivo);
             var nodo = doc.Descendants("Turno").FirstOrDefault(t => (int?)t.Element("Id") == id);
@@ -178,10 +172,8 @@ namespace MPP
                                            .Where(idC => idC != 0)
                                            .ToList() ?? new List<int>()
                 };
-                // Cargar relaciones
                 turno.Actividad = new MPPActividad().BuscarPorId(turno.IdActividad);
                 turno.Profesional = new MPPProfesional().BuscarPorId(turno.IdProfesional);
-                // Clientes podrían cargarse si es necesario
                 return turno;
             }
             return null;
@@ -195,7 +187,7 @@ namespace MPP
             if (turno.Actividad == null) throw new InvalidOperationException("El turno no tiene una actividad asociada válida.");
 
             // Validar si el cliente existe
-            var cliente = new MPPCliente().Listar().FirstOrDefault(c => c.Id == idCliente); // O un método BuscarPorId si lo tienes
+            var cliente = new MPPCliente().Listar().FirstOrDefault(c => c.Id == idCliente); 
             if (cliente == null) throw new KeyNotFoundException("Cliente no encontrado.");
 
 

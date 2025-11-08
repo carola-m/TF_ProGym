@@ -91,13 +91,11 @@ namespace MPP
                         new XAttribute("NombreInterno", (string)permElem.Attribute("NombreInterno"))
                     ));
                 }
-
-                // El nodo 'permisosAdmin' debe estar DENTRO del nodo 'Rol'
                 docRolPerm.Root.Add(new XElement("RolPermiso",
                     new XElement("Rol",
                         new XElement("Id", adminId),
                         new XElement("Nombre", "Administrador"),
-                        permisosAdmin  // <--- ESTA ES LA POSICIÓN CORRECTA
+                        permisosAdmin
                     )
                 ));
 
@@ -134,7 +132,7 @@ namespace MPP
         {
             if (!File.Exists(rolFilePath)) return new List<BERol>();
             var doc = XDocument.Load(rolFilePath);
-            return doc.Root.Elements("Rol") // Cambiado de Descendants
+            return doc.Root.Elements("Rol") 
                       .Select(r => new BERol
                       {
                           Id = (int?)r.Element("Id") ?? 0,
@@ -237,7 +235,7 @@ namespace MPP
                 new XElement("Rol",
                     new XElement("Id", idRol),
                     new XElement("Nombre", nombreRol),
-                    permisosElement // <-- Añade el nodo de permisos DENTRO de 'Rol'
+                    permisosElement 
                 )
             );
 
@@ -246,7 +244,6 @@ namespace MPP
         }
 
         // Obtiene el Rol con su lista de permisos cargada
-        // En MPP/MPPRol.cs
 
         public BERol ObtenerRolConPermisos(int idRol)
         {
@@ -261,7 +258,6 @@ namespace MPP
 
                 if (rolPermisoElement != null)
                 {
-                    // Se busca "Permisos" DENTRO de "Rol"
                     var permisosGuardados = rolPermisoElement.Element("Rol")?.Element("Permisos")?.Elements("Permiso") ?? Enumerable.Empty<XElement>();
 
                     var nombresInternosPermisos = permisosGuardados.Select(p => (string)p.Attribute("NombreInterno")).ToList();

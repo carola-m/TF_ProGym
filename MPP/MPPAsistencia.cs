@@ -1,11 +1,6 @@
 ﻿using BE;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Xml.Linq;
-using XmlHelper;
 
 namespace MPP
 {
@@ -53,16 +48,14 @@ namespace MPP
             else // Si no existe, es un nuevo registro
             {
                 // --- Validaciones de existencia de IDs referenciados ---
-                // (Podrían hacerse en BLL también)
                 var mppTurno = new MPPTurno(); // Para verificar si el turno existe
                 if (mppTurno.BuscarPorId(asistencia.IdTurno) == null)
                     throw new KeyNotFoundException($"El Turno con Id {asistencia.IdTurno} no existe.");
 
                 var mppCliente = new MPPCliente(); // Para verificar si el cliente existe
-                if (mppCliente.Listar().All(c => c.Id != asistencia.IdCliente)) // O BuscarPorId
+                if (mppCliente.Listar().All(c => c.Id != asistencia.IdCliente)) 
                     throw new KeyNotFoundException($"El Cliente con Id {asistencia.IdCliente} no existe.");
-                // --- Fin Validaciones ---
-
+        
 
                 asistencia.Id = ObtenerNuevoId(root); // Asignar nuevo ID
                 XElement nuevo = new XElement("Asistencia",
@@ -84,11 +77,6 @@ namespace MPP
             if (!File.Exists(archivo)) return lista;
             var doc = XDocument.Load(archivo);
 
-            // Podrías precargar turnos y clientes si necesitas los objetos completos aquí
-            // var turnos = new MPPTurno().Listar().ToDictionary(t => t.Id);
-            // var clientes = new MPPCliente().Listar().ToDictionary(c => c.Id);
-
-
             foreach (var nodo in doc.Descendants("Asistencia"))
             {
                 var asistencia = new BEAsistencia
@@ -99,10 +87,6 @@ namespace MPP
                     FechaHoraRegistro = DateTime.ParseExact((string)nodo.Element("FechaHoraRegistro"), "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                     Presente = (bool?)nodo.Element("Presente") ?? false
                 };
-
-                // Si precargaste datos, puedes asignarlos aquí:
-                // if (turnos.ContainsKey(asistencia.IdTurno)) asistencia.Turno = turnos[asistencia.IdTurno];
-                // if (clientes.ContainsKey(asistencia.IdCliente)) asistencia.Cliente = clientes[asistencia.IdCliente];
 
 
                 lista.Add(asistencia);
@@ -119,7 +103,6 @@ namespace MPP
             doc.Save(archivo);
         }
 
-        // Métodos adicionales útiles:
         public List<BEAsistencia> ListarPorTurno(int idTurno)
         {
             return Listar().Where(a => a.IdTurno == idTurno).ToList();

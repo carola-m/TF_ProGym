@@ -1,29 +1,27 @@
 ﻿using BE;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 
 namespace Services
 {
     public sealed class Session // Sealed para prevenir herencia
     {
-        // Instancia única (Singleton) - Volatile asegura visibilidad entre hilos
+        // Instancia única (Singleton) 
         private static volatile Session instancia;
         private static readonly object lockObj = new object(); // Objeto para bloqueo
 
-        // Propiedades de la sesión (privadas para escritura externa)
+        // Propiedades de la sesión 
         public BEUsuario UsuarioLogueado { get; private set; }
         public List<BEPermisoComponent> PermisosUsuario { get; private set; } // Lista consolidada de permisos simples
 
         // Constructor privado para evitar instanciación externa
         private Session() { }
 
-        // Propiedad estática para acceder a la instancia única (Double-Checked Locking)
+        // Propiedad estática para acceder a la instancia única 
         public static Session ObtenerInstancia
         {
             get
             {
-                // Primera verificación (sin bloqueo) para rendimiento
+                // Primera verificación (sin bloqueo)
                 if (instancia == null)
                 {
                     // Bloqueo solo si la instancia es nula
@@ -57,8 +55,8 @@ namespace Services
         {
             this.UsuarioLogueado = null;
             this.PermisosUsuario = null;
-            // Opcional: Destruir la instancia singleton si se requiere un reinicio completo
-            // instancia = null;
+            // Destruir la instancia singleton si se requiere un reinicio completo
+            instancia = null;
         }
 
         // Método para verificar si el usuario logueado tiene un permiso específico por su NombreInterno
@@ -71,12 +69,12 @@ namespace Services
                 return false;
             }
 
-            // Busca si algún permiso en la lista del usuario coincide con el NombreInterno (ignorando mayúsculas/minúsculas)
+            // Busca si algún permiso en la lista del usuario coincide con el NombreInterno 
             return PermisosUsuario.Any(p => p.NombreInterno != null &&
                                             p.NombreInterno.Equals(nombreInternoPermiso, StringComparison.OrdinalIgnoreCase));
         }
 
-        // Propiedad para verificar rápidamente si hay una sesión activa
+        // Propiedad para verificar si hay una sesión activa
         public bool IsLoggedIn => UsuarioLogueado != null;
     }
 }

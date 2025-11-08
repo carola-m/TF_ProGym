@@ -1,10 +1,6 @@
-﻿using BE;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿
 using System.Xml.Linq;
-using XmlHelper;
+
 
 namespace MPP
 {
@@ -12,7 +8,6 @@ namespace MPP
     {
         private readonly string archivo = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "datos", "UsuarioRol.xml");
         private readonly XmlHelper.XmlHelper xmlHelper;
-        // Rutas para validación
         private readonly string archivoUsuarios = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "datos", "Usuarios.xml");
         private readonly string archivoRoles = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "datos", "Roles.xml");
 
@@ -41,9 +36,7 @@ namespace MPP
             var docRoles = XDocument.Load(archivoRoles);
             if (!docRoles.Root.Elements("Rol").Any(r => (int?)r.Element("Id") == idRol))
                 throw new KeyNotFoundException($"Rol con Id {idRol} no encontrado.");
-            // --- Fin Validaciones ---
-
-
+ 
             var doc = XDocument.Load(archivo);
             var root = doc.Element("UsuarioRoles");
 
@@ -59,7 +52,7 @@ namespace MPP
                 ));
                 doc.Save(archivo);
             }
-            // else { podrías lanzar excepción o ignorar si ya existe }
+    
         }
 
         // Desasocia un usuario de un rol específico

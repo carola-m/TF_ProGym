@@ -28,18 +28,18 @@ namespace BLL
             if (turno.IdActividad <= 0) throw new ArgumentException("Debe seleccionar una Actividad válida.");
             if (turno.IdProfesional <= 0) throw new ArgumentException("Debe seleccionar un Profesional válido.");
             if (turno.FechaHoraInicio >= turno.FechaHoraFin) throw new ArgumentException("La fecha/hora de inicio debe ser anterior a la fecha/hora de fin.");
-            if (turno.FechaHoraInicio < DateTime.Now && turno.Id == 0) throw new ArgumentException("No se pueden crear turnos en el pasado."); // Solo al crear
+            if (turno.FechaHoraInicio < DateTime.Now && turno.Id == 0) throw new ArgumentException("No se pueden crear turnos en el pasado."); 
 
-            // Validar existencia de Actividad y Profesional (ya se hace en MPP, pero puede hacerse aquí también)
+            // Validar existencia de Actividad y Profesional
             var actividad = mppActividad.BuscarPorId(turno.IdActividad);
             if (actividad == null) throw new KeyNotFoundException($"Actividad con ID {turno.IdActividad} no encontrada.");
 
             var profesional = mppProfesional.BuscarPorId(turno.IdProfesional);
             if (profesional == null) throw new KeyNotFoundException($"Profesional con ID {turno.IdProfesional} no encontrado.");
 
-            // Validar que el profesional pueda dictar esa actividad (si tienes esa lógica)
-            // if (!profesional.IdsActividadesPuedeDictar.Contains(turno.IdActividad))
-            //     throw new InvalidOperationException($"El profesional {profesional.Nombre} {profesional.Apellido} no está habilitado para dictar la actividad {actividad.Nombre}.");
+            // Validar que el profesional pueda dictar esa actividad 
+             if (!profesional.IdsActividadesPuedeDictar.Contains(turno.IdActividad))
+              throw new InvalidOperationException($"El profesional {profesional.Nombre} {profesional.Apellido} no está habilitado para dictar la actividad {actividad.Nombre}.");
 
 
             // Validar superposición de horarios para el MISMO profesional
@@ -53,17 +53,11 @@ namespace BLL
                 }
             }
 
-            // Validar que los clientes inscritos existan (ya se hace en MPP, redundante aquí si confías en MPP)
-
-
             // Validar cupo si se están agregando clientes directamente al guardar el turno
             if (turno.IdClientesInscritos.Count > actividad.CupoMaximo)
             {
                 throw new InvalidOperationException($"La cantidad de clientes inscritos ({turno.IdClientesInscritos.Count}) supera el cupo máximo ({actividad.CupoMaximo}) de la actividad.");
             }
-
-
-            // --- Fin Validaciones ---
 
             try
             {
@@ -71,14 +65,13 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                // Podrías loguear el error original ex
                 throw new Exception("Error al guardar el turno: " + ex.Message);
             }
         }
 
         public List<BETurno> Listar()
         {
-            // Carga los turnos y sus relaciones básicas (Actividad, Profesional)
+            // Carga los turnos y sus relaciones
             return mppTurno.Listar();
         }
 
@@ -94,7 +87,7 @@ namespace BLL
             }
 
             // Validar si tiene asistencias (necesitarías BLLAsistencia)
-            var bllAsistencia = new BLLAsistencia(); // Asume que existe
+            var bllAsistencia = new BLLAsistencia(); 
             if (bllAsistencia.ListarPorTurno(idTurno).Any())
             {
                 throw new InvalidOperationException("No se puede eliminar el turno porque ya tiene registros de asistencia asociados.");
@@ -116,10 +109,10 @@ namespace BLL
             // Validaciones de negocio
             var turno = BuscarPorId(idTurno);
             if (turno == null) throw new KeyNotFoundException("Turno no encontrado.");
-            if (turno.Actividad == null) throw new InvalidOperationException("El turno no tiene una actividad válida."); // Actividad debe estar cargada
+            if (turno.Actividad == null) throw new InvalidOperationException("El turno no tiene una actividad válida."); 
             if (turno.FechaHoraInicio <= DateTime.Now) throw new InvalidOperationException("No se puede reservar un turno que ya ha comenzado o finalizado.");
 
-            var cliente = mppCliente.Listar().FirstOrDefault(c => c.Id == idCliente); // O un mppCliente.BuscarPorId(idCliente);
+            var cliente = mppCliente.Listar().FirstOrDefault(c => c.Id == idCliente); 
             if (cliente == null) throw new KeyNotFoundException("Cliente no encontrado.");
             if (!cliente.MembresiaActiva) throw new InvalidOperationException("El cliente no tiene una membresía activa para reservar.");
 
@@ -142,17 +135,14 @@ namespace BLL
             // Validaciones de negocio
             var turno = BuscarPorId(idTurno);
             if (turno == null) throw new KeyNotFoundException("Turno no encontrado.");
-            // Podrías añadir una regla de tiempo límite para cancelar (ej. 24hs antes)
-            // if (turno.FechaHoraInicio <= DateTime.Now.AddHours(24))
-            //     throw new InvalidOperationException("No se puede cancelar la reserva con menos de 24 horas de anticipación.");
 
 
-            var cliente = mppCliente.Listar().FirstOrDefault(c => c.Id == idCliente); // O BuscarPorId
+            var cliente = mppCliente.Listar().FirstOrDefault(c => c.Id == idCliente); 
             if (cliente == null) throw new KeyNotFoundException("Cliente no encontrado.");
 
             if (!turno.IdClientesInscritos.Contains(idCliente)) throw new InvalidOperationException("El cliente no tiene una reserva en este turno.");
 
-            // Validar si ya se registró asistencia para este cliente en este turno (no se podría cancelar)
+            // Validar si ya se registró asistencia para este cliente en este turno
             var bllAsistencia = new BLLAsistencia();
             if (bllAsistencia.BuscarAsistenciaTurnoCliente(idTurno, idCliente) != null)
             {

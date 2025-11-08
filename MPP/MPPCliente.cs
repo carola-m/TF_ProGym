@@ -1,21 +1,15 @@
 ﻿using BE;
-using XmlHelper; 
-using System;
-using System.Collections.Generic;
 using System.Globalization; 
-using System.IO;
-using System.Linq;
 using System.Xml.Linq;
 
 namespace MPP
 {
     public class MPPCliente
     {
-        // Usa la ruta completa y el XmlHelper instanciado
-        private readonly string archivo; // Ruta completa al archivo XML
+        private readonly string archivo; 
         private readonly XmlHelper.XmlHelper xmlHelper;
 
-        // Constructor para inicializar el helper y la ruta
+ 
         public MPPCliente()
         {
             // Define la ruta base donde está la carpeta 'datos'
@@ -75,7 +69,6 @@ namespace MPP
                 existente.SetElementValue("Email", cliente.Email);
                 existente.SetElementValue("Telefono", cliente.Telefono);
                 existente.SetElementValue("MembresiaActiva", cliente.MembresiaActiva);
-                // FechaRegistro usualmente no se actualiza al editar
             }
             else
             {
@@ -89,7 +82,6 @@ namespace MPP
                     new XElement("Apellido", cliente.Apellido),
                     new XElement("Email", cliente.Email),
                     new XElement("Telefono", cliente.Telefono),
-                    // Guarda fecha en formato ISO 8601 recomendado para XML
                     new XElement("FechaRegistro", cliente.FechaRegistro.ToString("o", CultureInfo.InvariantCulture)),
                     new XElement("MembresiaActiva", cliente.MembresiaActiva)
                 );
@@ -101,10 +93,9 @@ namespace MPP
         }
 
         // Lista todos los clientes desde el XML
-        public List<BECliente> Listar() // Devuelve List<BECliente>
+        public List<BECliente> Listar() 
         {
             List<BECliente> lista = new List<BECliente>();
-            // Carga el documento XML usando el helper
             var doc = xmlHelper.CargarXml(archivo);
             // Verifica si el documento o el nodo raíz existen
             if (doc == null || doc.Root == null) return lista;
@@ -112,9 +103,9 @@ namespace MPP
 
             foreach (var nodo in doc.Root.Elements("Cliente")) // Itera sobre los elementos Cliente
             {
-                try // Añadir try-catch para evitar que un nodo mal formado rompa toda la carga
+                try 
                 {
-                    lista.Add(new BECliente // Crea BECliente
+                    lista.Add(new BECliente 
                     {
                         Id = (int?)nodo.Element("Id") ?? 0,
                         DNI = (string)nodo.Element("DNI"),
@@ -131,7 +122,6 @@ namespace MPP
                 {
                     // Informa sobre el nodo problemático si falla el parseo
                     Console.WriteLine($"Error al parsear nodo cliente (Id: {(int?)nodo.Element("Id") ?? -1}): {ex.Message}");
-                    // Puedes decidir si continuar o relanzar la excepción
                 }
             }
             return lista;
@@ -154,13 +144,12 @@ namespace MPP
                 // Guarda el documento modificado usando el helper
                 xmlHelper.GuardarXml(doc, archivo);
             }
-            // else { podrías lanzar una excepción si el cliente no se encuentra }
         }
 
         // Busca un cliente por DNI (ya lo tenías, revisado)
-        public BECliente BuscarPorDNI(string dni) // Usa BECliente
+        public BECliente BuscarPorDNI(string dni) 
         {
-            // Carga el documento XML usando el helper
+            // Carga el documento XML
             var doc = xmlHelper.CargarXml(archivo);
             // Verifica si el documento o el nodo raíz existen
             if (doc == null || doc.Root == null) return null;
@@ -171,7 +160,7 @@ namespace MPP
             {
                 try
                 {
-                    return new BECliente // Crea BECliente
+                    return new BECliente 
                     {
                         Id = (int?)nodo.Element("Id") ?? 0,
                         DNI = (string)nodo.Element("DNI"),
@@ -186,14 +175,14 @@ namespace MPP
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error al parsear nodo cliente encontrado por DNI '{dni}': {ex.Message}");
-                    return null; // Devuelve null si falla el parseo
+                    return null; 
                 }
             }
-            return null; // No encontrado
+            return null;
         }
 
-        // Busca un cliente por ID (añadido para consistencia)
-        public BECliente BuscarPorId(int id) // Usa BECliente
+        // Busca un cliente por ID 
+        public BECliente BuscarPorId(int id) 
         {
             var doc = xmlHelper.CargarXml(archivo);
             if (doc == null || doc.Root == null) return null;
@@ -204,7 +193,7 @@ namespace MPP
             {
                 try
                 {
-                    return new BECliente // Crea BECliente
+                    return new BECliente 
                     {
                         Id = (int?)nodo.Element("Id") ?? 0,
                         DNI = (string)nodo.Element("DNI"),
@@ -222,20 +211,8 @@ namespace MPP
                     return null;
                 }
             }
-            return null; // No encontrado
+            return null; 
         }
-
-        // Elimina los métodos ObtenerPorCodigo y ObtenerPorDNI si son redundantes con BuscarPorId y BuscarPorDNI
-        /*
-         public BECliente ObtenerPorCodigo(int codigo) // OJO: ¿Usas Codigo o Id como identificador principal? Usa Id consistentemente.
-         {
-             // Si Codigo es lo mismo que Id, usa BuscarPorId(codigo)
-             // Si Codigo es un campo diferente, necesitas buscar por ese campo:
-             // var nodo = doc.Root.Elements("Cliente").FirstOrDefault(c => (int?)c.Element("Codigo") == codigo);
-             // ... mapear nodo ...
-             return BuscarPorId(codigo); // Asumiendo que Codigo es el Id
-         }
-        */
 
     }
 }

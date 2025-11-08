@@ -1,14 +1,7 @@
 ﻿using BE;
 using BLL;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace CapaPresentacion
 {
@@ -29,22 +22,15 @@ namespace CapaPresentacion
         // Configuración inicial del formulario, DGV, y ComboBoxes
         private void frmGestionTurnos_Load(object sender, EventArgs e)
         {
-            // *** CORRECCIÓN DE ANCLAJES ***
-            // 1. Grid (dgvTurnosDia): Anclar Arriba, Izquierda, Derecha. NO Abajo.
+  
             this.dgvTurnosDia.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
-
-            // 2. GroupBox Izquierdo (gbDetalleTurno): Anclar Arriba, Abajo, Izquierda. NO Derecha.
-            //    (El 'Top' es relativo a su posición Y de 322)
             this.gbDetalleTurno.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
-
-            // 3. GroupBox Derecho (gbReservaCliente): Anclar Arriba, Abajo, Izquierda, Derecha.
-            //    (Se anclará al borde derecho del form y al borde izquierdo de gbDetalleTurno)
+       
             this.gbReservaCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            // *** FIN CORRECCIÓN DE ANCLAJES ***
+            | System.Windows.Forms.AnchorStyles.Right)));        
 
 
             dgvTurnosDia.AutoGenerateColumns = false;
@@ -55,8 +41,8 @@ namespace CapaPresentacion
             dgvTurnosDia.AllowUserToAddRows = false;
             dgvTurnosDia.AllowUserToDeleteRows = false;
             dgvTurnosDia.RowHeadersVisible = false;
-            dgvTurnosDia.BackgroundColor = Color.White; // Estilo Limpio
-            dgvTurnosDia.BorderStyle = BorderStyle.None; // Estilo Limpio
+            dgvTurnosDia.BackgroundColor = Color.White; 
+            dgvTurnosDia.BorderStyle = BorderStyle.None; 
 
             dtpHoraInicio.Format = DateTimePickerFormat.Custom;
             dtpHoraInicio.CustomFormat = "HH:mm";
@@ -91,7 +77,7 @@ namespace CapaPresentacion
             dgvTurnosDia.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCupos", DataPropertyName = "CuposInfo", HeaderText = "Cupos (Ocup/Max)", Width = 120 });
         }
 
-        // Carga el ComboBox de actividades (y añade "Seleccione")
+        // Carga el ComboBox de actividades
         private void CargarComboActividades()
         {
             try
@@ -107,7 +93,7 @@ namespace CapaPresentacion
             catch (Exception ex) { MessageBox.Show("Error cargando actividades: " + ex.Message); }
         }
 
-        // Carga el ComboBox de profesionales (y añade "Seleccione")
+        // Carga el ComboBox de profesionales 
         private void CargarComboProfesionales()
         {
             try
@@ -123,7 +109,7 @@ namespace CapaPresentacion
             catch (Exception ex) { MessageBox.Show("Error cargando profesionales: " + ex.Message); }
         }
 
-        // Carga el ComboBox de clientes (y añade "Seleccione")
+        // Carga el ComboBox de clientes 
         private void CargarComboClientes()
         {
             try

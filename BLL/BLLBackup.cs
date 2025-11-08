@@ -1,8 +1,8 @@
-﻿// BLL/BLLBackup.cs
+﻿
 using System;
 using System.IO;
 using System.Linq;
-// No necesita BE directamente, pero sí BLLBitacora
+
 
 namespace BLL
 {
@@ -30,12 +30,8 @@ namespace BLL
                                              .Where(f => !Path.GetFileName(f).Equals(bitacoraFileName, StringComparison.OrdinalIgnoreCase));
 
                 if (!archivosACopiar.Any())
-                {
-                    // Si no hay archivos de datos, igual registra el intento? O lanza error?
-                    // Por ahora, solo registramos que no había archivos.
+                {              
                     bllBitacora.Registrar("Backup Intento (Sin archivos)", nombreBackup);
-                    // Limpiar carpeta creada si está vacía? Opcional.
-                    // Directory.Delete(carpetaDestino);
                     throw new InvalidOperationException("No se encontraron archivos de datos (.xml) para realizar el backup.");
                 }
 
@@ -44,7 +40,7 @@ namespace BLL
                 {
                     string nombreArchivo = Path.GetFileName(archivoOrigen);
                     string rutaDestinoArchivo = Path.Combine(carpetaDestino, nombreArchivo);
-                    File.Copy(archivoOrigen, rutaDestinoArchivo, true); // true = sobrescribir si existe (poco probable aquí)
+                    File.Copy(archivoOrigen, rutaDestinoArchivo, true);
                 }
 
                 // Registrar éxito en Bitácora
@@ -55,9 +51,8 @@ namespace BLL
             catch (Exception ex)
             {
                 // Registrar error en Bitácora
-                bllBitacora.Registrar($"Backup Fallido: {ex.Message}", nombreBackup);
-                // Limpiar carpeta destino si falló? Podría dejar archivos parciales.
-                try { if (Directory.Exists(carpetaDestino)) Directory.Delete(carpetaDestino, true); } catch { /* Ignorar error al limpiar */ }
+                bllBitacora.Registrar($"Backup Fallido: {ex.Message}", nombreBackup);          
+                try { if (Directory.Exists(carpetaDestino)) Directory.Delete(carpetaDestino, true); }catch { /* Ignorar error al limpiar */ }
 
                 // Relanzar la excepción para informar a la UI
                 throw new Exception($"Error al realizar el backup: {ex.Message}", ex);

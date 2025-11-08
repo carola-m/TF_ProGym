@@ -24,17 +24,17 @@ namespace BLL
             // --- Validaciones ---
             var turno = mppTurno.BuscarPorId(idTurno);
             if (turno == null) throw new KeyNotFoundException("Turno no encontrado.");
-            // Opcional: Validar que el turno sea del día actual o pasado reciente para registrar asistencia
-            // if (turno.FechaHoraInicio.Date > DateTime.Today)
-            //     throw new InvalidOperationException("No se puede registrar asistencia para un turno futuro.");
+            // Validar que el turno sea del día actual o pasado reciente para registrar asistencia
+            if (turno.FechaHoraInicio.Date > DateTime.Today)
+                 throw new InvalidOperationException("No se puede registrar asistencia para un turno futuro.");
 
 
-            var cliente = mppCliente.Listar().FirstOrDefault(c => c.Id == idCliente); // o BuscarPorId
+            var cliente = mppCliente.Listar().FirstOrDefault(c => c.Id == idCliente); 
             if (cliente == null) throw new KeyNotFoundException("Cliente no encontrado.");
 
-            // Validar que el cliente estuviera inscrito en el turno (si es requerido)
-            // if (!turno.IdClientesInscritos.Contains(idCliente))
-            //     throw new InvalidOperationException("El cliente no estaba inscrito en este turno.");
+            // Validar que el cliente estuviera inscrito en el turno 
+             if (!turno.IdClientesInscritos.Contains(idCliente))
+                 throw new InvalidOperationException("El cliente no estaba inscrito en este turno.");
 
 
             // Verificar si ya existe un registro para actualizarlo o crear uno nuevo
@@ -71,7 +71,6 @@ namespace BLL
 
         public List<BEAsistencia> Listar()
         {
-            // Podría añadir lógica para cargar los objetos Turno y Cliente si es necesario
             return mppAsistencia.Listar();
         }
 
@@ -101,8 +100,6 @@ namespace BLL
 
         public void Eliminar(int idAsistencia)
         {
-            // Considerar si se debe permitir eliminar registros de asistencia
-            // Podría requerir permisos especiales o solo permitir en ciertos casos
             mppAsistencia.Eliminar(idAsistencia);
         }
     }

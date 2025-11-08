@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿
 using System.Xml.Linq;
 
 namespace XmlHelper
@@ -11,7 +10,6 @@ namespace XmlHelper
 
         public XmlHelper()
         {
-            // Asegura que la carpeta 'datos' exista al instanciar
             Directory.CreateDirectory(basePath);
         }
 
@@ -28,9 +26,7 @@ namespace XmlHelper
                 }
                 catch (IOException ex)
                 {
-                    // Manejar posible error de escritura (permisos, etc.)
                     Console.WriteLine($"Error al crear archivo XML inicial '{filePath}': {ex.Message}");
-                    // Podrías relanzar la excepción o manejarla de otra forma
                     throw;
                 }
             }
@@ -43,8 +39,6 @@ namespace XmlHelper
             string directory = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(directory))
             {
-                // Podría intentar crearla o lanzar un error más específico
-                // Directory.CreateDirectory(directory);
                 throw new DirectoryNotFoundException($"El directorio '{directory}' para el archivo XML no existe.");
             }
 
@@ -60,14 +54,14 @@ namespace XmlHelper
                 {
                     // Manejar XML mal formado
                     Console.WriteLine($"Error al cargar XML mal formado '{filePath}': {ex.Message}");
-                    // Podrías intentar renombrar el archivo corrupto y crear uno nuevo, o lanzar excepción
+                    // intentar renombrar el archivo corrupto y crear uno nuevo
                     // File.Move(filePath, filePath + ".corrupt." + DateTime.Now.ToString("yyyyMMddHHmmss"));
                     // return new XDocument(new XElement(Path.GetFileNameWithoutExtension(filePath) + "s")); // Crear uno nuevo vacío
-                    throw; // Relanzar para que la capa superior maneje el error
+                    throw; 
                 }
                 catch (IOException ex)
                 {
-                    // Manejar error de lectura (archivo bloqueado, etc.)
+                    // Manejar error de lectura 
                     Console.WriteLine($"Error de IO al cargar archivo XML '{filePath}': {ex.Message}");
                     throw;
                 }
@@ -76,16 +70,15 @@ namespace XmlHelper
             else
             {
                 // Si el archivo no existe, devuelve un documento vacío con el nodo raíz esperado
-                // (asumiendo que el nombre del nodo raíz es el nombre del archivo sin extensión + "s")
                 string rootName = Path.GetFileNameWithoutExtension(filePath);
-                // Si el archivo esperado tiene un nombre raíz diferente, ajusta esta lógica
-                if (rootName.EndsWith("y")) // ej: Activity -> Activities
+                // Si el archivo esperado tiene un nombre raíz diferente
+                if (rootName.EndsWith("y")) 
                     rootName = rootName.Substring(0, rootName.Length - 1) + "ies";
-                else if (!rootName.EndsWith("s")) // ej: Turno -> Turnos
+                else if (!rootName.EndsWith("s")) 
                     rootName += "s";
 
                 Console.WriteLine($"Advertencia: Archivo XML '{filePath}' no encontrado. Se creará uno nuevo con raíz '<{rootName}>'.");
-                return new XDocument(new XElement(rootName)); // Devuelve uno nuevo en memoria (no lo guarda aquí)
+                return new XDocument(new XElement(rootName)); 
 
             }
         }

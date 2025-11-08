@@ -100,7 +100,7 @@ namespace MPP
                 {
                     profesional.IdsActividadesPuedeDictar = idsActividadesNodo.Elements("IdActividad")
                                                                    .Select(el => (int?)el ?? 0)
-                                                                   .Where(id => id != 0) // Filtra posibles errores de parseo
+                                                                   .Where(id => id != 0) 
                                                                    .ToList();
                 }
 
@@ -111,10 +111,6 @@ namespace MPP
 
         public void Eliminar(int idProfesional)
         {
-            // IMPORTANTE: Aquí deberías añadir lógica para verificar si el profesional
-            // está asignado a turnos futuros antes de permitir la eliminación.
-            // Por simplicidad, aquí solo se elimina del archivo.
-
             var doc = XDocument.Load(archivo);
             var profesional = doc.Descendants("Profesional")
                                  .FirstOrDefault(p => (int?)p.Element("Id") == idProfesional);

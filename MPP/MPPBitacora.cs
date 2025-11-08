@@ -1,12 +1,7 @@
-﻿// MPP/MPPBitacora.cs
+﻿
 using BE;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Xml.Linq;
-using XmlHelper; // Asumiendo XmlHelper en su propio proyecto
 
 namespace MPP
 {
@@ -17,13 +12,11 @@ namespace MPP
 
         public MPPBitacora()
         {
-            // Usa AppDomain.CurrentDomain.BaseDirectory para asegurar la ruta correcta
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string dataDirectory = Path.Combine(baseDirectory, "datos");
             archivo = Path.Combine(dataDirectory, "Bitacora.xml"); // Ruta completa
 
             xmlHelper = new XmlHelper.XmlHelper();
-            // Asegurar que el archivo exista
             xmlHelper.AsegurarArchivoXml("Bitacora.xml", "Bitacoras");
         }
 

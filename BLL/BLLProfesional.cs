@@ -16,7 +16,7 @@ namespace BLL
         {
             mppProfesional = new MPPProfesional();
             mppActividad = new MPPActividad();
-            mppTurno = new MPPTurno(); // Instanciar para validaciones
+            mppTurno = new MPPTurno(); 
         }
 
         public void Guardar(BEProfesional profesional)
@@ -28,7 +28,7 @@ namespace BLL
             if (profesional.DNI.Length < 7 || profesional.DNI.Length > 8 || !profesional.DNI.All(char.IsDigit))
                 throw new ArgumentException("El DNI debe tener 7 u 8 dígitos numéricos.");
             // Validar formato de Email si existe
-            if (!string.IsNullOrEmpty(profesional.Email) && !profesional.Email.Contains("@")) // Validación muy básica
+            if (!string.IsNullOrEmpty(profesional.Email) && !profesional.Email.Contains("@")) 
                 throw new ArgumentException("El formato del Email no es válido.");
 
             // Validar que los IDs de actividades asignadas existan
@@ -73,7 +73,6 @@ namespace BLL
             return mppProfesional.BuscarPorId(id);
         }
 
-        // Métodos adicionales: BuscarPorEspecialidad, etc.
         public List<BEProfesional> BuscarPorEspecialidad(string especialidad)
         {
             if (string.IsNullOrWhiteSpace(especialidad)) return Listar();

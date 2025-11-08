@@ -3,20 +3,20 @@ using BLL;
 using System.Data;
 using System.Diagnostics;
 
-
 namespace CapaPresentacion
 {
     public partial class frmGestionLiquidaciones : Form
     {
         private BLLLiquidacion bllLiquidacion = new BLLLiquidacion();
         private BLLProfesional bllProfesional = new BLLProfesional();
-        private List<BELiquidacion> _listaActual; // Cache para el PDF
+        private List<BELiquidacion> _listaActual;
 
         public frmGestionLiquidaciones()
         {
             InitializeComponent();
         }
 
+        // Carga inicial del formulario, DGV y combos
         private void frmGestionLiquidaciones_Load(object sender, EventArgs e)
         {
             dgvLiquidaciones.AutoGenerateColumns = false;
@@ -24,6 +24,8 @@ namespace CapaPresentacion
             dgvLiquidaciones.ReadOnly = true;
             dgvLiquidaciones.AllowUserToAddRows = false;
             dgvLiquidaciones.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvLiquidaciones.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            dgvLiquidaciones.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 
             dtpDesdeCalc.Value = DateTime.Today.AddMonths(-1).Date;
             dtpHastaCalc.Value = DateTime.Today.Date;
@@ -34,6 +36,7 @@ namespace CapaPresentacion
             CargarGrilla();
         }
 
+        // Define las columnas personalizadas para el DGV
         private void ConfigurarColumnasDGV()
         {
             dgvLiquidaciones.Columns.Clear();
@@ -45,6 +48,7 @@ namespace CapaPresentacion
             dgvLiquidaciones.Columns.Add(new DataGridViewTextBoxColumn { Name = "colMonto", DataPropertyName = "MontoTotal", HeaderText = "Monto Total", DefaultCellStyle = new DataGridViewCellStyle { Format = "C2" }, AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
         }
 
+        // Carga el ComboBox de profesionales con la opción "[Todos]"
         private void CargarComboProfesionales()
         {
             try
@@ -54,7 +58,7 @@ namespace CapaPresentacion
 
                 cmbProfesionalFiltro.DataSource = null;
                 cmbProfesionalFiltro.DataSource = lista;
-                cmbProfesionalFiltro.DisplayMember = "ApellidoNombre"; // Usa la propiedad calculada
+                cmbProfesionalFiltro.DisplayMember = "ApellidoNombre";
                 cmbProfesionalFiltro.ValueMember = "Id";
                 cmbProfesionalFiltro.SelectedIndex = 0;
             }
@@ -64,6 +68,7 @@ namespace CapaPresentacion
             }
         }
 
+        // Carga la grilla de liquidaciones según los filtros seleccionados
         private void CargarGrilla()
         {
             try
@@ -76,11 +81,10 @@ namespace CapaPresentacion
 
                 _listaActual = bllLiquidacion.Buscar(idProfesional, desde, hasta);
 
-                // IMPORTANTE: BLLLiquidacion.Buscar() ahora DEBE devolver BELiquidacion con la prop .Profesional cargada.
                 var dataSource = _listaActual.Select(liq => new {
                     liq.Id,
                     liq.FechaEmision,
-                    NombreProfesional = liq.Profesional?.ApellidoNombre ?? $"ID: {liq.IdProfesional}", // <--- ESTO AHORA DEBERÍA FUNCIONAR
+                    NombreProfesional = liq.Profesional?.ApellidoNombre ?? $"ID: {liq.IdProfesional}",
                     Periodo = $"{liq.PeriodoDesde:dd/MM/yy} al {liq.PeriodoHasta:dd/MM/yy}",
                     CantidadTurnos = liq.TurnosLiquidados?.Count ?? 0,
                     liq.MontoTotal
@@ -95,11 +99,13 @@ namespace CapaPresentacion
             }
         }
 
+        // Aplica los filtros seleccionados a la grilla
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             CargarGrilla();
         }
 
+        // Inicia el proceso de cálculo de liquidaciones para el período
         private void btnCalcularLiquidaciones_Click(object sender, EventArgs e)
         {
             DateTime desde = dtpDesdeCalc.Value.Date;
@@ -139,7 +145,7 @@ namespace CapaPresentacion
             }
         }
 
-        // Evento para el botón de exportar PDF (DESCOMENTADO)
+        // Genera y abre un PDF de la liquidación seleccionada
         private void btnExportarPDF_Click(object sender, EventArgs e)
         {
             if (dgvLiquidaciones.CurrentRow == null || dgvLiquidaciones.CurrentRow.DataBoundItem == null)
@@ -150,18 +156,12 @@ namespace CapaPresentacion
 
             try
             {
-                // Obtener el ID del objeto anónimo
                 int idLiquidacion = (int)dgvLiquidaciones.CurrentRow.Cells["colId"].Value;
 
-                // Llamar a la BLL para generar el PDF
-                string rutaPDF = bllLiquidacion.EmitirLiquidacionPDF(idLiquidacion); // BLL lo implementa
+                string rutaPDF = bllLiquidacion.EmitirLiquidacionPDF(idLiquidacion);
 
                 MessageBox.Show($"PDF generado correctamente en:\n{rutaPDF}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Abrir el PDF
-                // Necesitas 'using System.Diagnostics;'
-                // Para .NET Core/8, Process.Start puede necesitar configuración adicional
-                // o simplemente abrir la carpeta
                 Process.Start(new ProcessStartInfo(rutaPDF) { UseShellExecute = true });
             }
             catch (Exception ex)

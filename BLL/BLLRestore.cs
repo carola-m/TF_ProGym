@@ -1,8 +1,4 @@
-﻿// BLL/BLLRestore.cs
-using System;
-using System.IO;
-using System.Linq;
-// No necesita BE directamente, pero sí BLLBitacora
+﻿
 
 namespace BLL
 {
@@ -10,7 +6,7 @@ namespace BLL
     {
         private readonly BLLBitacora bllBitacora = new BLLBitacora();
 
-        public void RealizarRestore(string nombreBackup) // Recibe el nombre de la CARPETA del backup
+        public void RealizarRestore(string nombreBackup) 
         {
             string dataDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "datos");
             string backupBaseDirectory = Path.Combine(dataDirectory, "Backups");
@@ -21,7 +17,7 @@ namespace BLL
                 throw new DirectoryNotFoundException($"La carpeta de backup '{nombreBackup}' no fue encontrada.");
             }
 
-            string bitacoraFileName = "Bitacora.xml"; // Archivo a no restaurar
+            string bitacoraFileName = "Bitacora.xml";
 
             try
             {
@@ -34,7 +30,6 @@ namespace BLL
                 }
 
 
-                // ¡¡ADVERTENCIA!! Esto sobrescribirá los archivos de datos actuales.
                 foreach (var archivoOrigen in archivosARestaurar)
                 {
                     string nombreArchivo = Path.GetFileName(archivoOrigen);
@@ -57,8 +52,6 @@ namespace BLL
             {
                 // Registrar error en Bitácora
                 bllBitacora.Registrar($"Restore Fallido: {ex.Message}", nombreBackup);
-                // Relanzar la excepción para informar a la UI
-                // ¡IMPORTANTE! Un restore fallido puede dejar los datos en estado inconsistente.
                 throw new Exception($"Error CRÍTICO al realizar el restore desde '{nombreBackup}': {ex.Message}", ex);
             }
         }

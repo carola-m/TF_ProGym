@@ -1,8 +1,6 @@
 ﻿using BE;
 using MPP;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 
 namespace BLL
 {
@@ -17,12 +15,14 @@ namespace BLL
 
         public void Guardar(BECliente cliente)
         {
-            // Aplicar reglas de negocio antes de guardar
+            // reglas de negocio
             if (cliente == null) throw new ArgumentNullException("El cliente no puede ser nulo.");
             if (string.IsNullOrWhiteSpace(cliente.DNI)) throw new ArgumentException("El DNI es obligatorio.");
             if (string.IsNullOrWhiteSpace(cliente.Nombre)) throw new ArgumentException("El Nombre es obligatorio.");
             if (string.IsNullOrWhiteSpace(cliente.Apellido)) throw new ArgumentException("El Apellido es obligatorio.");
-            // Añadir más validaciones (formato email, teléfono, etc.)
+            if (string.IsNullOrWhiteSpace(cliente.Telefono)) throw new ArgumentException("El Teléfono es obligatorio.");
+            if (string.IsNullOrWhiteSpace(cliente.Email)) throw new ArgumentException("El Email es obligatorio.");
+
 
             // Validar longitud y formato del DNI
             if (cliente.DNI.Length < 7 || cliente.DNI.Length > 8 || !cliente.DNI.All(char.IsDigit))
@@ -37,7 +37,6 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                // Podrías registrar el error o relanzar una excepción más específica
                 throw new Exception("Error al guardar el cliente: " + ex.Message);
             }
         }
@@ -49,8 +48,7 @@ namespace BLL
 
         public void Eliminar(int idCliente)
         {
-            // Reglas de negocio antes de eliminar (ej. verificar si tiene deudas, turnos activos)
-            // Ejemplo simple: no permitir eliminar si tiene membresía activa
+            // Reglas de negocio antes de eliminar 
             var cliente = Listar().FirstOrDefault(c => c.Id == idCliente);
             if (cliente != null && cliente.MembresiaActiva)
             {
@@ -67,7 +65,6 @@ namespace BLL
             return mppCliente.BuscarPorDNI(dni);
         }
 
-        // Otros métodos BLL (ej. ActivarMembresia, DesactivarMembresia, ObtenerHistorialAsistencia, etc.)
         public void CambiarEstadoMembresia(int idCliente, bool nuevoEstado)
         {
             var cliente = Listar().FirstOrDefault(c => c.Id == idCliente);
