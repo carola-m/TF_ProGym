@@ -33,24 +33,43 @@ namespace MPP
             xmlDoc.Save(filePath);
         }
 
-        // Método específico para crear el archivo de permisos con una estructura inicial si no existe
+        /// <summary>
+        /// Método específico para crear el archivo de permisos con una estructura jerárquica si no existe
+        /// </summary>
         private void CrearArchivoXmlPermisosInicial(string filePath)
         {
             var xmlDoc = new XDocument(
                 new XElement("Permisos",
-                    // Permisos Simples
-                    new XElement("Permiso", new XAttribute("Id", "1"), new XAttribute("Nombre", "Gestionar Clientes"), new XAttribute("NombreInterno", "PERM_GEST_CLIENTES")),
-                    new XElement("Permiso", new XAttribute("Id", "2"), new XAttribute("Nombre", "Gestionar Profesionales"), new XAttribute("NombreInterno", "PERM_GEST_PROFESIONALES")),
-                    new XElement("Permiso", new XAttribute("Id", "3"), new XAttribute("Nombre", "Gestionar Actividades"), new XAttribute("NombreInterno", "PERM_GEST_ACTIVIDADES")),
-                    new XElement("Permiso", new XAttribute("Id", "4"), new XAttribute("Nombre", "Gestionar Turnos"), new XAttribute("NombreInterno", "PERM_GEST_TURNOS")),
-                    new XElement("Permiso", new XAttribute("Id", "5"), new XAttribute("Nombre", "Registrar Asistencia"), new XAttribute("NombreInterno", "PERM_REG_ASISTENCIA")),
-                    new XElement("Permiso", new XAttribute("Id", "6"), new XAttribute("Nombre", "Calcular Liquidaciones"), new XAttribute("NombreInterno", "PERM_CALC_LIQ")),
-                    new XElement("Permiso", new XAttribute("Id", "7"), new XAttribute("Nombre", "Emitir Liquidaciones"), new XAttribute("NombreInterno", "PERM_EMIT_LIQ")),
-                    new XElement("Permiso", new XAttribute("Id", "8"), new XAttribute("Nombre", "Consultar Dashboard"), new XAttribute("NombreInterno", "PERM_VER_DASHBOARD")),
-                    new XElement("Permiso", new XAttribute("Id", "9"), new XAttribute("Nombre", "Gestionar Usuarios y Roles"), new XAttribute("NombreInterno", "PERM_GEST_SEGURIDAD")),
-                    new XElement("Permiso", new XAttribute("Id", "10"), new XAttribute("Nombre", "Realizar Backup"), new XAttribute("NombreInterno", "PERM_BACKUP")),
-                    new XElement("Permiso", new XAttribute("Id", "11"), new XAttribute("Nombre", "Realizar Restore"), new XAttribute("NombreInterno", "PERM_RESTORE")),
-                    new XElement("Permiso", new XAttribute("Id", "12"), new XAttribute("Nombre", "Ver Bitácora"), new XAttribute("NombreInterno", "PERM_BITACORA"))
+                    // Grupo 1: Gestión
+                    new XElement("Categoria",
+                        new XAttribute("Id", "100"),
+                        new XAttribute("Nombre", "Gestión del Gimnasio"),
+                        new XAttribute("NombreInterno", "GRP_GESTION"),
+                        new XElement("Permiso", new XAttribute("Id", "1"), new XAttribute("Nombre", "Gestionar Clientes"), new XAttribute("NombreInterno", "PERM_GEST_CLIENTES")),
+                        new XElement("Permiso", new XAttribute("Id", "2"), new XAttribute("Nombre", "Gestionar Profesionales"), new XAttribute("NombreInterno", "PERM_GEST_PROFESIONALES")),
+                        new XElement("Permiso", new XAttribute("Id", "3"), new XAttribute("Nombre", "Gestionar Actividades"), new XAttribute("NombreInterno", "PERM_GEST_ACTIVIDADES")),
+                        new XElement("Permiso", new XAttribute("Id", "4"), new XAttribute("Nombre", "Gestionar Turnos"), new XAttribute("NombreInterno", "PERM_GEST_TURNOS")),
+                        new XElement("Permiso", new XAttribute("Id", "5"), new XAttribute("Nombre", "Registrar Asistencia"), new XAttribute("NombreInterno", "PERM_REG_ASISTENCIA"))
+                    ),
+                    // Grupo 2: Liquidaciones
+                    new XElement("Categoria",
+                        new XAttribute("Id", "200"),
+                        new XAttribute("Nombre", "Liquidaciones"),
+                        new XAttribute("NombreInterno", "GRP_LIQUIDACION"),
+                        new XElement("Permiso", new XAttribute("Id", "6"), new XAttribute("Nombre", "Calcular Liquidaciones"), new XAttribute("NombreInterno", "PERM_CALC_LIQ")),
+                        new XElement("Permiso", new XAttribute("Id", "7"), new XAttribute("Nombre", "Emitir Liquidaciones"), new XAttribute("NombreInterno", "PERM_EMIT_LIQ"))
+                    ),
+                    // Grupo 3: Sistema
+                    new XElement("Categoria",
+                        new XAttribute("Id", "300"),
+                        new XAttribute("Nombre", "Administración"),
+                        new XAttribute("NombreInterno", "GRP_ADMIN"),
+                        new XElement("Permiso", new XAttribute("Id", "8"), new XAttribute("Nombre", "Consultar Dashboard"), new XAttribute("NombreInterno", "PERM_VER_DASHBOARD")),
+                        new XElement("Permiso", new XAttribute("Id", "9"), new XAttribute("Nombre", "Gestionar Usuarios y Roles"), new XAttribute("NombreInterno", "PERM_GEST_SEGURIDAD")),
+                        new XElement("Permiso", new XAttribute("Id", "10"), new XAttribute("Nombre", "Realizar Backup"), new XAttribute("NombreInterno", "PERM_BACKUP")),
+                        new XElement("Permiso", new XAttribute("Id", "11"), new XAttribute("Nombre", "Realizar Restore"), new XAttribute("NombreInterno", "PERM_RESTORE")),
+                        new XElement("Permiso", new XAttribute("Id", "12"), new XAttribute("Nombre", "Ver Bitácora"), new XAttribute("NombreInterno", "PERM_BITACORA"))
+                    )
                 )
             );
             xmlDoc.Save(filePath);
@@ -58,7 +77,9 @@ namespace MPP
             CrearRolAdminInicial();
         }
 
-        // Crea el rol Admin y le asigna todos los permisos iniciales
+        /// <summary>
+        /// Crea el rol Admin y le asigna todos los permisos simples (hojas) definidos en Permisos.xml
+        /// </summary>
         private void CrearRolAdminInicial()
         {
             // 1. Crear Rol Admin en Roles.xml
@@ -84,13 +105,18 @@ namespace MPP
                    .Remove();
 
                 var permisosAdmin = new XElement("Permisos");
-                foreach (var permElem in docPermisos.Root.Elements("Permiso"))
+
+                // --- CORRECCIÓN ---
+                // Busca .Descendants("Permiso") para encontrar TODOS los permisos simples,
+                // incluso si están dentro de <Categoria>.
+                foreach (var permElem in docPermisos.Root.Descendants("Permiso"))
                 {
                     permisosAdmin.Add(new XElement("Permiso",
                         new XAttribute("Id", (string)permElem.Attribute("Id")),
                         new XAttribute("NombreInterno", (string)permElem.Attribute("NombreInterno"))
                     ));
                 }
+
                 docRolPerm.Root.Add(new XElement("RolPermiso",
                     new XElement("Rol",
                         new XElement("Id", adminId),
@@ -105,7 +131,13 @@ namespace MPP
                 if (!File.Exists(usuarioRolFilePath)) CrearArchivoXmlInicial(usuarioRolFilePath, "UsuarioRoles");
                 var docUserRol = XDocument.Load(usuarioRolFilePath);
 
+                // Asegurarse que el usuario admin exista (MPPUsuario debería haberlo creado)
                 var userAdmin = new MPPUsuario().BuscarPorNombre("admin");
+                if (userAdmin == null)
+                {
+                    new MPPUsuario();
+                    userAdmin = new MPPUsuario().BuscarPorNombre("admin");
+                }
 
                 if (userAdmin != null && !docUserRol.Root.Elements("UsuarioRol")
                                             .Any(ur => (int?)ur.Attribute("usuarioId") == userAdmin.Id && (int?)ur.Attribute("rolId") == adminId))
@@ -119,6 +151,7 @@ namespace MPP
             }
         }
 
+
         private int ObtenerSiguienteIdRol(XElement root)
         {
             return root.Elements("Rol")
@@ -127,12 +160,14 @@ namespace MPP
                        .Max() + 1;
         }
 
-        // Obtiene la lista básica de roles (Id, Nombre, Activo)
+        /// <summary>
+        /// Obtiene la lista básica de roles (Id, Nombre, Activo)
+        /// </summary>
         public List<BERol> ListarRolesBasico()
         {
             if (!File.Exists(rolFilePath)) return new List<BERol>();
             var doc = XDocument.Load(rolFilePath);
-            return doc.Root.Elements("Rol") 
+            return doc.Root.Elements("Rol")
                       .Select(r => new BERol
                       {
                           Id = (int?)r.Element("Id") ?? 0,
@@ -141,7 +176,9 @@ namespace MPP
                       }).ToList();
         }
 
-        // Guarda la información básica del Rol en Roles.xml
+        /// <summary>
+        /// Guarda la información básica del Rol en Roles.xml
+        /// </summary>
         public void GuardarRolBasico(BERol rol)
         {
             var doc = XDocument.Load(rolFilePath);
@@ -180,7 +217,9 @@ namespace MPP
             }
         }
 
-        // Elimina el rol de Roles.xml y sus asociaciones
+        /// <summary>
+        /// Elimina el rol de Roles.xml y sus asociaciones
+        /// </summary>
         public void EliminarRolCompleto(int idRol)
         {
             var rol = ListarRolesBasico().FirstOrDefault(r => r.Id == idRol);
@@ -211,7 +250,9 @@ namespace MPP
             }
         }
 
-        // Guarda/Actualiza la lista de permisos para un rol en RolesPermisos.xml
+        /// <summary>
+        /// Guarda/Actualiza la lista de permisos para un rol en RolesPermisos.xml
+        /// </summary>
         public void GuardarPermisosParaRol(int idRol, string nombreRol, List<BEPermisoComponent> permisos)
         {
             if (!File.Exists(rolPermisoFilePath)) CrearArchivoXmlInicial(rolPermisoFilePath, "RolesPermisos");
@@ -220,7 +261,6 @@ namespace MPP
             doc.Root.Elements("RolPermiso")
                 .FirstOrDefault(rp => (int?)rp.Element("Rol")?.Element("Id") == idRol)?.Remove();
 
-            // Crea el nodo de permisos
             var permisosElement = new XElement("Permisos");
             foreach (var permiso in ObtenerPermisosSimplesRecursivo(permisos)) // Obtiene solo las hojas
             {
@@ -230,12 +270,11 @@ namespace MPP
                 ));
             }
 
-            // Crea la nueva entrada
             var nuevoRolPermiso = new XElement("RolPermiso",
                 new XElement("Rol",
                     new XElement("Id", idRol),
                     new XElement("Nombre", nombreRol),
-                    permisosElement 
+                    permisosElement
                 )
             );
 
@@ -243,8 +282,9 @@ namespace MPP
             doc.Save(rolPermisoFilePath);
         }
 
-        // Obtiene el Rol con su lista de permisos cargada
-
+        /// <summary>
+        /// Obtiene el Rol con su lista de permisos (hojas) cargada
+        /// </summary>
         public BERol ObtenerRolConPermisos(int idRol)
         {
             var rolBasico = ListarRolesBasico().FirstOrDefault(r => r.Id == idRol);
@@ -259,12 +299,9 @@ namespace MPP
                 if (rolPermisoElement != null)
                 {
                     var permisosGuardados = rolPermisoElement.Element("Rol")?.Element("Permisos")?.Elements("Permiso") ?? Enumerable.Empty<XElement>();
-
                     var nombresInternosPermisos = permisosGuardados.Select(p => (string)p.Attribute("NombreInterno")).ToList();
-
                     var todosLosPermisosDefinidos = CargarDefinicionPermisos();
 
-                    // Asigna la lista de permisos encontrada a la propiedad del rol
                     rolBasico.Permisos = todosLosPermisosDefinidos
                         .Where(p => nombresInternosPermisos.Contains(p.NombreInterno))
                         .Select(p => new BEPermiso { Id = p.Id, Nombre = p.Nombre, NombreInterno = p.NombreInterno })
@@ -274,12 +311,18 @@ namespace MPP
             return rolBasico;
         }
 
-        // Carga la definición de todos los permisos simples desde Permisos.xml
+        /// <summary>
+        /// Carga la definición de todos los permisos simples (hojas) desde Permisos.xml
+        /// </summary>
         private List<BEPermiso> CargarDefinicionPermisos()
         {
             if (!File.Exists(permisoFilePath)) return new List<BEPermiso>();
             var docPermisos = XDocument.Load(permisoFilePath);
-            return docPermisos.Root.Elements("Permiso")
+
+            // --- CORRECCIÓN 2 ---
+            // Busca .Descendants("Permiso") para encontrar TODOS los permisos simples,
+            // incluso si están dentro de <Categoria>.
+            return docPermisos.Root.Descendants("Permiso")
                                .Select(p => new BEPermiso
                                {
                                    Id = (int?)p.Attribute("Id") ?? 0,
@@ -290,7 +333,9 @@ namespace MPP
                                .ToList();
         }
 
-        // Obtiene todos los roles con sus permisos cargados
+        /// <summary>
+        /// Obtiene todos los roles con sus permisos (hojas) cargados
+        /// </summary>
         public List<BERol> ListarRolesConPermisos()
         {
             var rolesBasicos = ListarRolesBasico();
@@ -307,10 +352,12 @@ namespace MPP
             return rolesConPermisos;
         }
 
-        // Método auxiliar recursivo para obtener solo los permisos simples (hojas)
+        /// <summary>
+        /// Método auxiliar recursivo para obtener solo los permisos simples (hojas)
+        /// </summary>
         private IEnumerable<BEPermisoComponent> ObtenerPermisosSimplesRecursivo(IEnumerable<BEPermisoComponent> componentes)
         {
-            if (componentes == null) yield break; // Seguridad contra listas nulas
+            if (componentes == null) yield break;
             foreach (var comp in componentes)
             {
                 if (comp is BEPermiso)
@@ -327,7 +374,9 @@ namespace MPP
             }
         }
 
-        // Método para actualizar el nombre del rol en RolesPermisos.xml si cambia en Roles.xml
+        /// <summary>
+        /// Método para actualizar el nombre del rol en RolesPermisos.xml si cambia en Roles.xml
+        /// </summary>
         private void ActualizarNombreRolEnPermisos(int idRol, string nuevoNombre)
         {
             if (!File.Exists(rolPermisoFilePath)) return;

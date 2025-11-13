@@ -1,8 +1,4 @@
 ﻿
-using System;
-using System.IO;
-using System.Linq;
-
 
 namespace BLL
 {
@@ -14,14 +10,14 @@ namespace BLL
         {
             string dataDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "datos");
             string backupBaseDirectory = Path.Combine(dataDirectory, "Backups"); // Carpeta Backups dentro de datos
-            Directory.CreateDirectory(backupBaseDirectory); // Asegura que exista
+            Directory.CreateDirectory(backupBaseDirectory); 
 
             // Nombre único para la carpeta del backup
             string nombreBackup = "Backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string carpetaDestino = Path.Combine(backupBaseDirectory, nombreBackup);
             Directory.CreateDirectory(carpetaDestino);
 
-            string bitacoraFileName = "Bitacora.xml"; // Nombre exacto del archivo a excluir
+            string bitacoraFileName = "Bitacora.xml"; 
 
             try
             {

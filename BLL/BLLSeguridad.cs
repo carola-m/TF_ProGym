@@ -1,6 +1,6 @@
 ﻿using BE;
 using MPP;
-using System.Text; 
+using System.Text;
 
 namespace BLL
 {
@@ -29,7 +29,7 @@ namespace BLL
             var usuario = mppUsuario.BuscarPorNombre(nombreUsuario);
 
             // Encriptamos la contraseña ingresada para compararla
-            string passwordEncriptada = EncriptarClave(password); 
+            string passwordEncriptada = EncriptarClave(password);
 
             // Verifica si el usuario existe, está activo y la contraseña encriptada coincide  --
             if (usuario != null && usuario.Activo && usuario.Password == passwordEncriptada)
@@ -69,7 +69,7 @@ namespace BLL
             if (!string.IsNullOrWhiteSpace(nuevaPassword))
             {
                 if (nuevaPassword.Length < 4) throw new ArgumentException("La nueva contraseña debe tener al menos 4 caracteres.");
-                usuarioExistente.Password = EncriptarClave(nuevaPassword); 
+                usuarioExistente.Password = EncriptarClave(nuevaPassword);
             }
 
             mppUsuario.Guardar(usuarioExistente);
@@ -187,7 +187,7 @@ namespace BLL
 
         #region Gestión Permisos y Asignación
 
-      
+
         public List<BEPermisoComponent> ObtenerDefinicionesPermisos()
         {
             return mppPermiso.ListarDefiniciones();
@@ -198,6 +198,7 @@ namespace BLL
             return mppRol.ObtenerRolConPermisos(idRol);
         }
 
+        // --- MÉTODO CORREGIDO ---
         public void AsignarPermisosARol(int idRol, List<BEPermisoComponent> permisos)
         {
             var rol = mppRol.ListarRolesBasico().FirstOrDefault(r => r.Id == idRol);
@@ -206,13 +207,23 @@ namespace BLL
             {
                 throw new InvalidOperationException("No se pueden modificar los permisos del rol Administrador.");
             }
-            var permisosDefinidos = ObtenerDefinicionesPermisos().Select(p => p.NombreInterno).ToList();
+
+            // 1. Obtiene la lista jerárquica (con grupos)
+            var todasLasDefiniciones = ObtenerDefinicionesPermisos();
+            // 2. Aplana la lista para obtener solo los permisos simples (hojas)
+            var permisosDefinidos = ObtenerPermisosSimplesRecursivo(todasLasDefiniciones).Select(p => p.NombreInterno).ToList();
+
+            // 3. Obtiene las hojas de la lista de permisos a asignar
             var permisosSimplesAAsignar = ObtenerPermisosSimplesRecursivo(permisos);
+
+            // 4. Valida que las hojas a asignar existan en la lista de hojas definidas
             foreach (var pAsignar in permisosSimplesAAsignar)
             {
                 if (!permisosDefinidos.Contains(pAsignar.NombreInterno))
                     throw new KeyNotFoundException($"El permiso '{pAsignar.Nombre}' (Interno: {pAsignar.NombreInterno}) no es un permiso válido definido en el sistema.");
             }
+
+            // 5. Guarda la lista de hojas
             mppRol.GuardarPermisosParaRol(idRol, rol.Nombre, permisosSimplesAAsignar.ToList());
         }
 
@@ -280,7 +291,7 @@ namespace BLL
         #endregion
 
         #region Encriptación Reversible (Base64 - Requerido por el profesor)
-        
+
         // Método para encriptar
         public static string EncriptarClave(string rawData)
         {
@@ -309,6 +320,10 @@ namespace BLL
 
         #region Métodos Auxiliares
 
+        /// <summary>
+        /// Recorre una lista de componentes (que pueden ser hojas o grupos)
+        /// y devuelve una lista plana que contiene solo las hojas (BEPermiso).
+        /// </summary>
         private IEnumerable<BEPermisoComponent> ObtenerPermisosSimplesRecursivo(IEnumerable<BEPermisoComponent> componentes)
         {
             foreach (var comp in componentes ?? Enumerable.Empty<BEPermisoComponent>())

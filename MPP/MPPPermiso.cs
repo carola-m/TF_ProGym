@@ -21,28 +21,55 @@ namespace MPP
             }
         }
 
-        // Lee la estructura plana de permisos desde Permisos.xml
-        // NO maneja jerarquía aquí, solo la definición básica.
+        // Lee la estructura JERÁRQUICA de permisos desde Permisos.xml
         public List<BEPermisoComponent> ListarDefiniciones()
         {
             if (!File.Exists(archivo)) return new List<BEPermisoComponent>();
             var doc = XDocument.Load(archivo);
+
+            // Inicia el parseo desde la raíz
+            return ParsearNodos(doc.Root.Elements());
+        }
+
+ 
+        // Método recursivo para parsear el XML
+        private List<BEPermisoComponent> ParsearNodos(IEnumerable<XElement> elementos)
+        {
             var lista = new List<BEPermisoComponent>();
 
-            // Asume una estructura plana en Permisos.xml por simplicidad
-            foreach (var nodo in doc.Root.Elements("Permiso"))
+            foreach (var nodo in elementos)
             {
-                // Aquí siempre creamos BEPermiso (hoja), la jerarquía se maneja en BLL o al asignar a roles
-                lista.Add(new BEPermiso
+                if (nodo.Name == "Categoria")
                 {
-                    Id = (int?)nodo.Attribute("Id") ?? 0,
-                    Nombre = (string)nodo.Attribute("Nombre"),
-                    NombreInterno = (string)nodo.Attribute("NombreInterno") // Importante leer el identificador único
-                });
+                    // GRUPO (BECategoriaPermiso)
+                    var categoria = new BECategoriaPermiso
+                    {
+                        Id = (int?)nodo.Attribute("Id") ?? 0,
+                        Nombre = (string)nodo.Attribute("Nombre"),
+                        NombreInterno = (string)nodo.Attribute("NombreInterno")
+                    };
+
+                    // Llama recursivamente para buscar a sus hijos
+                    foreach (var hijo in ParsearNodos(nodo.Elements()))
+                    {
+                        categoria.AgregarHijo(hijo);
+                    }
+                    lista.Add(categoria);
+                }
+                else if (nodo.Name == "Permiso")
+                {
+                    // HOJA (BEPermiso)
+                    lista.Add(new BEPermiso
+                    {
+                        Id = (int?)nodo.Attribute("Id") ?? 0,
+                        Nombre = (string)nodo.Attribute("Nombre"),
+                        NombreInterno = (string)nodo.Attribute("NombreInterno")
+                    });
+                }
             }
-            // Filtra los que no tengan ID o NombreInterno válidos
-            return lista.Where(p => p.Id != 0 && !string.IsNullOrEmpty(p.NombreInterno)).ToList();
+            return lista;
         }
+
 
         // Buscar una definición de permiso por su NombreInterno
         public BEPermisoComponent BuscarDefinicionPorNombreInterno(string nombreInterno)

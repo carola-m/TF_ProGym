@@ -1,5 +1,4 @@
 ﻿
-
 namespace BE
 {
     public class BECategoriaPermiso : BEPermisoComponent

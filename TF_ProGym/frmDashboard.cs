@@ -1,10 +1,5 @@
-﻿using BE;
-using BLL;
-using System;
+﻿using BLL;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace CapaPresentacion
@@ -112,7 +107,7 @@ namespace CapaPresentacion
 
             try
             {
-                // Limpiar gráfico PRIMERO
+                // Limpiar gráfico 
                 chartOcupacion.Series.Clear();
                 chartOcupacion.Titles.Clear();
                 chartOcupacion.Legends.Clear();
@@ -151,10 +146,10 @@ namespace CapaPresentacion
                 if (!ocupacionPorActividad.Any())
                 {
                     chartOcupacion.Titles.Add("No hay datos de ocupación para este período.");
-                    return; // IMPORTANTE: Salir si no hay datos
+                    return; 
                 }
 
-                // Configurar Ejes SOLO si hay datos
+                // Configurar Ejes si hay datos
                 areaOcupacion.AxisX.Title = "Actividad";
                 areaOcupacion.AxisY.Title = "Ocupación (%)";
                 areaOcupacion.AxisY.Maximum = 100;
@@ -205,7 +200,7 @@ namespace CapaPresentacion
 
             try
             {
-                // Limpiar gráfico PRIMERO
+                // Limpiar gráfico 
                 chartIngresos.Series.Clear();
                 chartIngresos.Titles.Clear();
                 chartIngresos.Legends.Clear();
@@ -236,7 +231,7 @@ namespace CapaPresentacion
                 if (!ingresosPorMes.Any())
                 {
                     chartIngresos.Titles.Add("No hay datos de liquidaciones para este período.");
-                    return; // Salir si no hay datos
+                    return;
                 }
 
                 areaIngresos.AxisX.Title = "Mes";
@@ -255,7 +250,7 @@ namespace CapaPresentacion
                     YValueType = ChartValueType.Double,
                     BorderWidth = 3,
                     IsValueShownAsLabel = true,
-                    ToolTip = "$#,##0.00" // Formato $ explícito en tooltip
+                    ToolTip = "$#,##0.00" 
                 };
 
                 foreach (var dato in ingresosPorMes)
@@ -348,7 +343,7 @@ namespace CapaPresentacion
 
             try
             {
-                // Limpiar gráfico PRIMERO
+                // Limpiar gráfico 
                 chartRendimientoProf.Series.Clear();
                 chartRendimientoProf.Titles.Clear();
                 chartRendimientoProf.Legends.Clear();
@@ -371,7 +366,7 @@ namespace CapaPresentacion
 
                 chartRendimientoProf.Titles.Add($"Rendimiento por Profesional ({desde:dd/MM} - {hasta:dd/MM})");
 
-                // RESETEAR ChartArea COMPLETAMENTE
+                // resetear ChartArea 
                 ChartArea areaRendimiento = chartRendimientoProf.ChartAreas[0];
                 areaRendimiento.AxisX.Minimum = Double.NaN;
                 areaRendimiento.AxisX.Maximum = Double.NaN;
@@ -386,13 +381,13 @@ namespace CapaPresentacion
                 if (!rendimiento.Any())
                 {
                     chartRendimientoProf.Titles.Add("No hay datos de rendimiento para este período.");
-                    return; // IMPORTANTE: Salir si no hay datos
+                    return; 
                 }
 
-                // Configurar Ejes SOLO si hay datos
+                // Configurar Ejes si hay datos
                 areaRendimiento.AxisX.Title = "Profesional";
                 areaRendimiento.AxisY.Title = "Monto Liquidado ($)";
-                areaRendimiento.AxisY.LabelStyle.Format = "$#,##0"; // Formato $ explícito
+                areaRendimiento.AxisY.LabelStyle.Format = "$#,##0";
                 areaRendimiento.AxisX.Interval = 1;
                 areaRendimiento.AxisX.LabelStyle.Angle = -45;
                 areaRendimiento.AxisX.MajorGrid.Enabled = false;
@@ -411,7 +406,7 @@ namespace CapaPresentacion
                     ChartType = SeriesChartType.Column,
                     YAxisType = AxisType.Primary,
                     IsValueShownAsLabel = true,
-                    ToolTip = "$#,##0.00" // Formato $ explícito
+                    ToolTip = "$#,##0.00" 
                 };
 
                 var serieTurnos = new Series("Turnos Dictados")

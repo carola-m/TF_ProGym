@@ -86,12 +86,12 @@
             gbCrearUsuario.Controls.Add(lblCodigoUsuario);
             gbCrearUsuario.Controls.Add(cbUsuarioEditarEliminar);
             gbCrearUsuario.Controls.Add(lblUsuarioEditar);
-            gbCrearUsuario.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            gbCrearUsuario.Location = new Point(14, 16);
-            gbCrearUsuario.Margin = new Padding(3, 4, 3, 4);
+            gbCrearUsuario.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            gbCrearUsuario.Location = new Point(16, 21);
+            gbCrearUsuario.Margin = new Padding(3, 5, 3, 5);
             gbCrearUsuario.Name = "gbCrearUsuario";
-            gbCrearUsuario.Padding = new Padding(3, 4, 3, 4);
-            gbCrearUsuario.Size = new Size(400, 320);
+            gbCrearUsuario.Padding = new Padding(3, 5, 3, 5);
+            gbCrearUsuario.Size = new Size(457, 427);
             gbCrearUsuario.TabIndex = 0;
             gbCrearUsuario.TabStop = false;
             gbCrearUsuario.Text = "Gestión Usuario";
@@ -100,10 +100,10 @@
             // 
             chkEncriptarDesencriptar.AutoSize = true;
             chkEncriptarDesencriptar.Font = new Font("Segoe UI", 8F);
-            chkEncriptarDesencriptar.Location = new Point(103, 280);
-            chkEncriptarDesencriptar.Margin = new Padding(3, 4, 3, 4);
+            chkEncriptarDesencriptar.Location = new Point(118, 373);
+            chkEncriptarDesencriptar.Margin = new Padding(3, 5, 3, 5);
             chkEncriptarDesencriptar.Name = "chkEncriptarDesencriptar";
-            chkEncriptarDesencriptar.Size = new Size(135, 17);
+            chkEncriptarDesencriptar.Size = new Size(161, 23);
             chkEncriptarDesencriptar.TabIndex = 9;
             chkEncriptarDesencriptar.Text = "Mostrar/Ocultar Pass";
             chkEncriptarDesencriptar.UseVisualStyleBackColor = true;
@@ -114,12 +114,12 @@
             btnLimpiarCamposUsuario.BackColor = Color.Gainsboro;
             btnLimpiarCamposUsuario.FlatAppearance.BorderSize = 0;
             btnLimpiarCamposUsuario.FlatStyle = FlatStyle.Flat;
-            btnLimpiarCamposUsuario.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnLimpiarCamposUsuario.Font = new Font("Segoe UI", 9.75F);
             btnLimpiarCamposUsuario.ForeColor = Color.Black;
-            btnLimpiarCamposUsuario.Location = new Point(306, 224);
-            btnLimpiarCamposUsuario.Margin = new Padding(3, 4, 3, 4);
+            btnLimpiarCamposUsuario.Location = new Point(350, 299);
+            btnLimpiarCamposUsuario.Margin = new Padding(3, 5, 3, 5);
             btnLimpiarCamposUsuario.Name = "btnLimpiarCamposUsuario";
-            btnLimpiarCamposUsuario.Size = new Size(70, 33);
+            btnLimpiarCamposUsuario.Size = new Size(80, 44);
             btnLimpiarCamposUsuario.TabIndex = 8;
             btnLimpiarCamposUsuario.Text = "Limpiar";
             btnLimpiarCamposUsuario.UseVisualStyleBackColor = false;
@@ -130,12 +130,12 @@
             btnBorrarUsuario.BackColor = Color.IndianRed;
             btnBorrarUsuario.FlatAppearance.BorderSize = 0;
             btnBorrarUsuario.FlatStyle = FlatStyle.Flat;
-            btnBorrarUsuario.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnBorrarUsuario.Font = new Font("Segoe UI", 9.75F);
             btnBorrarUsuario.ForeColor = Color.White;
-            btnBorrarUsuario.Location = new Point(286, 159);
-            btnBorrarUsuario.Margin = new Padding(3, 4, 3, 4);
+            btnBorrarUsuario.Location = new Point(327, 212);
+            btnBorrarUsuario.Margin = new Padding(3, 5, 3, 5);
             btnBorrarUsuario.Name = "btnBorrarUsuario";
-            btnBorrarUsuario.Size = new Size(103, 40);
+            btnBorrarUsuario.Size = new Size(118, 53);
             btnBorrarUsuario.TabIndex = 7;
             btnBorrarUsuario.Text = "Baja";
             btnBorrarUsuario.UseVisualStyleBackColor = false;
@@ -146,12 +146,12 @@
             btnEditarUsuario.BackColor = Color.SteelBlue;
             btnEditarUsuario.FlatAppearance.BorderSize = 0;
             btnEditarUsuario.FlatStyle = FlatStyle.Flat;
-            btnEditarUsuario.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            btnEditarUsuario.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             btnEditarUsuario.ForeColor = Color.White;
-            btnEditarUsuario.Location = new Point(286, 107);
-            btnEditarUsuario.Margin = new Padding(3, 4, 3, 4);
+            btnEditarUsuario.Location = new Point(327, 143);
+            btnEditarUsuario.Margin = new Padding(3, 5, 3, 5);
             btnEditarUsuario.Name = "btnEditarUsuario";
-            btnEditarUsuario.Size = new Size(103, 40);
+            btnEditarUsuario.Size = new Size(118, 53);
             btnEditarUsuario.TabIndex = 6;
             btnEditarUsuario.Text = "Editar";
             btnEditarUsuario.UseVisualStyleBackColor = false;
@@ -162,12 +162,12 @@
             btnAltaUsuario.BackColor = Color.SteelBlue;
             btnAltaUsuario.FlatAppearance.BorderSize = 0;
             btnAltaUsuario.FlatStyle = FlatStyle.Flat;
-            btnAltaUsuario.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            btnAltaUsuario.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             btnAltaUsuario.ForeColor = Color.White;
-            btnAltaUsuario.Location = new Point(286, 53);
-            btnAltaUsuario.Margin = new Padding(3, 4, 3, 4);
+            btnAltaUsuario.Location = new Point(327, 71);
+            btnAltaUsuario.Margin = new Padding(3, 5, 3, 5);
             btnAltaUsuario.Name = "btnAltaUsuario";
-            btnAltaUsuario.Size = new Size(103, 40);
+            btnAltaUsuario.Size = new Size(118, 53);
             btnAltaUsuario.TabIndex = 5;
             btnAltaUsuario.Text = "Alta";
             btnAltaUsuario.UseVisualStyleBackColor = false;
@@ -178,94 +178,94 @@
             chkActivoUsuario.AutoSize = true;
             chkActivoUsuario.Checked = true;
             chkActivoUsuario.CheckState = CheckState.Checked;
-            chkActivoUsuario.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            chkActivoUsuario.Location = new Point(17, 280);
-            chkActivoUsuario.Margin = new Padding(3, 4, 3, 4);
+            chkActivoUsuario.Font = new Font("Segoe UI", 9.75F);
+            chkActivoUsuario.Location = new Point(19, 373);
+            chkActivoUsuario.Margin = new Padding(3, 5, 3, 5);
             chkActivoUsuario.Name = "chkActivoUsuario";
-            chkActivoUsuario.Size = new Size(62, 21);
+            chkActivoUsuario.Size = new Size(79, 27);
             chkActivoUsuario.TabIndex = 4;
             chkActivoUsuario.Text = "Activo";
             chkActivoUsuario.UseVisualStyleBackColor = true;
             // 
             // txtContraseña
             // 
-            txtContraseña.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            txtContraseña.Location = new Point(91, 233);
-            txtContraseña.Margin = new Padding(3, 4, 3, 4);
+            txtContraseña.Font = new Font("Segoe UI", 9.75F);
+            txtContraseña.Location = new Point(104, 311);
+            txtContraseña.Margin = new Padding(3, 5, 3, 5);
             txtContraseña.Name = "txtContraseña";
             txtContraseña.PasswordChar = '*';
-            txtContraseña.Size = new Size(171, 25);
+            txtContraseña.Size = new Size(195, 29);
             txtContraseña.TabIndex = 3;
             // 
             // lblPassword
             // 
             lblPassword.AutoSize = true;
-            lblPassword.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblPassword.Location = new Point(14, 237);
+            lblPassword.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblPassword.Location = new Point(16, 316);
             lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(60, 15);
+            lblPassword.Size = new Size(77, 20);
             lblPassword.TabIndex = 0;
             lblPassword.Text = "Password:";
             // 
             // txtNombreUsuario
             // 
-            txtNombreUsuario.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            txtNombreUsuario.Location = new Point(91, 187);
-            txtNombreUsuario.Margin = new Padding(3, 4, 3, 4);
+            txtNombreUsuario.Font = new Font("Segoe UI", 9.75F);
+            txtNombreUsuario.Location = new Point(104, 249);
+            txtNombreUsuario.Margin = new Padding(3, 5, 3, 5);
             txtNombreUsuario.Name = "txtNombreUsuario";
-            txtNombreUsuario.Size = new Size(171, 25);
+            txtNombreUsuario.Size = new Size(195, 29);
             txtNombreUsuario.TabIndex = 2;
             // 
             // lblUsuario
             // 
             lblUsuario.AutoSize = true;
-            lblUsuario.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblUsuario.Location = new Point(14, 191);
+            lblUsuario.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblUsuario.Location = new Point(16, 255);
             lblUsuario.Name = "lblUsuario";
-            lblUsuario.Size = new System.Drawing.Size(50, 15);
+            lblUsuario.Size = new Size(66, 20);
             lblUsuario.TabIndex = 0;
             lblUsuario.Text = "Usuario:";
             // 
             // txtCodigoUsuario
             // 
-            txtCodigoUsuario.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            txtCodigoUsuario.Location = new Point(91, 140);
-            txtCodigoUsuario.Margin = new Padding(3, 4, 3, 4);
+            txtCodigoUsuario.Font = new Font("Segoe UI", 9.75F);
+            txtCodigoUsuario.Location = new Point(104, 187);
+            txtCodigoUsuario.Margin = new Padding(3, 5, 3, 5);
             txtCodigoUsuario.Name = "txtCodigoUsuario";
             txtCodigoUsuario.ReadOnly = true;
-            txtCodigoUsuario.Size = new Size(79, 25);
+            txtCodigoUsuario.Size = new Size(90, 29);
             txtCodigoUsuario.TabIndex = 1;
             txtCodigoUsuario.TabStop = false;
             // 
             // lblCodigoUsuario
             // 
             lblCodigoUsuario.AutoSize = true;
-            lblCodigoUsuario.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblCodigoUsuario.Location = new Point(14, 144);
+            lblCodigoUsuario.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblCodigoUsuario.Location = new Point(16, 192);
             lblCodigoUsuario.Name = "lblCodigoUsuario";
-            lblCodigoUsuario.Size = new System.Drawing.Size(21, 15);
+            lblCodigoUsuario.Size = new Size(28, 20);
             lblCodigoUsuario.TabIndex = 0;
             lblCodigoUsuario.Text = "ID:";
             // 
             // cbUsuarioEditarEliminar
             // 
             cbUsuarioEditarEliminar.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbUsuarioEditarEliminar.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            cbUsuarioEditarEliminar.Font = new Font("Segoe UI", 9.75F);
             cbUsuarioEditarEliminar.FormattingEnabled = true;
-            cbUsuarioEditarEliminar.Location = new Point(17, 60);
-            cbUsuarioEditarEliminar.Margin = new Padding(3, 4, 3, 4);
+            cbUsuarioEditarEliminar.Location = new Point(19, 80);
+            cbUsuarioEditarEliminar.Margin = new Padding(3, 5, 3, 5);
             cbUsuarioEditarEliminar.Name = "cbUsuarioEditarEliminar";
-            cbUsuarioEditarEliminar.Size = new Size(245, 25);
+            cbUsuarioEditarEliminar.Size = new Size(279, 29);
             cbUsuarioEditarEliminar.TabIndex = 0;
             cbUsuarioEditarEliminar.SelectedIndexChanged += cbUsuarioEditarEliminar_SelectedIndexChanged;
             // 
             // lblUsuarioEditar
             // 
             lblUsuarioEditar.AutoSize = true;
-            lblUsuarioEditar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblUsuarioEditar.Location = new Point(17, 33);
+            lblUsuarioEditar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblUsuarioEditar.Location = new Point(19, 44);
             lblUsuarioEditar.Name = "lblUsuarioEditar";
-            lblUsuarioEditar.Size = new System.Drawing.Size(120, 15);
+            lblUsuarioEditar.Size = new Size(157, 20);
             lblUsuarioEditar.TabIndex = 0;
             lblUsuarioEditar.Text = "Usuario a editar/baja:";
             // 
@@ -282,12 +282,12 @@
             gbCrearRol.Controls.Add(lblCodigoRol);
             gbCrearRol.Controls.Add(cbRolEditarEliminar);
             gbCrearRol.Controls.Add(lblRolEditar);
-            gbCrearRol.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            gbCrearRol.Location = new Point(14, 347);
-            gbCrearRol.Margin = new Padding(3, 4, 3, 4);
+            gbCrearRol.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            gbCrearRol.Location = new Point(16, 463);
+            gbCrearRol.Margin = new Padding(3, 5, 3, 5);
             gbCrearRol.Name = "gbCrearRol";
-            gbCrearRol.Padding = new Padding(3, 4, 3, 4);
-            gbCrearRol.Size = new Size(400, 267);
+            gbCrearRol.Padding = new Padding(3, 5, 3, 5);
+            gbCrearRol.Size = new Size(457, 356);
             gbCrearRol.TabIndex = 1;
             gbCrearRol.TabStop = false;
             gbCrearRol.Text = "Gestión Rol";
@@ -297,12 +297,12 @@
             btnLimpiarCamposRol.BackColor = Color.Gainsboro;
             btnLimpiarCamposRol.FlatAppearance.BorderSize = 0;
             btnLimpiarCamposRol.FlatStyle = FlatStyle.Flat;
-            btnLimpiarCamposRol.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnLimpiarCamposRol.Font = new Font("Segoe UI", 9.75F);
             btnLimpiarCamposRol.ForeColor = Color.Black;
-            btnLimpiarCamposRol.Location = new Point(313, 213);
-            btnLimpiarCamposRol.Margin = new Padding(3, 4, 3, 4);
+            btnLimpiarCamposRol.Location = new Point(358, 284);
+            btnLimpiarCamposRol.Margin = new Padding(3, 5, 3, 5);
             btnLimpiarCamposRol.Name = "btnLimpiarCamposRol";
-            btnLimpiarCamposRol.Size = new Size(76, 33);
+            btnLimpiarCamposRol.Size = new Size(87, 44);
             btnLimpiarCamposRol.TabIndex = 17;
             btnLimpiarCamposRol.Text = "Limpiar";
             btnLimpiarCamposRol.UseVisualStyleBackColor = false;
@@ -313,12 +313,12 @@
             btnBorrarRol.BackColor = Color.IndianRed;
             btnBorrarRol.FlatAppearance.BorderSize = 0;
             btnBorrarRol.FlatStyle = FlatStyle.Flat;
-            btnBorrarRol.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnBorrarRol.Font = new Font("Segoe UI", 9.75F);
             btnBorrarRol.ForeColor = Color.White;
-            btnBorrarRol.Location = new Point(286, 159);
-            btnBorrarRol.Margin = new Padding(3, 4, 3, 4);
+            btnBorrarRol.Location = new Point(327, 212);
+            btnBorrarRol.Margin = new Padding(3, 5, 3, 5);
             btnBorrarRol.Name = "btnBorrarRol";
-            btnBorrarRol.Size = new Size(103, 40);
+            btnBorrarRol.Size = new Size(118, 53);
             btnBorrarRol.TabIndex = 16;
             btnBorrarRol.Text = "Baja";
             btnBorrarRol.UseVisualStyleBackColor = false;
@@ -329,12 +329,12 @@
             btnEditarRol.BackColor = Color.SteelBlue;
             btnEditarRol.FlatAppearance.BorderSize = 0;
             btnEditarRol.FlatStyle = FlatStyle.Flat;
-            btnEditarRol.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            btnEditarRol.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             btnEditarRol.ForeColor = Color.White;
-            btnEditarRol.Location = new Point(286, 107);
-            btnEditarRol.Margin = new Padding(3, 4, 3, 4);
+            btnEditarRol.Location = new Point(327, 143);
+            btnEditarRol.Margin = new Padding(3, 5, 3, 5);
             btnEditarRol.Name = "btnEditarRol";
-            btnEditarRol.Size = new Size(103, 40);
+            btnEditarRol.Size = new Size(118, 53);
             btnEditarRol.TabIndex = 15;
             btnEditarRol.Text = "Editar";
             btnEditarRol.UseVisualStyleBackColor = false;
@@ -345,12 +345,12 @@
             btnAltaRol.BackColor = Color.SteelBlue;
             btnAltaRol.FlatAppearance.BorderSize = 0;
             btnAltaRol.FlatStyle = FlatStyle.Flat;
-            btnAltaRol.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            btnAltaRol.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             btnAltaRol.ForeColor = Color.White;
-            btnAltaRol.Location = new Point(286, 53);
-            btnAltaRol.Margin = new Padding(3, 4, 3, 4);
+            btnAltaRol.Location = new Point(327, 71);
+            btnAltaRol.Margin = new Padding(3, 5, 3, 5);
             btnAltaRol.Name = "btnAltaRol";
-            btnAltaRol.Size = new Size(103, 40);
+            btnAltaRol.Size = new Size(118, 53);
             btnAltaRol.TabIndex = 14;
             btnAltaRol.Text = "Alta";
             btnAltaRol.UseVisualStyleBackColor = false;
@@ -361,74 +361,74 @@
             chkActivoRol.AutoSize = true;
             chkActivoRol.Checked = true;
             chkActivoRol.CheckState = CheckState.Checked;
-            chkActivoRol.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            chkActivoRol.Location = new Point(17, 220);
-            chkActivoRol.Margin = new Padding(3, 4, 3, 4);
+            chkActivoRol.Font = new Font("Segoe UI", 9.75F);
+            chkActivoRol.Location = new Point(19, 293);
+            chkActivoRol.Margin = new Padding(3, 5, 3, 5);
             chkActivoRol.Name = "chkActivoRol";
-            chkActivoRol.Size = new Size(62, 21);
+            chkActivoRol.Size = new Size(79, 27);
             chkActivoRol.TabIndex = 13;
             chkActivoRol.Text = "Activo";
             chkActivoRol.UseVisualStyleBackColor = true;
             // 
             // txtNombreRol
             // 
-            txtNombreRol.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            txtNombreRol.Location = new Point(91, 173);
-            txtNombreRol.Margin = new Padding(3, 4, 3, 4);
+            txtNombreRol.Font = new Font("Segoe UI", 9.75F);
+            txtNombreRol.Location = new Point(104, 231);
+            txtNombreRol.Margin = new Padding(3, 5, 3, 5);
             txtNombreRol.Name = "txtNombreRol";
-            txtNombreRol.Size = new Size(171, 25);
+            txtNombreRol.Size = new Size(195, 29);
             txtNombreRol.TabIndex = 12;
             // 
             // lblNombreRol
             // 
             lblNombreRol.AutoSize = true;
-            lblNombreRol.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblNombreRol.Location = new Point(14, 177);
+            lblNombreRol.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblNombreRol.Location = new Point(16, 236);
             lblNombreRol.Name = "lblNombreRol";
-            lblNombreRol.Size = new System.Drawing.Size(54, 15);
+            lblNombreRol.Size = new Size(70, 20);
             lblNombreRol.TabIndex = 0;
             lblNombreRol.Text = "Nombre:";
             // 
             // txtCodigoRol
             // 
-            txtCodigoRol.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            txtCodigoRol.Location = new Point(91, 127);
-            txtCodigoRol.Margin = new Padding(3, 4, 3, 4);
+            txtCodigoRol.Font = new Font("Segoe UI", 9.75F);
+            txtCodigoRol.Location = new Point(104, 169);
+            txtCodigoRol.Margin = new Padding(3, 5, 3, 5);
             txtCodigoRol.Name = "txtCodigoRol";
             txtCodigoRol.ReadOnly = true;
-            txtCodigoRol.Size = new Size(79, 25);
+            txtCodigoRol.Size = new Size(90, 29);
             txtCodigoRol.TabIndex = 11;
             txtCodigoRol.TabStop = false;
             // 
             // lblCodigoRol
             // 
             lblCodigoRol.AutoSize = true;
-            lblCodigoRol.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblCodigoRol.Location = new Point(14, 131);
+            lblCodigoRol.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblCodigoRol.Location = new Point(16, 175);
             lblCodigoRol.Name = "lblCodigoRol";
-            lblCodigoRol.Size = new System.Drawing.Size(21, 15);
+            lblCodigoRol.Size = new Size(28, 20);
             lblCodigoRol.TabIndex = 0;
             lblCodigoRol.Text = "ID:";
             // 
             // cbRolEditarEliminar
             // 
             cbRolEditarEliminar.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbRolEditarEliminar.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            cbRolEditarEliminar.Font = new Font("Segoe UI", 9.75F);
             cbRolEditarEliminar.FormattingEnabled = true;
-            cbRolEditarEliminar.Location = new Point(17, 60);
-            cbRolEditarEliminar.Margin = new Padding(3, 4, 3, 4);
+            cbRolEditarEliminar.Location = new Point(19, 80);
+            cbRolEditarEliminar.Margin = new Padding(3, 5, 3, 5);
             cbRolEditarEliminar.Name = "cbRolEditarEliminar";
-            cbRolEditarEliminar.Size = new Size(245, 25);
+            cbRolEditarEliminar.Size = new Size(279, 29);
             cbRolEditarEliminar.TabIndex = 10;
             cbRolEditarEliminar.SelectedIndexChanged += cbRolEditarEliminar_SelectedIndexChanged;
             // 
             // lblRolEditar
             // 
             lblRolEditar.AutoSize = true;
-            lblRolEditar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblRolEditar.Location = new Point(17, 33);
+            lblRolEditar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblRolEditar.Location = new Point(19, 44);
             lblRolEditar.Name = "lblRolEditar";
-            lblRolEditar.Size = new System.Drawing.Size(98, 15);
+            lblRolEditar.Size = new Size(126, 20);
             lblRolEditar.TabIndex = 0;
             lblRolEditar.Text = "Rol a editar/baja:";
             // 
@@ -440,12 +440,12 @@
             gbAsociarUsuarioRol.Controls.Add(lblRolAsociar);
             gbAsociarUsuarioRol.Controls.Add(cmbUsuarioAasociarRol);
             gbAsociarUsuarioRol.Controls.Add(lblUsuarioAsociar);
-            gbAsociarUsuarioRol.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            gbAsociarUsuarioRol.Location = new Point(14, 627);
-            gbAsociarUsuarioRol.Margin = new Padding(3, 4, 3, 4);
+            gbAsociarUsuarioRol.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            gbAsociarUsuarioRol.Location = new Point(16, 836);
+            gbAsociarUsuarioRol.Margin = new Padding(3, 5, 3, 5);
             gbAsociarUsuarioRol.Name = "gbAsociarUsuarioRol";
-            gbAsociarUsuarioRol.Padding = new Padding(3, 4, 3, 4);
-            gbAsociarUsuarioRol.Size = new Size(400, 200);
+            gbAsociarUsuarioRol.Padding = new Padding(3, 5, 3, 5);
+            gbAsociarUsuarioRol.Size = new Size(457, 267);
             gbAsociarUsuarioRol.TabIndex = 2;
             gbAsociarUsuarioRol.TabStop = false;
             gbAsociarUsuarioRol.Text = "Asociar Usuario a Rol";
@@ -455,12 +455,12 @@
             btnDesasociarUsuarioArol.BackColor = Color.IndianRed;
             btnDesasociarUsuarioArol.FlatAppearance.BorderSize = 0;
             btnDesasociarUsuarioArol.FlatStyle = FlatStyle.Flat;
-            btnDesasociarUsuarioArol.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnDesasociarUsuarioArol.Font = new Font("Segoe UI", 9.75F);
             btnDesasociarUsuarioArol.ForeColor = Color.White;
-            btnDesasociarUsuarioArol.Location = new Point(286, 120);
-            btnDesasociarUsuarioArol.Margin = new Padding(3, 4, 3, 4);
+            btnDesasociarUsuarioArol.Location = new Point(327, 160);
+            btnDesasociarUsuarioArol.Margin = new Padding(3, 5, 3, 5);
             btnDesasociarUsuarioArol.Name = "btnDesasociarUsuarioArol";
-            btnDesasociarUsuarioArol.Size = new Size(103, 40);
+            btnDesasociarUsuarioArol.Size = new Size(118, 53);
             btnDesasociarUsuarioArol.TabIndex = 22;
             btnDesasociarUsuarioArol.Text = "Desasociar";
             btnDesasociarUsuarioArol.UseVisualStyleBackColor = false;
@@ -471,12 +471,12 @@
             btnAsociarUsuarioArol.BackColor = Color.SteelBlue;
             btnAsociarUsuarioArol.FlatAppearance.BorderSize = 0;
             btnAsociarUsuarioArol.FlatStyle = FlatStyle.Flat;
-            btnAsociarUsuarioArol.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            btnAsociarUsuarioArol.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             btnAsociarUsuarioArol.ForeColor = Color.White;
-            btnAsociarUsuarioArol.Location = new Point(286, 60);
-            btnAsociarUsuarioArol.Margin = new Padding(3, 4, 3, 4);
+            btnAsociarUsuarioArol.Location = new Point(327, 80);
+            btnAsociarUsuarioArol.Margin = new Padding(3, 5, 3, 5);
             btnAsociarUsuarioArol.Name = "btnAsociarUsuarioArol";
-            btnAsociarUsuarioArol.Size = new Size(103, 40);
+            btnAsociarUsuarioArol.Size = new Size(118, 53);
             btnAsociarUsuarioArol.TabIndex = 21;
             btnAsociarUsuarioArol.Text = "Asociar";
             btnAsociarUsuarioArol.UseVisualStyleBackColor = false;
@@ -485,42 +485,42 @@
             // cmbRolAasociarAusuario
             // 
             cmbRolAasociarAusuario.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbRolAasociarAusuario.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            cmbRolAasociarAusuario.Font = new Font("Segoe UI", 9.75F);
             cmbRolAasociarAusuario.FormattingEnabled = true;
-            cmbRolAasociarAusuario.Location = new Point(17, 133);
-            cmbRolAasociarAusuario.Margin = new Padding(3, 4, 3, 4);
+            cmbRolAasociarAusuario.Location = new Point(19, 177);
+            cmbRolAasociarAusuario.Margin = new Padding(3, 5, 3, 5);
             cmbRolAasociarAusuario.Name = "cmbRolAasociarAusuario";
-            cmbRolAasociarAusuario.Size = new Size(245, 25);
+            cmbRolAasociarAusuario.Size = new Size(279, 29);
             cmbRolAasociarAusuario.TabIndex = 20;
             // 
             // lblRolAsociar
             // 
             lblRolAsociar.AutoSize = true;
-            lblRolAsociar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblRolAsociar.Location = new Point(17, 107);
+            lblRolAsociar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblRolAsociar.Location = new Point(19, 143);
             lblRolAsociar.Name = "lblRolAsociar";
-            lblRolAsociar.Size = new System.Drawing.Size(129, 15);
+            lblRolAsociar.Size = new Size(170, 20);
             lblRolAsociar.TabIndex = 0;
             lblRolAsociar.Text = "Rol a asociar al usuario:";
             // 
             // cmbUsuarioAasociarRol
             // 
             cmbUsuarioAasociarRol.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbUsuarioAasociarRol.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            cmbUsuarioAasociarRol.Font = new Font("Segoe UI", 9.75F);
             cmbUsuarioAasociarRol.FormattingEnabled = true;
-            cmbUsuarioAasociarRol.Location = new Point(17, 60);
-            cmbUsuarioAasociarRol.Margin = new Padding(3, 4, 3, 4);
+            cmbUsuarioAasociarRol.Location = new Point(19, 80);
+            cmbUsuarioAasociarRol.Margin = new Padding(3, 5, 3, 5);
             cmbUsuarioAasociarRol.Name = "cmbUsuarioAasociarRol";
-            cmbUsuarioAasociarRol.Size = new Size(245, 25);
+            cmbUsuarioAasociarRol.Size = new Size(279, 29);
             cmbUsuarioAasociarRol.TabIndex = 19;
             // 
             // lblUsuarioAsociar
             // 
             lblUsuarioAsociar.AutoSize = true;
-            lblUsuarioAsociar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblUsuarioAsociar.Location = new Point(17, 33);
+            lblUsuarioAsociar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblUsuarioAsociar.Location = new Point(19, 44);
             lblUsuarioAsociar.Name = "lblUsuarioAsociar";
-            lblUsuarioAsociar.Size = new System.Drawing.Size(113, 15);
+            lblUsuarioAsociar.Size = new Size(146, 20);
             lblUsuarioAsociar.TabIndex = 0;
             lblUsuarioAsociar.Text = "Seleccionar usuario:";
             // 
@@ -536,12 +536,12 @@
             gbAsociarPermisoRol.Controls.Add(lblRolDisponible);
             gbAsociarPermisoRol.Controls.Add(trvwPermisoAasociar);
             gbAsociarPermisoRol.Controls.Add(lblPermisosDisponibles);
-            gbAsociarPermisoRol.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            gbAsociarPermisoRol.Location = new Point(429, 16);
-            gbAsociarPermisoRol.Margin = new Padding(3, 4, 3, 4);
+            gbAsociarPermisoRol.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            gbAsociarPermisoRol.Location = new Point(490, 21);
+            gbAsociarPermisoRol.Margin = new Padding(3, 5, 3, 5);
             gbAsociarPermisoRol.Name = "gbAsociarPermisoRol";
-            gbAsociarPermisoRol.Padding = new Padding(3, 4, 3, 4);
-            gbAsociarPermisoRol.Size = new Size(560, 413);
+            gbAsociarPermisoRol.Padding = new Padding(3, 5, 3, 5);
+            gbAsociarPermisoRol.Size = new Size(598, 551);
             gbAsociarPermisoRol.TabIndex = 3;
             gbAsociarPermisoRol.TabStop = false;
             gbAsociarPermisoRol.Text = "Asociar Permiso a Rol";
@@ -551,12 +551,12 @@
             btnDesasociarPermisoArol.BackColor = Color.IndianRed;
             btnDesasociarPermisoArol.FlatAppearance.BorderSize = 0;
             btnDesasociarPermisoArol.FlatStyle = FlatStyle.Flat;
-            btnDesasociarPermisoArol.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnDesasociarPermisoArol.Font = new Font("Segoe UI", 9.75F);
             btnDesasociarPermisoArol.ForeColor = Color.White;
-            btnDesasociarPermisoArol.Location = new Point(389, 80);
-            btnDesasociarPermisoArol.Margin = new Padding(3, 4, 3, 4);
+            btnDesasociarPermisoArol.Location = new Point(445, 107);
+            btnDesasociarPermisoArol.Margin = new Padding(3, 5, 3, 5);
             btnDesasociarPermisoArol.Name = "btnDesasociarPermisoArol";
-            btnDesasociarPermisoArol.Size = new Size(91, 33);
+            btnDesasociarPermisoArol.Size = new Size(104, 44);
             btnDesasociarPermisoArol.TabIndex = 27;
             btnDesasociarPermisoArol.Text = "Desasociar";
             btnDesasociarPermisoArol.UseVisualStyleBackColor = false;
@@ -567,12 +567,12 @@
             btnAsociarPermisoArol.BackColor = Color.SteelBlue;
             btnAsociarPermisoArol.FlatAppearance.BorderSize = 0;
             btnAsociarPermisoArol.FlatStyle = FlatStyle.Flat;
-            btnAsociarPermisoArol.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            btnAsociarPermisoArol.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             btnAsociarPermisoArol.ForeColor = Color.White;
-            btnAsociarPermisoArol.Location = new Point(286, 80);
-            btnAsociarPermisoArol.Margin = new Padding(3, 4, 3, 4);
+            btnAsociarPermisoArol.Location = new Point(327, 107);
+            btnAsociarPermisoArol.Margin = new Padding(3, 5, 3, 5);
             btnAsociarPermisoArol.Name = "btnAsociarPermisoArol";
-            btnAsociarPermisoArol.Size = new Size(91, 33);
+            btnAsociarPermisoArol.Size = new Size(104, 44);
             btnAsociarPermisoArol.TabIndex = 26;
             btnAsociarPermisoArol.Text = "Asociar >";
             btnAsociarPermisoArol.UseVisualStyleBackColor = false;
@@ -580,20 +580,20 @@
             // 
             // trViewPermisoRol
             // 
-            trViewPermisoRol.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            trViewPermisoRol.Location = new Point(286, 153);
-            trViewPermisoRol.Margin = new Padding(3, 4, 3, 4);
+            trViewPermisoRol.Font = new Font("Segoe UI", 9.75F);
+            trViewPermisoRol.Location = new Point(327, 204);
+            trViewPermisoRol.Margin = new Padding(3, 5, 3, 5);
             trViewPermisoRol.Name = "trViewPermisoRol";
-            trViewPermisoRol.Size = new Size(251, 199);
+            trViewPermisoRol.Size = new Size(286, 264);
             trViewPermisoRol.TabIndex = 28;
             // 
             // lblPermisosRol
             // 
             lblPermisosRol.AutoSize = true;
-            lblPermisosRol.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblPermisosRol.Location = new Point(286, 127);
+            lblPermisosRol.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblPermisosRol.Location = new Point(327, 169);
             lblPermisosRol.Name = "lblPermisosRol";
-            lblPermisosRol.Size = new System.Drawing.Size(95, 15);
+            lblPermisosRol.Size = new Size(124, 20);
             lblPermisosRol.TabIndex = 0;
             lblPermisosRol.Text = "Permisos por rol:";
             // 
@@ -602,12 +602,12 @@
             btnAsociarPermisosMarcados.BackColor = Color.SteelBlue;
             btnAsociarPermisosMarcados.FlatAppearance.BorderSize = 0;
             btnAsociarPermisosMarcados.FlatStyle = FlatStyle.Flat;
-            btnAsociarPermisosMarcados.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            btnAsociarPermisosMarcados.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             btnAsociarPermisosMarcados.ForeColor = Color.White;
-            btnAsociarPermisosMarcados.Location = new Point(17, 360);
-            btnAsociarPermisosMarcados.Margin = new Padding(3, 4, 3, 4);
+            btnAsociarPermisosMarcados.Location = new Point(19, 480);
+            btnAsociarPermisosMarcados.Margin = new Padding(3, 5, 3, 5);
             btnAsociarPermisosMarcados.Name = "btnAsociarPermisosMarcados";
-            btnAsociarPermisosMarcados.Size = new Size(251, 40);
+            btnAsociarPermisosMarcados.Size = new Size(287, 53);
             btnAsociarPermisosMarcados.TabIndex = 25;
             btnAsociarPermisosMarcados.Text = "Guardar Permisos Marcados";
             btnAsociarPermisosMarcados.UseVisualStyleBackColor = false;
@@ -616,42 +616,43 @@
             // cbRolParaAsociarApermiso
             // 
             cbRolParaAsociarApermiso.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbRolParaAsociarApermiso.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            cbRolParaAsociarApermiso.Font = new Font("Segoe UI", 9.75F);
             cbRolParaAsociarApermiso.FormattingEnabled = true;
-            cbRolParaAsociarApermiso.Location = new Point(286, 33);
-            cbRolParaAsociarApermiso.Margin = new Padding(3, 4, 3, 4);
+            cbRolParaAsociarApermiso.Location = new Point(327, 44);
+            cbRolParaAsociarApermiso.Margin = new Padding(3, 5, 3, 5);
             cbRolParaAsociarApermiso.Name = "cbRolParaAsociarApermiso";
-            cbRolParaAsociarApermiso.Size = new Size(251, 25);
+            cbRolParaAsociarApermiso.Size = new Size(286, 29);
             cbRolParaAsociarApermiso.TabIndex = 23;
             cbRolParaAsociarApermiso.SelectedIndexChanged += cbRolParaAsociarApermiso_SelectedIndexChanged;
             // 
             // lblRolDisponible
             // 
             lblRolDisponible.AutoSize = true;
-            lblRolDisponible.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblRolDisponible.Location = new Point(286, 12);
+            lblRolDisponible.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblRolDisponible.Location = new Point(327, 16);
             lblRolDisponible.Name = "lblRolDisponible";
-            lblRolDisponible.Size = new System.Drawing.Size(102, 15);
+            lblRolDisponible.Size = new Size(130, 20);
             lblRolDisponible.TabIndex = 0;
             lblRolDisponible.Text = "Roles disponibles:";
             // 
             // trvwPermisoAasociar
             // 
             trvwPermisoAasociar.CheckBoxes = true;
-            trvwPermisoAasociar.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            trvwPermisoAasociar.Location = new Point(17, 60);
-            trvwPermisoAasociar.Margin = new Padding(3, 4, 3, 4);
+            trvwPermisoAasociar.Font = new Font("Segoe UI", 9.75F);
+            trvwPermisoAasociar.Location = new Point(19, 80);
+            trvwPermisoAasociar.Margin = new Padding(3, 5, 3, 5);
             trvwPermisoAasociar.Name = "trvwPermisoAasociar";
-            trvwPermisoAasociar.Size = new Size(251, 292);
+            trvwPermisoAasociar.Size = new Size(286, 388);
             trvwPermisoAasociar.TabIndex = 24;
+            this.trvwPermisoAasociar.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.trvwPermisoAasociar_AfterCheck);
             // 
             // lblPermisosDisponibles
             // 
             lblPermisosDisponibles.AutoSize = true;
-            lblPermisosDisponibles.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblPermisosDisponibles.Location = new Point(17, 33);
+            lblPermisosDisponibles.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblPermisosDisponibles.Location = new Point(19, 44);
             lblPermisosDisponibles.Name = "lblPermisosDisponibles";
-            lblPermisosDisponibles.Size = new System.Drawing.Size(122, 15);
+            lblPermisosDisponibles.Size = new Size(154, 20);
             lblPermisosDisponibles.TabIndex = 0;
             lblPermisosDisponibles.Text = "Permisos disponibles:";
             // 
@@ -659,12 +660,12 @@
             // 
             gbRolesYPermisosUsuario.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gbRolesYPermisosUsuario.Controls.Add(trvRolesyPermisosPorUsuario);
-            gbRolesYPermisosUsuario.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            gbRolesYPermisosUsuario.Location = new Point(429, 440);
-            gbRolesYPermisosUsuario.Margin = new Padding(3, 4, 3, 4);
+            gbRolesYPermisosUsuario.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            gbRolesYPermisosUsuario.Location = new Point(490, 587);
+            gbRolesYPermisosUsuario.Margin = new Padding(3, 5, 3, 5);
             gbRolesYPermisosUsuario.Name = "gbRolesYPermisosUsuario";
-            gbRolesYPermisosUsuario.Padding = new Padding(3, 4, 3, 4);
-            gbRolesYPermisosUsuario.Size = new Size(560, 387);
+            gbRolesYPermisosUsuario.Padding = new Padding(3, 5, 3, 5);
+            gbRolesYPermisosUsuario.Size = new Size(598, 545);
             gbRolesYPermisosUsuario.TabIndex = 4;
             gbRolesYPermisosUsuario.TabStop = false;
             gbRolesYPermisosUsuario.Text = "Roles y permisos del usuario (Vista)";
@@ -672,26 +673,27 @@
             // trvRolesyPermisosPorUsuario
             // 
             trvRolesyPermisosPorUsuario.Dock = DockStyle.Fill;
-            trvRolesyPermisosPorUsuario.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            trvRolesyPermisosPorUsuario.Location = new Point(3, 20);
-            trvRolesyPermisosPorUsuario.Margin = new Padding(3, 4, 3, 4);
+            trvRolesyPermisosPorUsuario.Font = new Font("Segoe UI", 9.75F);
+            trvRolesyPermisosPorUsuario.Location = new Point(3, 25);
+            trvRolesyPermisosPorUsuario.Margin = new Padding(3, 5, 3, 5);
             trvRolesyPermisosPorUsuario.Name = "trvRolesyPermisosPorUsuario";
-            trvRolesyPermisosPorUsuario.Size = new Size(554, 363);
+            trvRolesyPermisosPorUsuario.Size = new Size(592, 515);
             trvRolesyPermisosPorUsuario.TabIndex = 29;
             // 
             // frmUsuarios
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
             BackColor = Color.White;
-            ClientSize = new Size(1005, 841);
+            ClientSize = new Size(1149, 1055);
             Controls.Add(gbRolesYPermisosUsuario);
             Controls.Add(gbAsociarPermisoRol);
             Controls.Add(gbAsociarUsuarioRol);
             Controls.Add(gbCrearRol);
             Controls.Add(gbCrearUsuario);
-            Margin = new Padding(3, 4, 3, 4);
-            MinimumSize = new Size(1020, 878);
+            Margin = new Padding(3, 5, 3, 5);
+            MinimumSize = new Size(1020, 700);
             Name = "frmUsuarios";
             Text = "Gestión de Seguridad (Usuarios, Roles y Permisos)";
             Load += frmUsuarios_Load;

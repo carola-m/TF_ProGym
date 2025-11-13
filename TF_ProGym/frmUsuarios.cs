@@ -1,14 +1,7 @@
 ﻿using BE;
 using BLL;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace CapaPresentacion
 {
@@ -36,28 +29,53 @@ namespace CapaPresentacion
 
         #region Lógica Carga de Controles
 
-        // Carga el TreeView 'trvwPermisoAasociar' con las definiciones de permisos
+        // Carga el TreeView  con las definiciones de permisos
         private void CargarPermisosEnTreeView()
         {
             try
             {
+                trvwPermisoAasociar.AfterCheck -= trvwPermisoAasociar_AfterCheck;
+
                 _definicionesPermisosCache = bllSeguridad.ObtenerDefinicionesPermisos();
                 trvwPermisoAasociar.Nodes.Clear();
 
-                foreach (var permiso in _definicionesPermisosCache.OrderBy(p => p.Nombre))
+                // carga en la raíz del TreeView
+                foreach (var componente in _definicionesPermisosCache.OrderBy(p => p.Nombre))
                 {
-                    TreeNode nodo = new TreeNode(permiso.Nombre);
-                    nodo.Tag = permiso;
-                    trvwPermisoAasociar.Nodes.Add(nodo);
+                    AgregarNodoAlTreeView(trvwPermisoAasociar.Nodes, componente);
                 }
+                trvwPermisoAasociar.ExpandAll(); 
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar permisos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                trvwPermisoAasociar.AfterCheck += trvwPermisoAasociar_AfterCheck;
+            }
         }
 
-        // Carga los ComboBox de Roles (cbRolEditarEliminar, cbRolParaAsociarApermiso, cmbRolAasociarAusuario)
+        // Método para poblar el TreeView
+        private void AgregarNodoAlTreeView(TreeNodeCollection nodosPadre, BEPermisoComponent componente)
+        {
+            var nodo = new TreeNode(componente.Nombre);
+            nodo.Tag = componente; // Guardamos el objeto BE (Hoja o Grupo)
+
+            if (componente is BECategoriaPermiso)
+            {
+                // Si es un grupo, iteramos sus hijos
+                foreach (var hijo in componente.ObtenerHijos().OrderBy(p => p.Nombre))
+                {
+                    AgregarNodoAlTreeView(nodo.Nodes, hijo); // Recursividad
+                }
+            }
+
+            nodosPadre.Add(nodo);
+        }
+
+
+        // Carga los roles
         private void CargarComboBoxRoles()
         {
             try
@@ -89,7 +107,7 @@ namespace CapaPresentacion
             }
         }
 
-        // Carga los ComboBox de Usuarios (cbUsuarioEditarEliminar, cmbUsuarioAasociarRol)
+        // Carga los usuarios
         private void CargarComboBoxUsuarios()
         {
             try
@@ -115,7 +133,7 @@ namespace CapaPresentacion
             }
         }
 
-        // Carga el TreeView 'trvRolesyPermisosPorUsuario' con la vista general
+        // Carga el TreeView con la vista general
         private void MostrarRolesYPermisosDeTodosLosUsuarios()
         {
             trvRolesyPermisosPorUsuario.Nodes.Clear();
@@ -155,7 +173,7 @@ namespace CapaPresentacion
         }
 
 
-        // Carga el TreeView 'trViewPermisoRol' (Permisos del Rol Seleccionado)
+        // Carga el TreeView (Permisos del Rol Seleccionado)
         private void CargarTreeViewPermisosDelRol(int rolId)
         {
             trViewPermisoRol.Nodes.Clear();
@@ -199,7 +217,7 @@ namespace CapaPresentacion
                 var usuario = new BEUsuario
                 {
                     NombreUsuario = txtNombreUsuario.Text.Trim(),
-                    Password = txtContraseña.Text, // BLL se encarga de encriptar
+                    Password = txtContraseña.Text, 
                     Activo = chkActivoUsuario.Checked
                 };
 
@@ -223,36 +241,48 @@ namespace CapaPresentacion
             {
                 try
                 {
+                    // 1. Preparar los datos del usuario (Nombre, Activo)
                     usuarioSeleccionado.NombreUsuario = txtNombreUsuario.Text.Trim();
                     usuarioSeleccionado.Activo = chkActivoUsuario.Checked;
 
+                    // 2. Determinar si la contraseña cambió
                     string nuevaPassword = null;
+                    string passEnTextbox = txtContraseña.Text;
 
-                    if (!chkEncriptarDesencriptar.Checked && !string.IsNullOrWhiteSpace(txtContraseña.Text))
+                    if (string.IsNullOrWhiteSpace(passEnTextbox))
                     {
-                        nuevaPassword = txtContraseña.Text; // Se pasará a BLL para encriptar
-                    }
-                    else if (chkEncriptarDesencriptar.Checked && !string.IsNullOrWhiteSpace(txtContraseña.Text))
-                    {
-                        usuarioSeleccionado.Password = txtContraseña.Text;
-                        bllSeguridad.ModificarUsuario(usuarioSeleccionado, null); // Llama sin nueva password
-                    }
-                    else
-                    {
-                        bllSeguridad.ModificarUsuario(usuarioSeleccionado, null);
+                        MessageBox.Show("La contraseña no puede estar vacía.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
                     }
 
-                    if (nuevaPassword != null)
+                    // Lógica para determinar si la contraseña cambió
+                    string passOriginalPlana = BLLSeguridad.DesencriptarClave(usuarioSeleccionado.Password);
+
+                    if (chkEncriptarDesencriptar.Checked) 
                     {
-                        bllSeguridad.ModificarUsuario(usuarioSeleccionado, nuevaPassword);
+                        if (passEnTextbox != passOriginalPlana)
+                            nuevaPassword = passEnTextbox; 
+                    }
+                    else //modo Base64
+                    {
+                        if (passEnTextbox != usuarioSeleccionado.Password)
+                        {
+                            nuevaPassword = passEnTextbox;
+                        }
                     }
 
+                    // 3. Llamar a la BLL 
+                    // La BLL se encargará de encriptar 'nuevaPassword' si no es nulo.
+                    bllSeguridad.ModificarUsuario(usuarioSeleccionado, nuevaPassword);
 
                     MessageBox.Show("Usuario modificado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                    // Guardamos el estado actual del combo para recargarlo
+                    int idSeleccionado = usuarioSeleccionado.Id;
                     CargarComboBoxUsuarios();
+                    cbUsuarioEditarEliminar.SelectedValue = idSeleccionado; // Mantenemos la selección
+
                     MostrarRolesYPermisosDeTodosLosUsuarios();
-                    LimpiarCamposUsuario();
                 }
                 catch (Exception ex)
                 {
@@ -264,6 +294,7 @@ namespace CapaPresentacion
                 MessageBox.Show("Seleccione un usuario de la lista para editar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
 
         // Realiza la baja lógica (Inactivo) o reactiva el usuario seleccionado
         private void btnBorrarUsuario_Click(object sender, EventArgs e)
@@ -308,6 +339,7 @@ namespace CapaPresentacion
         }
 
 
+
         // Al seleccionar un usuario, carga sus datos en los campos de edición
         private void cbUsuarioEditarEliminar_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -318,32 +350,55 @@ namespace CapaPresentacion
                 chkActivoUsuario.Checked = usuario.Activo;
                 btnBorrarUsuario.Text = usuario.Activo ? "Baja" : "Reactivar";
 
-                txtContraseña.Text = usuario.Password;
+                // Desconectar el evento del checkbox antes de cambiarlo
+                chkEncriptarDesencriptar.CheckedChanged -= chkEncriptarDesencriptar_CheckedChanged;
 
-                chkEncriptarDesencriptar_CheckedChanged(sender, e);
+                // Establecer estado por defecto (oculto = Base64)
+                chkEncriptarDesencriptar.Checked = false;
+                txtContraseña.PasswordChar = '\0'; 
+                txtContraseña.Text = usuario.Password; // Cargar la contraseña Base64
+                txtContraseña.PlaceholderText = "";
+
+                // Reconectar el evento
+                chkEncriptarDesencriptar.CheckedChanged += chkEncriptarDesencriptar_CheckedChanged;
             }
         }
 
-        // Muestra/Oculta la contraseña en texto plano o "encriptada" (Base64)
+  
+        // Muestra/Oculta la contraseña en texto plano o en base64
         private void chkEncriptarDesencriptar_CheckedChanged(object sender, EventArgs e)
         {
+            if (cbUsuarioEditarEliminar.SelectedItem == null)
+            {
+                txtContraseña.PasswordChar = chkEncriptarDesencriptar.Checked ? '\0' : '*';
+                return;
+            }
+
             txtContraseña.PasswordChar = '\0';
-            string passMostrada = txtContraseña.Text;
+
+            BEUsuario usuarioSeleccionado = (BEUsuario)cbUsuarioEditarEliminar.SelectedItem;
+            string textoActual = txtContraseña.Text;
 
             if (chkEncriptarDesencriptar.Checked)
             {
-                txtContraseña.Text = BLLSeguridad.DesencriptarClave(passMostrada);
+                // Solo desencriptar si el texto actual es el Base64 original
+                if (textoActual == usuarioSeleccionado.Password)
+                {
+                    txtContraseña.Text = BLLSeguridad.DesencriptarClave(usuarioSeleccionado.Password);
+                }
             }
             else
             {
-                bool estaEncriptada = (passMostrada.Length % 4 == 0) && System.Text.RegularExpressions.Regex.IsMatch(passMostrada, @"^[a-zA-Z0-9\+/]*={0,3}$", System.Text.RegularExpressions.RegexOptions.None);
-
-                if (!estaEncriptada)
+                // El usuario quiere OCULTAR (volver a Base64)
+                // Solo re-encriptar si el texto actual es el plano original
+                string passOriginalPlana = BLLSeguridad.DesencriptarClave(usuarioSeleccionado.Password);
+                if (textoActual == passOriginalPlana)
                 {
-                    txtContraseña.Text = BLLSeguridad.EncriptarClave(passMostrada);
+                    txtContraseña.Text = usuarioSeleccionado.Password;
                 }
             }
         }
+
 
         // Limpia los campos de gestión de usuarios
         private void btnLimpiarCamposUsuario_Click(object sender, EventArgs e)
@@ -351,10 +406,12 @@ namespace CapaPresentacion
             LimpiarCamposUsuario();
         }
 
+
         // Resetea los controles del panel de gestión de usuarios a su estado inicial
         private void LimpiarCamposUsuario()
         {
             cbUsuarioEditarEliminar.SelectedIndexChanged -= cbUsuarioEditarEliminar_SelectedIndexChanged;
+            chkEncriptarDesencriptar.CheckedChanged -= chkEncriptarDesencriptar_CheckedChanged;
 
             cbUsuarioEditarEliminar.SelectedIndex = -1;
             txtCodigoUsuario.Clear();
@@ -364,12 +421,14 @@ namespace CapaPresentacion
             chkActivoUsuario.Checked = true;
 
             chkEncriptarDesencriptar.Checked = false;
-            txtContraseña.PasswordChar = '*';
+            txtContraseña.PasswordChar = '*'; 
 
             btnBorrarUsuario.Text = "Baja";
 
             cbUsuarioEditarEliminar.SelectedIndexChanged += cbUsuarioEditarEliminar_SelectedIndexChanged;
+            chkEncriptarDesencriptar.CheckedChanged += chkEncriptarDesencriptar_CheckedChanged;
         }
+
 
         #endregion
 
@@ -520,6 +579,9 @@ namespace CapaPresentacion
         // Al seleccionar un rol, muestra sus permisos asignados y marca los permisos en la lista general
         private void cbRolParaAsociarApermiso_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Desconectar evento
+            trvwPermisoAasociar.AfterCheck -= trvwPermisoAasociar_AfterCheck;
+
             MarcarNodosRecursivo(trvwPermisoAasociar.Nodes, false);
             trViewPermisoRol.Nodes.Clear();
 
@@ -542,6 +604,8 @@ namespace CapaPresentacion
                 btnAsociarPermisoArol.Enabled = !esAdmin;
                 btnDesasociarPermisoArol.Enabled = !esAdmin;
                 btnAsociarPermisosMarcados.Enabled = !esAdmin;
+                trvwPermisoAasociar.Enabled = !esAdmin; // Deshabilita el treeview si es Admin
+
                 if (esAdmin) trViewPermisoRol.Nodes.Insert(0, new TreeNode("PERMISOS DE ADMIN NO MODIFICABLES"));
             }
             else
@@ -549,7 +613,11 @@ namespace CapaPresentacion
                 btnAsociarPermisoArol.Enabled = false;
                 btnDesasociarPermisoArol.Enabled = false;
                 btnAsociarPermisosMarcados.Enabled = false;
+                trvwPermisoAasociar.Enabled = true; // Habilita por defecto
             }
+
+            // Reconectar evento
+            trvwPermisoAasociar.AfterCheck += trvwPermisoAasociar_AfterCheck;
         }
 
         // Marca (check) los nodos del TreeView de permisos que ya están asignados al rol
@@ -557,13 +625,16 @@ namespace CapaPresentacion
         {
             foreach (TreeNode nodo in nodos)
             {
-                if (nodo.Tag is BEPermisoComponent permiso)
+                if (nodo.Tag is BEPermiso permiso) // Solo marca las hojas
                 {
                     nodo.Checked = idsPermisos.Contains(permiso.Id);
                 }
+
                 if (nodo.Nodes.Count > 0)
                 {
                     MarcarPermisosEnTreeView(nodo.Nodes, idsPermisos);
+                    // Marcar padre si todos los hijos están marcados
+                    MarcarPadre(nodo);
                 }
             }
         }
@@ -586,24 +657,47 @@ namespace CapaPresentacion
             {
                 if (rolSeleccionado.Nombre.Equals("Administrador", StringComparison.OrdinalIgnoreCase)) return;
 
+                //  Obtener solo las hojas del permiso seleccionado
+                List<BEPermisoComponent> permisosAAsignar = new List<BEPermisoComponent>();
+                if (permisoSeleccionado is BEPermiso)
+                {
+                    permisosAAsignar.Add(permisoSeleccionado);
+                }
+                else if (permisoSeleccionado is BECategoriaPermiso)
+                {
+                    permisosAAsignar.AddRange(ObtenerHojasRecursivo(permisoSeleccionado));
+                }
+
                 try
                 {
-                    var permisosActuales = bllSeguridad.ObtenerRolConPermisos(rolSeleccionado.Id).Permisos;
+                    var permisosActuales = bllSeguridad.ObtenerRolConPermisos(rolSeleccionado.Id).Permisos.Cast<BEPermisoComponent>().ToList();
+                    bool huboCambios = false;
 
-                    if (permisosActuales.Any(p => p.Id == permisoSeleccionado.Id))
+                    foreach (var permiso in permisosAAsignar)
                     {
-                        MessageBox.Show("El rol ya tiene este permiso asignado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        if (!permisosActuales.Any(p => p.Id == permiso.Id))
+                        {
+                            permisosActuales.Add(permiso);
+                            huboCambios = true;
+                        }
+                    }
+
+                    if (!huboCambios)
+                    {
+                        MessageBox.Show("El rol ya tiene este permiso (o permisos) asignado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
 
-                    permisosActuales.Add(permisoSeleccionado as BEPermiso);
+                    bllSeguridad.AsignarPermisosARol(rolSeleccionado.Id, permisosActuales);
 
-                    bllSeguridad.AsignarPermisosARol(rolSeleccionado.Id, permisosActuales.Cast<BEPermisoComponent>().ToList());
+                    MessageBox.Show("Permiso(s) asociado(s) correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    MessageBox.Show("Permiso asociado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                    // Recargar vistas
+                    trvwPermisoAasociar.AfterCheck -= trvwPermisoAasociar_AfterCheck;
                     CargarTreeViewPermisosDelRol(rolSeleccionado.Id);
-                    trvwPermisoAasociar.SelectedNode.Checked = true;
+                    MarcarPermisosEnTreeView(trvwPermisoAasociar.Nodes, permisosActuales.Select(p => p.Id).ToList());
+                    trvwPermisoAasociar.AfterCheck += trvwPermisoAasociar_AfterCheck;
+
                     MostrarRolesYPermisosDeTodosLosUsuarios();
                 }
                 catch (Exception ex)
@@ -617,7 +711,7 @@ namespace CapaPresentacion
             }
         }
 
-        // Quita un permiso (seleccionado en 'trViewPermisoRol') del rol seleccionado
+        // Quita un permiso  del rol seleccionado
         private void btnDesasociarPermisoArol_Click(object sender, EventArgs e)
         {
             if (cbRolParaAsociarApermiso.SelectedItem is BERol rolSeleccionado && rolSeleccionado.Id != 0 &&
@@ -641,8 +735,11 @@ namespace CapaPresentacion
                     bllSeguridad.AsignarPermisosARol(rolSeleccionado.Id, permisosActuales.Cast<BEPermisoComponent>().ToList());
                     MessageBox.Show("Permiso desasociado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                    trvwPermisoAasociar.AfterCheck -= trvwPermisoAasociar_AfterCheck;
                     CargarTreeViewPermisosDelRol(rolSeleccionado.Id);
                     MarcarPermisosEnTreeView(trvwPermisoAasociar.Nodes, permisosActuales.Select(p => p.Id).ToList());
+                    trvwPermisoAasociar.AfterCheck += trvwPermisoAasociar_AfterCheck;
+
                     MostrarRolesYPermisosDeTodosLosUsuarios();
                 }
                 catch (Exception ex)
@@ -665,12 +762,16 @@ namespace CapaPresentacion
 
                 try
                 {
-                    List<BEPermisoComponent> permisosMarcados = ObtenerPermisosSeleccionados(trvwPermisoAasociar.Nodes);
+                    List<BEPermisoComponent> permisosMarcados = ObtenerHojasSeleccionadas(trvwPermisoAasociar.Nodes);
 
                     bllSeguridad.AsignarPermisosARol(rolSeleccionado.Id, permisosMarcados);
                     MessageBox.Show("Permisos guardados para el rol (basado en las marcas).", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                    trvwPermisoAasociar.AfterCheck -= trvwPermisoAasociar_AfterCheck;
                     CargarTreeViewPermisosDelRol(rolSeleccionado.Id);
+                    MarcarPermisosEnTreeView(trvwPermisoAasociar.Nodes, permisosMarcados.Select(p => p.Id).ToList());
+                    trvwPermisoAasociar.AfterCheck += trvwPermisoAasociar_AfterCheck;
+
                     MostrarRolesYPermisosDeTodosLosUsuarios();
                 }
                 catch (Exception ex)
@@ -684,19 +785,38 @@ namespace CapaPresentacion
             }
         }
 
-        // Recorre el TreeView y devuelve una lista de los componentes de permiso marcados (check)
-        private List<BEPermisoComponent> ObtenerPermisosSeleccionados(TreeNodeCollection nodos)
+        // Recorre el TreeView y devuelve una lista de las HOJAS (BEPermiso) marcadas (check)
+        private List<BEPermisoComponent> ObtenerHojasSeleccionadas(TreeNodeCollection nodos)
         {
             var lista = new List<BEPermisoComponent>();
             foreach (TreeNode nodo in nodos)
             {
-                if (nodo.Checked && nodo.Tag is BEPermisoComponent permiso)
+                if (nodo.Checked && nodo.Tag is BEPermiso permisoHoja)
                 {
-                    lista.Add(permiso);
+                    lista.Add(permisoHoja);
                 }
                 if (nodo.Nodes.Count > 0)
                 {
-                    lista.AddRange(ObtenerPermisosSeleccionados(nodo.Nodes));
+                    lista.AddRange(ObtenerHojasSeleccionadas(nodo.Nodes));
+                }
+            }
+            return lista;
+        }
+
+
+        // Obtiene todas las hojas de un componente (ya sea una hoja o un grupo)
+        private List<BEPermisoComponent> ObtenerHojasRecursivo(BEPermisoComponent componente)
+        {
+            var lista = new List<BEPermisoComponent>();
+            if (componente is BEPermiso)
+            {
+                lista.Add(componente);
+            }
+            else if (componente is BECategoriaPermiso)
+            {
+                foreach (var hijo in componente.ObtenerHijos())
+                {
+                    lista.AddRange(ObtenerHojasRecursivo(hijo));
                 }
             }
             return lista;
@@ -770,6 +890,57 @@ namespace CapaPresentacion
             else
             {
                 MessageBox.Show("Seleccione un usuario y un rol válidos.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        #endregion
+
+        #region Eventos TreeView Permisos
+
+     
+        // Evento que se dispara después de marcar o desmarcar un nodo
+        private void trvwPermisoAasociar_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            if (e.Action == TreeViewAction.Unknown) return;
+
+            // 1. Marcar/Desmarcar todos los hijos recursivamente
+            MarcarHijos(e.Node, e.Node.Checked);
+
+            // 2. Actualizar estado del padre
+            if (e.Node.Parent != null)
+            {
+                MarcarPadre(e.Node.Parent);
+            }
+        }
+
+        // Función auxiliar para marcar hijos
+        private void MarcarHijos(TreeNode nodoPadre, bool marcado)
+        {
+            foreach (TreeNode nodoHijo in nodoPadre.Nodes)
+            {
+                if (nodoHijo.Checked != marcado)
+                {
+                    nodoHijo.Checked = marcado; 
+                }
+            }
+        }
+
+        // Función auxiliar para marcar al padre
+        private void MarcarPadre(TreeNode nodoPadre)
+        {
+            bool todosHijosMarcados = true;
+            foreach (TreeNode nodoHijo in nodoPadre.Nodes)
+            {
+                if (!nodoHijo.Checked)
+                {
+                    todosHijosMarcados = false;
+                    break;
+                }
+            }
+
+            if (nodoPadre.Checked != todosHijosMarcados)
+            {
+                nodoPadre.Checked = todosHijosMarcados;
             }
         }
 
