@@ -40,7 +40,7 @@ namespace CapaPresentacion
             LimpiarCamposYSeleccion();
         }
 
-        // Carga la grilla de clientes, opcionalmente filtrada
+        // Carga la grilla de clientes
         private void CargarGrilla(string filtro = null)
         {
             try

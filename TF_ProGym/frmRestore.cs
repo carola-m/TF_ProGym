@@ -50,11 +50,11 @@ namespace CapaPresentacion
 
                 foreach (var carpeta in carpetas)
                 {
-                    string nombreCarpeta = Path.GetFileName(carpeta); // Ej: "Backup_20251027_193000"
+                    string nombreCarpeta = Path.GetFileName(carpeta); 
                     TreeNode nodoBackup = new TreeNode(nombreCarpeta);
                     nodoBackup.Tag = carpeta; // Guarda la ruta completa en el Tag
 
-                    // Opcional: Mostrar los archivos XML dentro de cada backup
+                    // Mostrar los archivos XML dentro de cada backup
                     try
                     {
                         var archivos = Directory.GetFiles(carpeta, "*.xml");
@@ -98,7 +98,6 @@ namespace CapaPresentacion
 
             string nombreBackup = treeBackups.SelectedNode.Text; // El nombre de la carpeta
 
-            // ADVERTENCIA
             DialogResult confirmacion = MessageBox.Show(
                 $"¡ADVERTENCIA!\n\nEsto sobrescribirá TODOS los datos actuales con los datos del backup '{nombreBackup}'.\n" +
                 "Esta acción NO se puede deshacer.\n\n¿Está seguro que desea continuar?",
@@ -111,12 +110,34 @@ namespace CapaPresentacion
             {
                 try
                 {
-                    // Llama a la BLL para que haga el trabajo
+                    // 1. Realiza el restore
                     bllRestore.RealizarRestore(nombreBackup);
-                    MessageBox.Show("Restore completado con éxito.\n\nLa aplicación se cerrará. Por favor, vuelva a abrirla para ver los datos restaurados.", "Restore Exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Forzar el cierre de la aplicación para recargar los datos
-                    Application.Exit();
+                    // 2. Muestra el mensaje de éxito
+                    MessageBox.Show("Restore completado con éxito.\n\n" +
+                                    "Se cerrará la sesión. Por favor, inicie sesión nuevamente para cargar los datos restaurados.",
+                                    "Restore Exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+         
+
+                    // 3. Cierra la sesión actual
+                    Services.Session.ObtenerInstancia.CerrarSesion();
+
+                    // 4. Busca el formulario frmInicio (el principal)
+                    frmInicio formularioPrincipal = Application.OpenForms.OfType<frmInicio>().FirstOrDefault();
+                    if (formularioPrincipal != null)
+                    {
+                        // 5. Oculta frmInicio
+                        formularioPrincipal.Hide();
+                    }
+
+                    // 6. Crea y muestra la nueva ventanita de Login
+                    frmLogin loginForm = new frmLogin();
+                    // 7. Asegura que la app se cierre si el usuario cierra el login con la 'X'
+                    loginForm.FormClosed += (s, args) => Application.ExitThread();
+                    loginForm.Show();
+
+                    // 8.Cierra este formulario (frmRestore)
+                    this.Close();
                 }
                 catch (Exception ex)
                 {

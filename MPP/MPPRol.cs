@@ -106,7 +106,6 @@ namespace MPP
 
                 var permisosAdmin = new XElement("Permisos");
 
-                // --- CORRECCIÓN ---
                 // Busca .Descendants("Permiso") para encontrar TODOS los permisos simples,
                 // incluso si están dentro de <Categoria>.
                 foreach (var permElem in docPermisos.Root.Descendants("Permiso"))
@@ -319,7 +318,7 @@ namespace MPP
             if (!File.Exists(permisoFilePath)) return new List<BEPermiso>();
             var docPermisos = XDocument.Load(permisoFilePath);
 
-            // --- CORRECCIÓN 2 ---
+  
             // Busca .Descendants("Permiso") para encontrar TODOS los permisos simples,
             // incluso si están dentro de <Categoria>.
             return docPermisos.Root.Descendants("Permiso")

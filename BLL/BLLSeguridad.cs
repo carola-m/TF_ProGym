@@ -44,7 +44,7 @@ namespace BLL
             if (usuario == null) throw new ArgumentNullException("El usuario no puede ser nulo.");
             if (string.IsNullOrWhiteSpace(usuario.NombreUsuario)) throw new ArgumentException("El nombre de usuario es obligatorio.");
             if (string.IsNullOrWhiteSpace(usuario.Password)) throw new ArgumentException("La contraseña es obligatoria.");
-            if (usuario.Password.Length < 4) throw new ArgumentException("La contraseña debe tener al menos 4 caracteres.");
+           // if (usuario.Password.Length < 4) throw new ArgumentException("La contraseña debe tener al menos 4 caracteres.");
 
             // Encripta la contraseña antes de guardarla
             usuario.Password = EncriptarClave(usuario.Password);
@@ -198,7 +198,6 @@ namespace BLL
             return mppRol.ObtenerRolConPermisos(idRol);
         }
 
-        // --- MÉTODO CORREGIDO ---
         public void AsignarPermisosARol(int idRol, List<BEPermisoComponent> permisos)
         {
             var rol = mppRol.ListarRolesBasico().FirstOrDefault(r => r.Id == idRol);
@@ -290,7 +289,7 @@ namespace BLL
 
         #endregion
 
-        #region Encriptación Reversible (Base64 - Requerido por el profesor)
+        #region
 
         // Método para encriptar
         public static string EncriptarClave(string rawData)

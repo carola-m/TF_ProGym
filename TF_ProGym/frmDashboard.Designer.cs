@@ -311,10 +311,9 @@
             this.chartOcupacion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             chartArea1.Name = "ChartArea1";
-            // --- INICIO CORRECCIÓN DE ERROR ---
+  
             chartArea1.AxisY.Minimum = 0;
-            chartArea1.AxisY.Maximum = 100;
-            // --- FIN CORRECCIÓN DE ERROR ---
+            chartArea1.AxisY.Maximum = 100;    
             this.chartOcupacion.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chartOcupacion.Legends.Add(legend1);
@@ -352,10 +351,8 @@
             | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             chartArea3.Name = "ChartArea1";
-            // --- INICIO CORRECCIÓN DE ERROR ---
             chartArea3.AxisY.Minimum = 0;
-            chartArea3.AxisY2.Minimum = 0; // Eje secundario también
-            // --- FIN CORRECCIÓN DE ERROR ---
+            chartArea3.AxisY2.Minimum = 0; 
             this.chartRendimientoProf.ChartAreas.Add(chartArea3);
             legend3.Name = "Legend1";
             this.chartRendimientoProf.Legends.Add(legend3);
@@ -483,7 +480,6 @@
         private System.Windows.Forms.Label lblTituloIngresos;
         private System.Windows.Forms.Label lblTituloClientes;
         private System.Windows.Forms.Label lblTituloRendimiento;
-        // --- Variables de KPIs ---
         private System.Windows.Forms.Panel panelKPIClientes;
         private System.Windows.Forms.Label lblKPIClientesActivos;
         private System.Windows.Forms.Label lblKPIClientesTitulo;
@@ -496,12 +492,9 @@
         private System.Windows.Forms.Panel panelKPILiquidado;
         private System.Windows.Forms.Label lblKPITotalLiquidado;
         private System.Windows.Forms.Label lblKPILiquidadoTitulo;
-        // --- Variables de Gráficos ---
         private System.Windows.Forms.DataVisualization.Charting.Chart chartOcupacion;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartIngresos;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartRendimientoProf;
-
-        // --- Variables de Botones NUEVOS ---
         private System.Windows.Forms.FlowLayoutPanel flpFiltrosRapidos;
         private System.Windows.Forms.Button btnFiltroHoy;
         private System.Windows.Forms.Button btnFiltroAyer;

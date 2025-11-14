@@ -50,17 +50,14 @@ namespace MPP
                 ))
             );
 
-            //REVISAR
+       
             if (existente != null)
             {
-                // Generalmente las liquidaciones no se editan, se anulan y se crean nuevas
-                // Pero si necesitaras editar:
                 existente.SetElementValue("IdProfesional", liquidacion.IdProfesional);
                 existente.SetElementValue("PeriodoDesde", liquidacion.PeriodoDesde.ToString("yyyy-MM-dd"));
                 existente.SetElementValue("PeriodoHasta", liquidacion.PeriodoHasta.ToString("yyyy-MM-dd"));
                 existente.SetElementValue("MontoTotal", liquidacion.MontoTotal);
                 existente.SetElementValue("FechaEmision", liquidacion.FechaEmision.ToString("o"));
-                // Reemplazar detalle
                 existente.Element("TurnosLiquidados")?.Remove();
                 existente.Add(nodoDetalle);
 
@@ -186,7 +183,8 @@ namespace MPP
             }
             if (hasta.HasValue)
             {
-                query = query.Where(l => l.FechaEmision <= hasta.Value);
+                DateTime hastaFinDia = hasta.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(l => l.FechaEmision <= hastaFinDia);
             }
 
             return query.OrderByDescending(l => l.FechaEmision).ToList(); 

@@ -53,10 +53,7 @@ namespace XmlHelper
                 catch (System.Xml.XmlException ex)
                 {
                     // Manejar XML mal formado
-                    Console.WriteLine($"Error al cargar XML mal formado '{filePath}': {ex.Message}");
-                    // intentar renombrar el archivo corrupto y crear uno nuevo
-                    // File.Move(filePath, filePath + ".corrupt." + DateTime.Now.ToString("yyyyMMddHHmmss"));
-                    // return new XDocument(new XElement(Path.GetFileNameWithoutExtension(filePath) + "s")); // Crear uno nuevo vacío
+                    Console.WriteLine($"Error al cargar XML mal formado '{filePath}': {ex.Message}");              
                     throw; 
                 }
                 catch (IOException ex)

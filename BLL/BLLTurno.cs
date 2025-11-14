@@ -160,7 +160,6 @@ namespace BLL
             }
         }
 
-        // --- Búsquedas Adicionales ---
         public List<BETurno> ListarTurnosPorFecha(DateTime fecha)
         {
             return Listar().Where(t => t.FechaHoraInicio.Date == fecha.Date)
